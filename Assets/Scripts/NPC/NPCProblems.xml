@@ -1,0 +1,185 @@
+<NPCData>
+
+  <!-- ОБЩИЙ ПУЛ СИМПТОМОВ -->
+  <SymptomsPool>
+
+    <!-- ПОВЕДЕНИЕ -->
+    <Symptom id="S1">Провалы в памяти</Symptom>
+    <Symptom id="S2">Резкие перепады настроения</Symptom>
+    <Symptom id="S3">Избегает определённых тем</Symptom>
+    <Symptom id="S4">Путается в деталях</Symptom>
+    <Symptom id="S5">Скованное поведение</Symptom>
+    <Symptom id="S6">Часто оглядывается</Symptom>
+
+    <!-- ОЩУЩЕНИЯ -->
+    <Symptom id="S7">Ощущение присутствия</Symptom>
+    <Symptom id="S8">Чувство слежки</Symptom>
+    <Symptom id="S9">Ощущение давления</Symptom>
+    <Symptom id="S10">Холод рядом</Symptom>
+    <Symptom id="S11">Шёпот</Symptom>
+
+    <!-- ФИЗИКА / ВНЕШКА -->
+    <Symptom id="S12">Следы на теле (царапины, ожоги)</Symptom>
+    <Symptom id="S13">Неестественная мимика</Symptom>
+    <Symptom id="S14">Изменение голоса или речи</Symptom>
+
+    <!-- ВИЗУАЛ / АНОМАЛИИ -->
+    <Symptom id="S15">Тень ведёт себя странно</Symptom>
+    <Symptom id="S16">Отражение отличается</Symptom>
+    <Symptom id="S17">Странные совпадения</Symptom>
+
+    <!-- ЛОГИКА -->
+    <Symptom id="S18">Противоречия в рассказе</Symptom>
+    <Symptom id="S19">Не может объяснить причину</Symptom>
+    <Symptom id="S20">Недавние резкие изменения</Symptom>
+
+    <!-- ПРЕДМЕТЫ -->
+    <Symptom id="S21">Связан с предметом</Symptom>
+    <Symptom id="S22">Не хочет отдавать вещь</Symptom>
+    <Symptom id="S23">Странный предмет</Symptom>
+
+    <!-- СРЕДА -->
+    <Symptom id="S24">Шумы</Symptom>
+    <Symptom id="S25">Движение предметов</Symptom>
+    <Symptom id="S26">Глючит техника</Symptom>
+
+    <!-- ВРЕМЯ -->
+    <Symptom id="S27">Провалы во времени</Symptom>
+    <Symptom id="S28">Повторяющиеся события</Symptom>
+    <Symptom id="S29">Дежавю</Symptom>
+
+  </SymptomsPool>
+
+
+  <!-- БЕДЫ -->
+
+  <Problems>
+
+    <!-- СУЩНОСТИ -->
+    <Problem name="Одержимость">
+      <SymptomRef>S1</SymptomRef>
+      <SymptomRef>S2</SymptomRef>
+      <SymptomRef>S11</SymptomRef>
+      <SymptomRef>S14</SymptomRef>
+      <SymptomRef>S16</SymptomRef>
+    </Problem>
+
+    <Problem name="Привязанный паразит">
+      <SymptomRef>S7</SymptomRef>
+      <SymptomRef>S10</SymptomRef>
+      <SymptomRef>S15</SymptomRef>
+      <SymptomRef>S20</SymptomRef>
+    </Problem>
+
+    <Problem name="Преследующая сущность">
+      <SymptomRef>S6</SymptomRef>
+      <SymptomRef>S8</SymptomRef>
+      <SymptomRef>S24</SymptomRef>
+      <SymptomRef>S17</SymptomRef>
+    </Problem>
+
+    <Problem name="Подмена">
+      <SymptomRef>S18</SymptomRef>
+      <SymptomRef>S4</SymptomRef>
+      <SymptomRef>S13</SymptomRef>
+      <SymptomRef>S16</SymptomRef>
+    </Problem>
+
+    <Problem name="Наблюдатель">
+      <SymptomRef>S5</SymptomRef>
+      <SymptomRef>S8</SymptomRef>
+      <SymptomRef>S9</SymptomRef>
+      <SymptomRef>S17</SymptomRef>
+    </Problem>
+
+
+    <!-- КОНТРАКТЫ -->
+    <Problem name="Осознанная сделка">
+      <SymptomRef>S3</SymptomRef>
+      <SymptomRef>S17</SymptomRef>
+      <SymptomRef>S20</SymptomRef>
+    </Problem>
+
+    <Problem name="Нарушенный контракт">
+      <SymptomRef>S8</SymptomRef>
+      <SymptomRef>S20</SymptomRef>
+      <SymptomRef>S28</SymptomRef>
+    </Problem>
+
+    <Problem name="Неосознанный контракт">
+      <SymptomRef>S1</SymptomRef>
+      <SymptomRef>S19</SymptomRef>
+      <SymptomRef>S23</SymptomRef>
+    </Problem>
+
+
+    <!-- ПРОКЛЯТИЯ -->
+    <Problem name="Классическое проклятие">
+      <SymptomRef>S17</SymptomRef>
+      <SymptomRef>S20</SymptomRef>
+      <SymptomRef>S18</SymptomRef>
+    </Problem>
+
+    <Problem name="Наследственное проклятие">
+      <SymptomRef>S17</SymptomRef>
+      <SymptomRef>S18</SymptomRef>
+      <SymptomRef>S21</SymptomRef>
+    </Problem>
+
+    <Problem name="Самонавязанное">
+      <SymptomRef>S3</SymptomRef>
+      <SymptomRef>S2</SymptomRef>
+      <SymptomRef>S20</SymptomRef>
+    </Problem>
+
+    <Problem name="Локальное проклятие">
+      <SymptomRef>S24</SymptomRef>
+      <SymptomRef>S25</SymptomRef>
+      <SymptomRef>S26</SymptomRef>
+      <SymptomRef>S9</SymptomRef>
+    </Problem>
+
+    <Problem name="Предметное проклятие">
+      <SymptomRef>S21</SymptomRef>
+      <SymptomRef>S22</SymptomRef>
+      <SymptomRef>S17</SymptomRef>
+    </Problem>
+
+
+    <!-- РИТУАЛЫ -->
+    <Problem name="Незакрытый ритуал">
+      <SymptomRef>S11</SymptomRef>
+      <SymptomRef>S27</SymptomRef>
+      <SymptomRef>S28</SymptomRef>
+    </Problem>
+
+    <Problem name="Ошибка ритуала">
+      <SymptomRef>S2</SymptomRef>
+      <SymptomRef>S17</SymptomRef>
+      <SymptomRef>S19</SymptomRef>
+    </Problem>
+
+    <Problem name="Чужой ритуал">
+      <SymptomRef>S20</SymptomRef>
+      <SymptomRef>S7</SymptomRef>
+      <SymptomRef>S19</SymptomRef>
+    </Problem>
+
+
+    <!-- АНОМАЛИИ -->
+    <Problem name="Искажение пространства">
+      <SymptomRef>S25</SymptomRef>
+      <SymptomRef>S24</SymptomRef>
+      <SymptomRef>S19</SymptomRef>
+    </Problem>
+
+    <Problem name="Искажение времени">
+      <SymptomRef>S27</SymptomRef>
+      <SymptomRef>S28</SymptomRef>
+      <SymptomRef>S29</SymptomRef>
+      <SymptomRef>S1</SymptomRef>
+    </Problem>
+
+  </Problems>
+
+</NPCData>

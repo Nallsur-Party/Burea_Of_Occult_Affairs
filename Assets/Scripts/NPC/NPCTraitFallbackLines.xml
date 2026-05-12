@@ -1,0 +1,292 @@
+<TraitFallbackData>
+<PhrasesDictionary>
+  
+  <!-- === УНИКАЛЬНЫЕ МАРКЕРЫ (по 3 на тип, 100% выдают) === -->
+  
+  <!-- Только HONEST (P001 - P003) -->
+  <Phrase id="P001">Я поклянусь на чём угодно — это правда.</Phrase>
+  <Phrase id="P002">Можете проверить каждое моё слово.</Phrase>
+  <Phrase id="P003">Я не умею врать, поэтому просто скажу как есть.</Phrase>
+  
+  <!-- Только NEUTRAL (P004 - P006) -->
+  <Phrase id="P004">Я не вижу смысла что-то скрывать или доказывать.</Phrase>
+  <Phrase id="P005">Мне всё равно, поверите вы или нет.</Phrase>
+  <Phrase id="P006">Я ни на чём не настаиваю. Просто факты.</Phrase>
+  
+  <!-- Только LIAR (P007 - P009) -->
+  <Phrase id="P007">Моё слово — и хватит. Не лезь.</Phrase>
+  <Phrase id="P008">Ты не узнаешь больше, даже если пытать будешь.</Phrase>
+  <Phrase id="P009">Думай что хочешь, мне плевать.</Phrase>
+
+  <!-- === ОБЩИЙ ПУЛ (все типы, P010 - P030) === -->
+  <Phrase id="P010">Я рассказал почти всё.</Phrase>
+  <Phrase id="P011">Дальше не помню.</Phrase>
+  <Phrase id="P012">Может, позже вспомню.</Phrase>
+  <Phrase id="P013">Устал от этих разговоров.</Phrase>
+  <Phrase id="P014">Давай закончим.</Phrase>
+  <Phrase id="P015">Я уже устал повторять.</Phrase>
+  <Phrase id="P016">Спроси что-нибудь другое.</Phrase>
+  <Phrase id="P017">Мне нужно отдохнуть.</Phrase>
+  <Phrase id="P018">У меня нет новых мыслей.</Phrase>
+  <Phrase id="P019">Оставь меня в покое.</Phrase>
+  <Phrase id="P020">Это всё, что я могу сказать.</Phrase>
+  <Phrase id="P021">Я не хочу больше об этом.</Phrase>
+  <Phrase id="P022">Ты слишком много спрашиваешь.</Phrase>
+  <Phrase id="P023">Я сказал достаточно.</Phrase>
+  <Phrase id="P024">Не помню уже.</Phrase>
+  <Phrase id="P025">Забудь.</Phrase>
+  <Phrase id="P026">Хватит.</Phrase>
+  <Phrase id="P027">Отстань.</Phrase>
+  <Phrase id="P028">Ничего нового нет.</Phrase>
+  <Phrase id="P029">Я не обязан ничего доказывать.</Phrase>
+  <Phrase id="P030">Просто поверь мне на слово.</Phrase>
+
+  <!-- === HONEST + NEUTRAL (без LIAR, P031 - P045) === -->
+  <Phrase id="P031">Может, я ошибаюсь, но это то, что я помню.</Phrase>
+  <Phrase id="P032">Я не утверждаю, что это стопроцентная правда.</Phrase>
+  <Phrase id="P033">Сам не уверен, но звучит правдоподобно.</Phrase>
+  <Phrase id="P034">Я просто пересказываю, как было.</Phrase>
+  <Phrase id="P035">Детали могли стереться, но суть такая.</Phrase>
+  <Phrase id="P036">Я не хочу никого обманывать.</Phrase>
+  <Phrase id="P037">Возможно, я что-то упустил.</Phrase>
+  <Phrase id="P038">Моя версия может отличаться от других.</Phrase>
+  <Phrase id="P039">Я ничего не приукрашиваю.</Phrase>
+  <Phrase id="P040">Я просто говорю, что вижу.</Phrase>
+  <Phrase id="P041">У меня нет причин врать.</Phrase>
+  <Phrase id="P042">Спроси кого-нибудь ещё, может, подтвердит.</Phrase>
+  <Phrase id="P043">Я не претендую на истину в последней инстанции.</Phrase>
+  <Phrase id="P044">Это не догадка, это мои воспоминания.</Phrase>
+  <Phrase id="P045">Если я что-то напутал — поправьте.</Phrase>
+
+  <!-- === HONEST + LIAR (без NEUTRAL, P046 - P060) === -->
+  <Phrase id="P046">Клянусь, это правда.</Phrase>
+  <Phrase id="P047">Всё именно так, как я говорю.</Phrase>
+  <Phrase id="P048">Я не ошибаюсь в этом.</Phrase>
+  <Phrase id="P049">Запомни мои слова — потом вспомнишь.</Phrase>
+  <Phrase id="P050">Поверь, я знаю, о чём говорю.</Phrase>
+  <Phrase id="P051">Хочешь верь, хочешь нет — это твоё дело.</Phrase>
+  <Phrase id="P052">У меня нет привычки врать.</Phrase>
+  <Phrase id="P053">Слово даю.</Phrase>
+  <Phrase id="P054">Это точная информация.</Phrase>
+  <Phrase id="P055">Я сам это видел.</Phrase>
+  <Phrase id="P056">Никто не расскажет тебе лучше.</Phrase>
+  <Phrase id="P057">Истина и всё тут.</Phrase>
+  <Phrase id="P058">Я на этом стою.</Phrase>
+  <Phrase id="P059">Это не обсуждается.</Phrase>
+  <Phrase id="P060">Можешь записать мои слова.</Phrase>
+
+  <!-- === NEUTRAL + LIAR (без HONEST, P061 - P075) === -->
+  <Phrase id="P061">Какая разница, что я скажу?</Phrase>
+  <Phrase id="P062">Всё равно ты не проверишь.</Phrase>
+  <Phrase id="P063">Не важно, правда это или нет.</Phrase>
+  <Phrase id="P064">Мне всё равно, поверишь или нет.</Phrase>
+  <Phrase id="P065">Я не собираюсь ничего доказывать.</Phrase>
+  <Phrase id="P066">Придётся принять как есть.</Phrase>
+  <Phrase id="P067">Ты не узнаешь больше этого.</Phrase>
+  <Phrase id="P068">Это моя версия, и она окончательная.</Phrase>
+  <Phrase id="P069">Я ничего не буду уточнять.</Phrase>
+  <Phrase id="P070">Пусть остаётся как есть.</Phrase>
+  <Phrase id="P071">Закрой эту тему.</Phrase>
+  <Phrase id="P072">Я не на допросе.</Phrase>
+  <Phrase id="P073">Дальше копай сам.</Phrase>
+  <Phrase id="P074">Мне надоело это обсуждать.</Phrase>
+  <Phrase id="P075">Хватит вопросов.</Phrase>
+
+</PhrasesDictionary>
+
+<TraitFallbackLines>
+
+  <Trait type="Honest">
+    <!-- Уникальные маркеры (редко, но бывают) -->
+    <Say ref="P001" />
+    <Say ref="P002" />
+    <Say ref="P003" />
+    
+    <!-- Общий пул (все типы) -->
+    <Say ref="P010" />
+    <Say ref="P011" />
+    <Say ref="P012" />
+    <Say ref="P013" />
+    <Say ref="P014" />
+    <Say ref="P015" />
+    <Say ref="P016" />
+    <Say ref="P017" />
+    <Say ref="P018" />
+    <Say ref="P019" />
+    <Say ref="P020" />
+    <Say ref="P021" />
+    <Say ref="P022" />
+    <Say ref="P023" />
+    <Say ref="P024" />
+    <Say ref="P025" />
+    <Say ref="P026" />
+    <Say ref="P027" />
+    <Say ref="P028" />
+    <Say ref="P029" />
+    <Say ref="P030" />
+    
+    <!-- Честный + Нейтрал (лжец так не скажет) -->
+    <Say ref="P031" />
+    <Say ref="P032" />
+    <Say ref="P033" />
+    <Say ref="P034" />
+    <Say ref="P035" />
+    <Say ref="P036" />
+    <Say ref="P037" />
+    <Say ref="P038" />
+    <Say ref="P039" />
+    <Say ref="P040" />
+    <Say ref="P041" />
+    <Say ref="P042" />
+    <Say ref="P043" />
+    <Say ref="P044" />
+    <Say ref="P045" />
+    
+    <!-- Честный + Лжец (нейтрал так не скажет) -->
+    <Say ref="P046" />
+    <Say ref="P047" />
+    <Say ref="P048" />
+    <Say ref="P049" />
+    <Say ref="P050" />
+    <Say ref="P051" />
+    <Say ref="P052" />
+    <Say ref="P053" />
+    <Say ref="P054" />
+    <Say ref="P055" />
+    <Say ref="P056" />
+    <Say ref="P057" />
+    <Say ref="P058" />
+    <Say ref="P059" />
+    <Say ref="P060" />
+  </Trait>
+
+  <Trait type="Neutral">
+    <!-- Уникальные маркеры (редко, но бывают) -->
+    <Say ref="P004" />
+    <Say ref="P005" />
+    <Say ref="P006" />
+    
+    <!-- Общий пул (все типы) -->
+    <Say ref="P010" />
+    <Say ref="P011" />
+    <Say ref="P012" />
+    <Say ref="P013" />
+    <Say ref="P014" />
+    <Say ref="P015" />
+    <Say ref="P016" />
+    <Say ref="P017" />
+    <Say ref="P018" />
+    <Say ref="P019" />
+    <Say ref="P020" />
+    <Say ref="P021" />
+    <Say ref="P022" />
+    <Say ref="P023" />
+    <Say ref="P024" />
+    <Say ref="P025" />
+    <Say ref="P026" />
+    <Say ref="P027" />
+    <Say ref="P028" />
+    <Say ref="P029" />
+    <Say ref="P030" />
+    
+    <!-- Честный + Нейтрал (лжец так не скажет) -->
+    <Say ref="P031" />
+    <Say ref="P032" />
+    <Say ref="P033" />
+    <Say ref="P034" />
+    <Say ref="P035" />
+    <Say ref="P036" />
+    <Say ref="P037" />
+    <Say ref="P038" />
+    <Say ref="P039" />
+    <Say ref="P040" />
+    <Say ref="P041" />
+    <Say ref="P042" />
+    <Say ref="P043" />
+    <Say ref="P044" />
+    <Say ref="P045" />
+    
+    <!-- Нейтрал + Лжец (честный так не скажет) -->
+    <Say ref="P061" />
+    <Say ref="P062" />
+    <Say ref="P063" />
+    <Say ref="P064" />
+    <Say ref="P065" />
+    <Say ref="P066" />
+    <Say ref="P067" />
+    <Say ref="P068" />
+    <Say ref="P069" />
+    <Say ref="P070" />
+    <Say ref="P071" />
+    <Say ref="P072" />
+    <Say ref="P073" />
+    <Say ref="P074" />
+    <Say ref="P075" />
+  </Trait>
+
+  <Trait type="Liar">
+    <!-- Уникальные маркеры (редко, но бывают) -->
+    <Say ref="P007" />
+    <Say ref="P008" />
+    <Say ref="P009" />
+    
+    <!-- Общий пул (все типы) -->
+    <Say ref="P010" />
+    <Say ref="P011" />
+    <Say ref="P012" />
+    <Say ref="P013" />
+    <Say ref="P014" />
+    <Say ref="P015" />
+    <Say ref="P016" />
+    <Say ref="P017" />
+    <Say ref="P018" />
+    <Say ref="P019" />
+    <Say ref="P020" />
+    <Say ref="P021" />
+    <Say ref="P022" />
+    <Say ref="P023" />
+    <Say ref="P024" />
+    <Say ref="P025" />
+    <Say ref="P026" />
+    <Say ref="P027" />
+    <Say ref="P028" />
+    <Say ref="P029" />
+    <Say ref="P030" />
+    
+    <!-- Честный + Лжец (нейтрал так не скажет) -->
+    <Say ref="P046" />
+    <Say ref="P047" />
+    <Say ref="P048" />
+    <Say ref="P049" />
+    <Say ref="P050" />
+    <Say ref="P051" />
+    <Say ref="P052" />
+    <Say ref="P053" />
+    <Say ref="P054" />
+    <Say ref="P055" />
+    <Say ref="P056" />
+    <Say ref="P057" />
+    <Say ref="P058" />
+    <Say ref="P059" />
+    <Say ref="P060" />
+    
+    <!-- Нейтрал + Лжец (честный так не скажет) -->
+    <Say ref="P061" />
+    <Say ref="P062" />
+    <Say ref="P063" />
+    <Say ref="P064" />
+    <Say ref="P065" />
+    <Say ref="P066" />
+    <Say ref="P067" />
+    <Say ref="P068" />
+    <Say ref="P069" />
+    <Say ref="P070" />
+    <Say ref="P071" />
+    <Say ref="P072" />
+    <Say ref="P073" />
+    <Say ref="P074" />
+    <Say ref="P075" />
+  </Trait>
+
+</TraitFallbackLines>
+</TraitFallbackData>

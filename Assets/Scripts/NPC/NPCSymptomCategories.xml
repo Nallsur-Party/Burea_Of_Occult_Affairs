@@ -1,0 +1,64 @@
+<SymptomCategories>
+
+  <!-- Поведенческие проявления и изменения в манере общения -->
+  <Category id="behavior" displayName="Поведение">
+    <SymptomRef>S1</SymptomRef>
+    <SymptomRef>S2</SymptomRef>
+    <SymptomRef>S3</SymptomRef>
+    <SymptomRef>S4</SymptomRef>
+    <SymptomRef>S5</SymptomRef>
+    <SymptomRef>S6</SymptomRef>
+  </Category>
+
+  <!-- Субъективные ощущения, переживания и восприятие присутствия -->
+  <Category id="sensations" displayName="Ощущения">
+    <SymptomRef>S7</SymptomRef>
+    <SymptomRef>S8</SymptomRef>
+    <SymptomRef>S9</SymptomRef>
+    <SymptomRef>S10</SymptomRef>
+    <SymptomRef>S11</SymptomRef>
+  </Category>
+
+  <!-- Телесные признаки, изменения внешности и голосовые аномалии -->
+  <Category id="physical" displayName="Физические признаки">
+    <SymptomRef>S12</SymptomRef>
+    <SymptomRef>S13</SymptomRef>
+    <SymptomRef>S14</SymptomRef>
+  </Category>
+
+  <!-- Наблюдаемые аномалии в тени, отражении и окружающей картине -->
+  <Category id="anomalies" displayName="Визуальные аномалии">
+    <SymptomRef>S15</SymptomRef>
+    <SymptomRef>S16</SymptomRef>
+    <SymptomRef>S17</SymptomRef>
+  </Category>
+
+  <!-- Противоречия, разрывы причинности и нарушения связности рассказа -->
+  <Category id="logic" displayName="Логические несоответствия">
+    <SymptomRef>S18</SymptomRef>
+    <SymptomRef>S19</SymptomRef>
+    <SymptomRef>S20</SymptomRef>
+  </Category>
+
+  <!-- Симптомы, связанные с конкретными вещами и объектами -->
+  <Category id="items" displayName="Связь с предметами">
+    <SymptomRef>S21</SymptomRef>
+    <SymptomRef>S22</SymptomRef>
+    <SymptomRef>S23</SymptomRef>
+  </Category>
+
+  <!-- Проявления в пространстве: звуки, движение вещей и сбои техники -->
+  <Category id="environment" displayName="Аномалии среды">
+    <SymptomRef>S24</SymptomRef>
+    <SymptomRef>S25</SymptomRef>
+    <SymptomRef>S26</SymptomRef>
+  </Category>
+
+  <!-- Нарушения течения времени, повторяемость событий и временные разрывы -->
+  <Category id="time" displayName="Искажения времени">
+    <SymptomRef>S27</SymptomRef>
+    <SymptomRef>S28</SymptomRef>
+    <SymptomRef>S29</SymptomRef>
+  </Category>
+
+</SymptomCategories>
