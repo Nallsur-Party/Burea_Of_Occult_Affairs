@@ -243,13 +243,14 @@ GameObject:
   m_Component:
   - component: {fileID: 7714048417432754080}
   - component: {fileID: 1533948283573119024}
+  - component: {fileID: 3994644447806010806}
   m_Layer: 6
   m_Name: interaction
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7714048417432754080
 Transform:
   m_ObjectHideFlags: 0
@@ -258,7 +259,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7424461039103929092}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.12449897, y: -0, z: -0, w: 0.99221975}
+  m_LocalRotation: {x: 0.124501996, y: -0, z: -0, w: 0.9922194}
   m_LocalPosition: {x: 0.192, y: 0.758, z: -0.036}
   m_LocalScale: {x: 0.27765998, y: 0.27765998, z: 0.27765998}
   m_ConstrainProportionsScale: 0
@@ -318,6 +319,22 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &3994644447806010806
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7424461039103929092}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0069fa913fe3684abdb1d1fd23090cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetCamera: {fileID: 0}
+  fullBillboard: 1
+  freezeY: 1
+  useMainCamera: 1
 --- !u!1 &9175066928066003693
 GameObject:
   m_ObjectHideFlags: 0
@@ -525,7 +542,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 5
-  jumpForce: 7
+  jumpForce: 5
   useDepthMovement: 1
   groundAcceleration: 35
   airAcceleration: 20
