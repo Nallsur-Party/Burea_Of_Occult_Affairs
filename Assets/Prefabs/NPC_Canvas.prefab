@@ -84,7 +84,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 1
+  m_PresetInfoIsWorld: 0
 --- !u!114 &1277000118469945732
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -193,12 +193,12 @@ PrefabInstance:
     - target: {fileID: 561501995964609331, guid: 6a468cadb7ba3444693c937c55795799,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.99221975
+      value: 0.9922194
       objectReference: {fileID: 0}
     - target: {fileID: 561501995964609331, guid: 6a468cadb7ba3444693c937c55795799,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.12449897
+      value: 0.124501996
       objectReference: {fileID: 0}
     - target: {fileID: 561501995964609331, guid: 6a468cadb7ba3444693c937c55795799,
         type: 3}
@@ -237,6 +237,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6006574150273007528, guid: 6a468cadb7ba3444693c937c55795799,
         type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6006574150273007528, guid: 6a468cadb7ba3444693c937c55795799,
+        type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
@@ -264,12 +269,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 7749826868646953788}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 02fbde1c4179c174d80f79046c6b6b96, type: 3}
+  m_Script: {fileID: 11500000, guid: e0069fa913fe3684abdb1d1fd23090cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   targetCamera: {fileID: 0}
   fullBillboard: 1
-  freezeY: 0
+  freezeY: 1
   useMainCamera: 1
 --- !u!224 &7825720674171101371 stripped
 RectTransform:
