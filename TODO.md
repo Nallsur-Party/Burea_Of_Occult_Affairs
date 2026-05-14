@@ -1,45 +1,27 @@
 ﻿# TODO
 
-## Roadmap Direction
-- Preserve and polish current office loop (intake -> diagnosis -> ritual).
-- Expand into mixed visitor/task gameplay.
-- Add external locations.
-- Add occult creatures as progression tools.
+## Core
+- [ ] Fix mojibake/encoding issues in Russian texts.
+- [ ] Improve ritual feedback readability for players.
+- [ ] Improve diary clarity for symptom-to-problem deduction.
 
-## High Priority
-- [ ] Fix text encoding/mojibake in Russian strings across scripts/data pipeline.
-- [ ] Improve ritual UX feedback to reduce punitive trial-and-error feel.
-- [ ] Validate diary clarity against real symptom/problem mapping complexity.
+## Orders / Requests
+- [ ] Add non-afflicted visitors with orders.
+- [ ] Add order types: retrieve, investigate, escort, info-contract.
+- [ ] Add parallel progression for treatment and orders.
 
-## Feature Track A: Orders / Requests
-- [ ] Introduce visitors without occult illness who provide tasks/orders.
-- [ ] Define order types (retrieve object, investigate anomaly, escort/protection, info contract).
-- [ ] Add order progression parallel to treatment cases.
-- [ ] Extend NPC/visitor model with intent type (`case`, `order`, `mixed`).
+## Locations
+- [ ] Add first external location tied to an order.
+- [ ] Choose content strategy: handcrafted, procedural, or hybrid.
+- [ ] Add location transition manager.
 
-## Feature Track B: Locations
-- [ ] Implement first external location playable from an order.
-- [ ] Decide world-building strategy:
-  - handcrafted,
-  - procedural,
-  - or hybrid (recommended initial hypothesis).
-- [ ] Add location manager for order-driven transitions.
+## Occult Animals
+- [ ] Add collectible/rescuable occult creatures.
+- [ ] Add curse-treatment flow for creatures.
+- [ ] Add first creature ability (interrogation, ritual, or exploration assist).
 
-## Feature Track C: Occult Animals
-- [ ] Add collectible/rescuable occult creature entities.
-- [ ] Add curse/healing loop for creatures (ritual-compatible).
-- [ ] Implement first creature utility ability:
-  - interrogation assist, or
-  - ritual assist, or
-  - exploration trace detection.
-
-## Suggested Delivery Order
-1. [ ] Minimal order system in office scene using current queue/dialogue stack.
-2. [ ] One handcrafted field location + one order that uses it.
-3. [ ] One end-to-end occult creature vertical slice.
-4. [ ] Re-evaluate need and scope of procedural generation after polished handcrafted baseline.
-
-## Risks to Manage
-- [ ] Scope explosion from developing office loop, field loop, and creatures in parallel.
-- [ ] Narrative quality loss if procedural generation is adopted too early.
-- [ ] UI overload risk if diary expansion is not information-architecture-first.
+## Delivery Order
+1. [ ] Minimal office order system.
+2. [ ] One handcrafted external mission.
+3. [ ] One complete creature vertical slice.
+4. [ ] Reassess procedural generation only after polished handcrafted baseline.

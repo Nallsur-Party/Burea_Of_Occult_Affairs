@@ -1,30 +1,34 @@
 ﻿# Bureau Of Occult Affairs
 
-Unity project about occult diagnostics in an eternal-winter post-Soviet city.
+Unity game about occult diagnostics in an eternal-winter post-Soviet city.
 
 ## What This Project Is
 You play a ministry clerk-investigator. Citizens arrive with strange symptoms. You interrogate them, infer the underlying occult problem, and perform the correct ritual sequence.
 
 ## Documentation Map
-- `README` (this file): quick project overview.
-- `ARCHITECTURE.md`: systems, data flow, script responsibilities.
-- `GAME_RULES.md`: gameplay loop, controls, deduction and ritual rules.
-- `TODO.md`: future roadmap and planned expansions.
+- `README`: quick overview.
+- `ARCHITECTURE.md`: systems, runtime flow, script responsibilities.
+- `GAME_RULES.md`: loop, controls, deduction/ritual rules.
+- `DESIGN_PILLARS.md`: high-level creative principles.
+- `TECH_CONSTRAINTS.md`: technical boundaries.
+- `CURRENT_LIMITATIONS.md`: known current limitations.
+- `AI_CONTEXT.md`: coding guardrails for future AI edits.
+- `TODO.md`: roadmap and planned expansions.
 
 ## Current Play Loop (Short)
 1. NPC arrives to queue/counter.
 2. Player talks to NPC and asks questions.
 3. Symptoms are inferred from dialogue lines.
-4. Player uses diary to eliminate wrong occult traces and identify the problem.
+4. Player uses diary to eliminate wrong traces and identify the problem.
 5. Player executes ritual steps (item + action) in correct order.
 6. NPC is cured on success, or ritual fails and damages health on mistakes.
 
-## Key Data Files
-- `Assets/Scripts/NPC/NPCProblems.xml`
-- `Assets/Scripts/NPC/NPCSymptomeLines.xml`
-- `Assets/Scripts/NPC/NPCTraitFallbackLines.xml`
-- `Assets/Scripts/NPC/NPCSymptomCategories.xml`
-- `Assets/Scripts/NPC/NameList.xml`
+## Core Data Files
+- `NPC/NPCProblems.xml`
+- `NPC/NPCSymptomeLines.xml`
+- `NPC/NPCTraitFallbackLines.xml`
+- `NPC/NPCSymptomCategories.xml`
+- `NPC/NameList.xml`
 
 ## Note
-There are encoding artifacts (mojibake) in some Russian strings in source output; treat this as a technical cleanup item.
+Some Russian strings still show encoding artifacts (mojibake) in source output.
