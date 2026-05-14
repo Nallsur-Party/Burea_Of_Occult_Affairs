@@ -1,67 +1,82 @@
 ﻿# Architecture
 
-## Scope
-This file describes technical structure under `Assets/Scripts`.
+## Structure Style
+Feature slices first: group files by game feature and responsibility, not by technical layer.
 
-## Top-Level Modules
-- `Player/`: player state, controller, profile.
-- `NPC/`: NPC data model, generation, queue actor, dialogue logic, XML loading.
-- `Ritual/`: ritual catalog, step validation, progress and reward.
-- UI scripts: diary page switching and draggable/toggle panels.
-- Support: camera scripts and billboard behavior.
+## Proposed Feature Slices
 
-## Core Runtime Objects
+### Player/
+- `Player.cs`: lightweight runtime state (facing, grounded, sprinting, selected ritual item/action).
+- `PlayerController.cs`: movement, interaction, dialogue input, ritual input.
+- `PlayerProfile.cs`: investigator constraints.
 
-### Player
-- `Player/Player.cs`: selected ritual item/action and runtime flags.
-- `Player/PlayerController.cs`: movement, interaction, dialogue input, ritual input.
-- `Player/PlayerProfile.cs`: interrogation constraints.
+### NPC/
 
-### NPC Data Layer
-- `NPC/NPC.cs`: identity, case data, token economy, dialogue memory, ritual health/cure state.
-- `NPC/NPCProblemCatalog.cs`, `NPC/NPCProblemDefinition.cs`
-- `NPC/NPCSymptomLinesCatalog.cs`
-- `NPC/NPCTraitFallbackCatalog.cs`
+#### NPC/Data/
+- `NPC.cs`: core NPC state model (identity, problem, symptoms, tokens, memory, ritual health).
+- `NPCProblemDefinition.cs`, `NPCProblemCatalog.cs`
+- `NPCSymptomCategoryDefinition.cs`, `NPCSymptomCategoryCatalog.cs`
+- `NPCSymptomLinesCatalog.cs`
+- `NPCTraitFallbackCatalog.cs`
+- `NPCTraitType.cs`, `NPCTraitTokenProfile.cs`, `NPCQuestionType.cs`
 
-### NPC Loaders
-- `NPC/NPCProblemsLoader.cs`
-- `NPC/NPCSymptomLinesLoader.cs`
-- `NPC/NPCTraitFallbackLoader.cs`
-- `NPC/NPCSymptomCategoriesLoader.cs`
+#### NPC/Dialogue/
+- `NPCDialogueUtility.cs`: dialogue rules, token consumption, repeated/fallback lines, symptom-specific behavior.
+- `NPCDialogueBubble.cs`: in-world dialogue UI behavior.
 
-### NPC Generator + World Actor
-- `NPC/NPCGenerator.cs`: loads catalogs, builds NPCs, precomputes dialogue pools.
-- `NPC/NpcOrderVisitor.cs`: movement/state machine, dialogue UI integration, exit logic.
-- `NPC/NPCQueueManager.cs`: queue state and queue point placement.
-- `NPC/NPCSpawner.cs`: spawns NPC visitors.
+#### NPC/Queue/
+- `NPCQueueManager.cs`: queue state, capacity and target assignment.
+- `NpcOrderVisitor.cs`: world actor FSM (counter, queue, exits, hold-until-cured behavior).
+- `NPCSpawner.cs`: NPC spawn flow entry.
 
-### Dialogue Logic
-- `NPC/NPCDialogueUtility.cs`: token profiles, line selection, repetition, special symptom behavior.
+#### NPC/Generation/
+- `NPCGenerator.cs`: loads catalogs and generates NPC data.
+- `NameList.xml`: name pools.
 
-### Ritual
-- `Ritual/RitualManager.cs`: ritual start/progress/validation/reward.
-- `Ritual/RitualSolutionCatalog.cs`: problem -> step sequence map.
-- `Ritual/RitualSolutionDefinition.cs`
-- `Ritual/RitualStepDefinition.cs`
-- `Ritual/RitualItemType.cs`
-- `Ritual/RitualActionType.cs`
-- `Ritual/RitualPointsUI.cs`
+#### NPC/Loaders/
+- `NPCProblemsLoader.cs`
+- `NPCSymptomLinesLoader.cs`
+- `NPCTraitFallbackLoader.cs`
+- `NPCSymptomCategoriesLoader.cs`
 
-### UI
-- `UIDiaryPageController.cs`
-- `UIDraggableTogglePanel.cs`
-- `UIDraggablePanel.cs`
+#### NPC/Content/
+- `NPCProblems.xml`: symptom pool + problem->symptom mapping.
+- `NPCSymptomeLines.xml`: dialogue lines per symptom.
+- `NPCTraitFallbackLines.xml`: fallback lines per trait.
+- `NPCSymptomCategories.xml`: diary symptom grouping.
 
-## Case Data Flow
-1. Generator loads XML catalogs.
-2. NPC is created with hidden problem and symptom IDs.
-3. Player obtains clues via dialogue.
-4. Player infers problem in diary.
-5. RitualManager validates submitted sequence.
-6. NPC is cured or damaged depending on correctness.
+### Ritual/
+- `RitualManager.cs`: per-NPC ritual progress, validation, result handling.
+- `RitualSolutionCatalog.cs`: problem->sequence map (asset or runtime default).
+- `RitualSolutionDefinition.cs`, `RitualStepDefinition.cs`
+- `RitualItemType.cs`, `RitualActionType.cs`, `RitualActionTypeExtensions.cs`
+- `RitualAttemptResult.cs`
+- `RitualPointsUI.cs`
+
+### UI/
+- `UIDiaryPageController.cs`: page switching for diary.
+- `UIDraggablePanel.cs`: draggable panel behavior.
+- `UIDraggableTogglePanel.cs`: panel visibility toggle.
+
+### Camera/
+- `CameraFollow.cs`
+- `CameraBoundsZone.cs`
+- `CameraBoundsTriggerRelay.cs`
+
+### Shared/
+- `Billboard.cs`
+- `NPCHealthBar.cs` (NPC-adjacent visual support)
+
+## Runtime Flow (Case Processing)
+1. `NPC/Generation` creates NPC with hidden problem and symptom IDs.
+2. `NPC/Queue` brings NPC to counter and manages waiting order.
+3. Player interaction triggers `NPC/Dialogue` responses.
+4. Player infers problem via diary UI and symptom logic.
+5. `Ritual/` validates item+action sequence against problem.
+6. NPC is cured (success) or damaged/reset (failure), then leaves via queue/exit logic.
 
 ## Invariants
 - Ritual lookup key is NPC problem name.
-- Runtime default ritual catalog is used if no asset is assigned.
-- NPC scene lifecycle is controlled by `NpcOrderVisitor`.
-- Dialogue bubble ownership is NPC-side.
+- If no ritual catalog asset is assigned, runtime default catalog is used.
+- `NpcOrderVisitor` owns NPC scene lifecycle and exit behavior.
+- Dialogue bubble ownership is NPC-side, not player-side.
