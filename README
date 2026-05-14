@@ -1,0 +1,30 @@
+﻿# Bureau Of Occult Affairs
+
+Unity project about occult diagnostics in an eternal-winter post-Soviet city.
+
+## What This Project Is
+You play a ministry clerk-investigator. Citizens arrive with strange symptoms. You interrogate them, infer the underlying occult problem, and perform the correct ritual sequence.
+
+## Documentation Map
+- `README` (this file): quick project overview.
+- `ARCHITECTURE.md`: systems, data flow, script responsibilities.
+- `GAME_RULES.md`: gameplay loop, controls, deduction and ritual rules.
+- `TODO.md`: future roadmap and planned expansions.
+
+## Current Play Loop (Short)
+1. NPC arrives to queue/counter.
+2. Player talks to NPC and asks questions.
+3. Symptoms are inferred from dialogue lines.
+4. Player uses diary to eliminate wrong occult traces and identify the problem.
+5. Player executes ritual steps (item + action) in correct order.
+6. NPC is cured on success, or ritual fails and damages health on mistakes.
+
+## Key Data Files
+- `Assets/Scripts/NPC/NPCProblems.xml`
+- `Assets/Scripts/NPC/NPCSymptomeLines.xml`
+- `Assets/Scripts/NPC/NPCTraitFallbackLines.xml`
+- `Assets/Scripts/NPC/NPCSymptomCategories.xml`
+- `Assets/Scripts/NPC/NameList.xml`
+
+## Note
+There are encoding artifacts (mojibake) in some Russian strings in source output; treat this as a technical cleanup item.
