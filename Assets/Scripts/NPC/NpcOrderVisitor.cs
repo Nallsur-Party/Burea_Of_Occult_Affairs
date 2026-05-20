@@ -219,19 +219,28 @@ public class NpcOrderVisitor : MonoBehaviour
 
     public void GenerateNpcData()
     {
-        if (npcGenerator == null)
+        TryGenerateAndSetNpcData();
+    }
+
+    public bool TryGenerateAndSetNpcData(NPCGenerator generatorOverride = null)
+    {
+        NPCGenerator generator = generatorOverride != null ? generatorOverride : npcGenerator;
+        if (generator == null)
         {
             Debug.LogWarning($"{nameof(NpcOrderVisitor)} on {name} could not find {nameof(NPCGenerator)}.", this);
-            return;
+            return false;
         }
 
-        npcGenerator.GenerateNpc();
-        npcData = npcGenerator.GeneratedNpc;
+        generator.GenerateNpc();
+        npcData = generator.GeneratedNpc;
+        npcGenerator = generator;
 
         if (renameGameObjectToNpcName && npcData != null && !string.IsNullOrWhiteSpace(npcData.Name))
         {
             gameObject.name = $"NPC - {npcData.Name}";
         }
+
+        return npcData != null;
     }
 
     public string Interact()

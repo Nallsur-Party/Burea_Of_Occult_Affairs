@@ -157,28 +157,21 @@ public class NPCSpawner : MonoBehaviour
             return false;
         }
 
-        NPC generatedNpc = GenerateUniqueNPC();
+        if (!npcOrderVisitor.TryGenerateAndSetNpcData(npcGenerator))
+        {
+            Debug.LogError("Failed to generate NPC data for spawned visitor.", spawnedNpcObject);
+            Destroy(spawnedNpcObject);
+            return false;
+        }
 
-        npcOrderVisitor.SetNpcData(generatedNpc);
         npcOrderVisitor.ConfigureRoute(startPoint, counterPoint, exitPoints, true);
         npcOrderVisitor.SetSequentialExitRoutePoints(GetSequentialExitRoutePoints());
         npcOrderVisitor.SetHoldUntilCuredExitRoutePoints(GetHoldUntilCuredExitRoutePoints());
 
         npcQueueManager.EnqueueNPC(npcOrderVisitor);
 
-        Debug.Log($"Spawned NPC: {generatedNpc?.Name}", spawnedNpcObject);
+        Debug.Log($"Spawned NPC: {npcOrderVisitor.NpcData?.Name}", spawnedNpcObject);
         return true;
-    }
-
-    private NPC GenerateUniqueNPC()
-    {
-        if (npcGenerator == null)
-        {
-            return null;
-        }
-
-        npcGenerator.GenerateNpc();
-        return npcGenerator.GeneratedNpc;
     }
 
     public void SpawnMultipleNPCs(int count)
