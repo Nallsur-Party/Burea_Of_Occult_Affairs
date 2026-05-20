@@ -14,16 +14,15 @@ public class NPCHealthBar : MonoBehaviour
 
     private void Awake()
     {
-        slider = GetComponent<Slider>();
-        canvasGroup = GetComponent<CanvasGroup>();
-
-        if (targetNpc == null)
-        {
-            targetNpc = GetComponentInParent<NpcOrderVisitor>();
-        }
+        ResolveReferences();
 
         SetVisible(false);
         Refresh();
+    }
+
+    private void OnValidate()
+    {
+        ResolveReferences();
     }
 
     private void Update()
@@ -96,5 +95,33 @@ public class NPCHealthBar : MonoBehaviour
         canvasGroup.alpha = visible ? 1f : 0f;
         canvasGroup.interactable = false;
         canvasGroup.blocksRaycasts = false;
+    }
+
+    private void ResolveReferences()
+    {
+        if (slider == null)
+        {
+            slider = GetComponent<Slider>();
+        }
+
+        if (canvasGroup == null)
+        {
+            canvasGroup = GetComponent<CanvasGroup>();
+        }
+
+        if (targetNpc == null)
+        {
+            targetNpc = GetComponentInParent<NpcOrderVisitor>();
+        }
+
+        if (slider == null)
+        {
+            Debug.LogWarning($"{nameof(NPCHealthBar)} on '{name}' could not find a {nameof(Slider)} component.", this);
+        }
+
+        if (targetNpc == null)
+        {
+            Debug.LogWarning($"{nameof(NPCHealthBar)} on '{name}' could not find a {nameof(NpcOrderVisitor)} in parents.", this);
+        }
     }
 }

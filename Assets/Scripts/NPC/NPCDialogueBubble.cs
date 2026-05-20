@@ -15,8 +15,14 @@ public class NPCDialogueBubble : MonoBehaviour
 
     private void Awake()
     {
+        ResolveReferences();
         CacheVisualComponents();
         SetVisible(false);
+    }
+
+    private void OnValidate()
+    {
+        ResolveReferences();
     }
 
     private void OnEnable()
@@ -165,6 +171,30 @@ public class NPCDialogueBubble : MonoBehaviour
 
         cachedCanvases = bubbleRoot.GetComponentsInChildren<Canvas>(true);
         cachedRenderers = bubbleRoot.GetComponentsInChildren<Renderer>(true);
+    }
+
+    private void ResolveReferences()
+    {
+        if (bubbleRoot == null)
+        {
+            bubbleRoot = gameObject;
+        }
+
+        if (bubbleText != null)
+        {
+            return;
+        }
+
+        bubbleText = bubbleRoot.GetComponentInChildren<TMP_Text>(true);
+        if (bubbleText == null && bubbleRoot != gameObject)
+        {
+            bubbleText = GetComponentInChildren<TMP_Text>(true);
+        }
+
+        if (bubbleText == null)
+        {
+            Debug.LogWarning($"{nameof(NPCDialogueBubble)} on '{name}' could not find a {nameof(TMP_Text)} reference.", this);
+        }
     }
 
     private void SetComponentsVisible(bool visible)

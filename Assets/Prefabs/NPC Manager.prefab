@@ -90,7 +90,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f702c157436754041b6f5e3f358e2703, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  npcPawnPrefab: {fileID: 0}
+  npcPawnPrefab: {fileID: 3188153488741869461, guid: 95513bd84ecdd5f4e9383d15fe1f53d9, type: 3}
   spawnParent: {fileID: 0}
   npcGenerator: {fileID: 6380206237659848771}
   npcQueueManager: {fileID: 320507868644829544}
