@@ -19,6 +19,27 @@ public class NPCDialogueBubble : MonoBehaviour
         SetVisible(false);
     }
 
+    private void OnEnable()
+    {
+        if (bubbleText != null)
+        {
+            bubbleText.enabled = true;
+        }
+    }
+
+    private void OnDisable()
+    {
+        hideTimer = -1f;
+        isFocused = false;
+        isVisible = false;
+
+        // Prevent TMP editor/runtime update callbacks from touching this text after owner deactivation/destruction.
+        if (bubbleText != null)
+        {
+            bubbleText.enabled = false;
+        }
+    }
+
     private void Update()
     {
         if (hideTimer < 0f)

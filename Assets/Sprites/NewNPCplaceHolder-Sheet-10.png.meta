@@ -1,0 +1,963 @@
+fileFormatVersion: 2
+guid: 7894c1e2620d72c40af503bc97a9b2e5
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 0
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 128
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: NewNPCplaceHolder-Sheet5_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 176
+        width: 134.36842
+        height: 176
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1f05275a5a9fea24fbf04c3d803f9752
+      internalID: -57097133
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewNPCplaceHolder-Sheet5_1
+      rect:
+        serializedVersion: 2
+        x: 134
+        y: 176
+        width: 134.36842
+        height: 176
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f8a1d9e0f3b14694aa6a1f2db1dede1d
+      internalID: 2136692533
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewNPCplaceHolder-Sheet5_2
+      rect:
+        serializedVersion: 2
+        x: 268
+        y: 176
+        width: 134.36842
+        height: 176
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 929de6944cbd78f4685d5bace191fb5a
+      internalID: -255052863
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewNPCplaceHolder-Sheet5_3
+      rect:
+        serializedVersion: 2
+        x: 402
+        y: 176
+        width: 134.36842
+        height: 176
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3e871fcbd529c6b4f9008501d0a22b8e
+      internalID: -1102694620
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewNPCplaceHolder-Sheet5_4
+      rect:
+        serializedVersion: 2
+        x: 536
+        y: 176
+        width: 134.36842
+        height: 176
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c00dcadbf1601db49849525d0a89b927
+      internalID: 1760035958
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewNPCplaceHolder-Sheet5_5
+      rect:
+        serializedVersion: 2
+        x: 670
+        y: 176
+        width: 134.36842
+        height: 176
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d644d5df019ef6d4f9c6ad0b31c5135a
+      internalID: -466590335
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewNPCplaceHolder-Sheet5_6
+      rect:
+        serializedVersion: 2
+        x: 804
+        y: 176
+        width: 134.36842
+        height: 176
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 89813193ac32c1b469901a54fe06fe68
+      internalID: 1697911619
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewNPCplaceHolder-Sheet5_7
+      rect:
+        serializedVersion: 2
+        x: 938
+        y: 176
+        width: 134.36842
+        height: 176
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0b8887b9706016b4199bfd41ac598e1e
+      internalID: -261583080
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewNPCplaceHolder-Sheet5_8
+      rect:
+        serializedVersion: 2
+        x: 1072
+        y: 176
+        width: 134.36842
+        height: 176
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e81512a1b5e93b54aac322f30c305fef
+      internalID: 1462695687
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewNPCplaceHolder-Sheet5_9
+      rect:
+        serializedVersion: 2
+        x: 1206
+        y: 176
+        width: 134.36842
+        height: 176
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4aa656bf756a7b44a9cb4ab60b912d2d
+      internalID: 1451240745
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewNPCplaceHolder-Sheet5_10
+      rect:
+        serializedVersion: 2
+        x: 1340
+        y: 176
+        width: 134.36842
+        height: 176
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 30cd27c723a072548a4a6a69f8dae24d
+      internalID: 1919441514
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewNPCplaceHolder-Sheet5_11
+      rect:
+        serializedVersion: 2
+        x: 1474
+        y: 176
+        width: 134.36842
+        height: 176
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ee40ee55bea55a9429a0fa48bf5f2694
+      internalID: -1012465100
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewNPCplaceHolder-Sheet5_12
+      rect:
+        serializedVersion: 2
+        x: 1608
+        y: 176
+        width: 134.36842
+        height: 176
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4f4d6acd38bb55e4e9a7b3c6a461c2a4
+      internalID: -319639893
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewNPCplaceHolder-Sheet5_13
+      rect:
+        serializedVersion: 2
+        x: 1742
+        y: 176
+        width: 134.36842
+        height: 176
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 991fd842043500c4d80deda8995f6eb9
+      internalID: -1691306939
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewNPCplaceHolder-Sheet5_14
+      rect:
+        serializedVersion: 2
+        x: 1876
+        y: 176
+        width: 134.36842
+        height: 176
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4900a46b4035a304ab829929fe046afe
+      internalID: 1740690717
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewNPCplaceHolder-Sheet5_15
+      rect:
+        serializedVersion: 2
+        x: 2010
+        y: 176
+        width: 134.36842
+        height: 176
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9509280f0b856c642a1a25210bd0407f
+      internalID: -1971021369
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewNPCplaceHolder-Sheet5_16
+      rect:
+        serializedVersion: 2
+        x: 2144
+        y: 176
+        width: 134.36842
+        height: 176
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 76b95e7cb3b0d804cb7fa32ad7a0641b
+      internalID: -2100586639
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewNPCplaceHolder-Sheet5_17
+      rect:
+        serializedVersion: 2
+        x: 2278
+        y: 176
+        width: 134.36842
+        height: 176
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fc2a14cbd03438440b01affc9d4ccc5f
+      internalID: 986621591
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewNPCplaceHolder-Sheet5_18
+      rect:
+        serializedVersion: 2
+        x: 2412
+        y: 176
+        width: 134.36842
+        height: 176
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2b37f4e2495c0bc4cbe2449695362c3b
+      internalID: 1054745131
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewNPCplaceHolder-Sheet5_19
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 134.36842
+        height: 176
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9c069ebd1d962b645a0b73920c7f110d
+      internalID: 1340635325
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewNPCplaceHolder-Sheet5_20
+      rect:
+        serializedVersion: 2
+        x: 134
+        y: 0
+        width: 134.36842
+        height: 176
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 11b93558b56740b469f70c504345307f
+      internalID: -439012916
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewNPCplaceHolder-Sheet5_21
+      rect:
+        serializedVersion: 2
+        x: 268
+        y: 0
+        width: 134.36842
+        height: 176
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 26767daf3523ad249b77e4e267574323
+      internalID: 1167692490
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewNPCplaceHolder-Sheet5_22
+      rect:
+        serializedVersion: 2
+        x: 402
+        y: 0
+        width: 134.36842
+        height: 176
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2b39939a91b855945ad270eb0380857f
+      internalID: 486555034
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewNPCplaceHolder-Sheet5_23
+      rect:
+        serializedVersion: 2
+        x: 536
+        y: 0
+        width: 134.36842
+        height: 176
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0cb338c53c81b7247855fbfc879777da
+      internalID: 1356048344
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewNPCplaceHolder-Sheet5_24
+      rect:
+        serializedVersion: 2
+        x: 670
+        y: 0
+        width: 134.36842
+        height: 176
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9fab66337eed36541b6e93c8c840e81a
+      internalID: 1001269603
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewNPCplaceHolder-Sheet5_25
+      rect:
+        serializedVersion: 2
+        x: 804
+        y: 0
+        width: 134.36842
+        height: 176
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 785c619733f2d5a4b9c63425c7cd05f8
+      internalID: 1610332491
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewNPCplaceHolder-Sheet5_26
+      rect:
+        serializedVersion: 2
+        x: 938
+        y: 0
+        width: 134.36842
+        height: 176
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0973cc85e612dcf479e897924078cc6b
+      internalID: 989493369
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewNPCplaceHolder-Sheet5_27
+      rect:
+        serializedVersion: 2
+        x: 1072
+        y: 0
+        width: 134.36842
+        height: 176
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5a42cd1111a27bc4592d489eedb3baab
+      internalID: 1093694783
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewNPCplaceHolder-Sheet5_28
+      rect:
+        serializedVersion: 2
+        x: 1206
+        y: 0
+        width: 134.36842
+        height: 176
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 84dd905b0fe384942944d28e4526c295
+      internalID: -298678602
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewNPCplaceHolder-Sheet5_29
+      rect:
+        serializedVersion: 2
+        x: 1340
+        y: 0
+        width: 134.36842
+        height: 176
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7fc017fff3122a9428598e34be1994ad
+      internalID: -627362811
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewNPCplaceHolder-Sheet5_30
+      rect:
+        serializedVersion: 2
+        x: 1474
+        y: 0
+        width: 134.36842
+        height: 176
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8b842533d08c53b42aa070176bca8b63
+      internalID: -1526035231
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewNPCplaceHolder-Sheet5_31
+      rect:
+        serializedVersion: 2
+        x: 1608
+        y: 0
+        width: 134.36842
+        height: 176
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 501fa2830a109674eb069d7f7a40f65b
+      internalID: -160835952
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewNPCplaceHolder-Sheet5_32
+      rect:
+        serializedVersion: 2
+        x: 1742
+        y: 0
+        width: 134.36842
+        height: 176
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1d7cbfb2111174f4585e47e0e65ded81
+      internalID: 1237187243
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewNPCplaceHolder-Sheet5_33
+      rect:
+        serializedVersion: 2
+        x: 1876
+        y: 0
+        width: 134.36842
+        height: 176
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 60ebc2fed160d6c46a08021af8b77e6d
+      internalID: 1561514194
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewNPCplaceHolder-Sheet5_34
+      rect:
+        serializedVersion: 2
+        x: 2010
+        y: 0
+        width: 134.36842
+        height: 176
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 625a7af4315a9d749ab7f9c7321f6fe7
+      internalID: -693586925
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewNPCplaceHolder-Sheet5_35
+      rect:
+        serializedVersion: 2
+        x: 2144
+        y: 0
+        width: 134.36842
+        height: 176
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6c5f5579be23943439e92b9d8557bb8d
+      internalID: -1766436270
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewNPCplaceHolder-Sheet5_36
+      rect:
+        serializedVersion: 2
+        x: 2278
+        y: 0
+        width: 134.36842
+        height: 176
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1153529ae1f44b54083a892fb6d32d39
+      internalID: -1188148528
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewNPCplaceHolder-Sheet5_37
+      rect:
+        serializedVersion: 2
+        x: 2412
+        y: 0
+        width: 134.36842
+        height: 176
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 89f2a6fb7dfa9194d9fc74d1dbc1d9c7
+      internalID: 1013323803
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 97dfa646f29a1a64d98c54e6c32ba476
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      NewNPCplaceHolder-Sheet5_0: -57097133
+      NewNPCplaceHolder-Sheet5_1: 2136692533
+      NewNPCplaceHolder-Sheet5_10: 1919441514
+      NewNPCplaceHolder-Sheet5_11: -1012465100
+      NewNPCplaceHolder-Sheet5_12: -319639893
+      NewNPCplaceHolder-Sheet5_13: -1691306939
+      NewNPCplaceHolder-Sheet5_14: 1740690717
+      NewNPCplaceHolder-Sheet5_15: -1971021369
+      NewNPCplaceHolder-Sheet5_16: -2100586639
+      NewNPCplaceHolder-Sheet5_17: 986621591
+      NewNPCplaceHolder-Sheet5_18: 1054745131
+      NewNPCplaceHolder-Sheet5_19: 1340635325
+      NewNPCplaceHolder-Sheet5_2: -255052863
+      NewNPCplaceHolder-Sheet5_20: -439012916
+      NewNPCplaceHolder-Sheet5_21: 1167692490
+      NewNPCplaceHolder-Sheet5_22: 486555034
+      NewNPCplaceHolder-Sheet5_23: 1356048344
+      NewNPCplaceHolder-Sheet5_24: 1001269603
+      NewNPCplaceHolder-Sheet5_25: 1610332491
+      NewNPCplaceHolder-Sheet5_26: 989493369
+      NewNPCplaceHolder-Sheet5_27: 1093694783
+      NewNPCplaceHolder-Sheet5_28: -298678602
+      NewNPCplaceHolder-Sheet5_29: -627362811
+      NewNPCplaceHolder-Sheet5_3: -1102694620
+      NewNPCplaceHolder-Sheet5_30: -1526035231
+      NewNPCplaceHolder-Sheet5_31: -160835952
+      NewNPCplaceHolder-Sheet5_32: 1237187243
+      NewNPCplaceHolder-Sheet5_33: 1561514194
+      NewNPCplaceHolder-Sheet5_34: -693586925
+      NewNPCplaceHolder-Sheet5_35: -1766436270
+      NewNPCplaceHolder-Sheet5_36: -1188148528
+      NewNPCplaceHolder-Sheet5_37: 1013323803
+      NewNPCplaceHolder-Sheet5_4: 1760035958
+      NewNPCplaceHolder-Sheet5_5: -466590335
+      NewNPCplaceHolder-Sheet5_6: 1697911619
+      NewNPCplaceHolder-Sheet5_7: -261583080
+      NewNPCplaceHolder-Sheet5_8: 1462695687
+      NewNPCplaceHolder-Sheet5_9: 1451240745
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
