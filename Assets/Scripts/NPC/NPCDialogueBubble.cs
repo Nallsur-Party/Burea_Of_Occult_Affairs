@@ -3,6 +3,11 @@ using TMPro;
 
 public class NPCDialogueBubble : MonoBehaviour
 {
+    private const char UpperHardSign = '\u042A';
+    private const char LowerHardSign = '\u044A';
+    private const char UpperSoftSign = '\u042C';
+    private const char LowerSoftSign = '\u044C';
+
     [SerializeField] private GameObject bubbleRoot;
     [SerializeField] private TMP_Text bubbleText;
     [SerializeField] private float hideDelay = 2f;
@@ -70,7 +75,7 @@ public class NPCDialogueBubble : MonoBehaviour
         }
 
         SetVisible(true);
-        bubbleText.text = message;
+        bubbleText.text = SanitizeForCurrentFont(message);
         bubbleText.ForceMeshUpdate();
         isFocused = false;
         hideTimer = hideDelay;
@@ -84,7 +89,7 @@ public class NPCDialogueBubble : MonoBehaviour
         }
 
         SetVisible(true);
-        bubbleText.text = message;
+        bubbleText.text = SanitizeForCurrentFont(message);
         bubbleText.ForceMeshUpdate();
         isFocused = true;
         hideTimer = -1f;
@@ -98,7 +103,7 @@ public class NPCDialogueBubble : MonoBehaviour
         }
 
         SetVisible(true);
-        bubbleText.text = message;
+        bubbleText.text = SanitizeForCurrentFont(message);
         bubbleText.ForceMeshUpdate();
         isFocused = false;
         hideTimer = duration;
@@ -225,5 +230,18 @@ public class NPCDialogueBubble : MonoBehaviour
                 }
             }
         }
+    }
+
+    private static string SanitizeForCurrentFont(string message)
+    {
+        if (string.IsNullOrEmpty(message))
+        {
+            return message;
+        }
+
+        // Legacy LiberationSans SDF in this project is missing hard-sign glyphs.
+        return message
+            .Replace(UpperHardSign, UpperSoftSign)
+            .Replace(LowerHardSign, LowerSoftSign);
     }
 }

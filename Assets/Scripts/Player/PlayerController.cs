@@ -153,6 +153,12 @@ public class PlayerController : MonoBehaviour
         UpdateAnimator();
         SetInteractionPromptVisible(currentInteractableNpc != null);
 
+        if (activeDialogueNpc != null)
+        {
+            bool isActiveNpcNearby = currentInteractableNpc == activeDialogueNpc;
+            activeDialogueNpc.SetDialogueFocus(isActiveNpcNearby);
+        }
+
         if (activeDialogueNpc != null && currentInteractableNpc != activeDialogueNpc)
         {
             if (ritualManager != null)
@@ -160,7 +166,6 @@ public class PlayerController : MonoBehaviour
                 ritualManager.ClearProgress(activeDialogueNpc);
             }
 
-            activeDialogueNpc.HideDialogue();
             activeDialogueNpc = null;
         }
     }
@@ -366,6 +371,7 @@ public class PlayerController : MonoBehaviour
 
         activeDialogueNpc = npc;
         npc.ShowDialogue(npc.Interact());
+        npc.SetDialogueFocus(true);
     }
 
     private void AskNpcQuestion(NPCQuestionType questionType)
