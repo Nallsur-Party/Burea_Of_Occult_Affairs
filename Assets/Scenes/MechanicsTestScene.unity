@@ -1521,6 +1521,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6388802178107742455, guid: a468429a45fcc1e4bb142170817d5051,
         type: 3}
+      propertyPath: canJump
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6388802178107742455, guid: a468429a45fcc1e4bb142170817d5051,
+        type: 3}
       propertyPath: interactionPrompt
       value: 
       objectReference: {fileID: 260456132}

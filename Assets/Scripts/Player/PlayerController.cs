@@ -38,9 +38,11 @@ public class PlayerController : MonoBehaviour
     private static readonly int VerticalSpeedHash = Animator.StringToHash("verticalSpeed");
     private static readonly int IsRunningHash = Animator.StringToHash("isRunning");
 
-    [Header("Movement")]
+   [Header("Movement")]
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float jumpForce = 7f;
+    [SerializeField, Tooltip("Disable this in scenes where the player should not be able to jump.")]
+    private bool canJump = true;
     [SerializeField] private bool useDepthMovement = false;
     [SerializeField] private float groundAcceleration = 35f;
     [SerializeField] private float airAcceleration = 20f;
@@ -133,15 +135,18 @@ public class PlayerController : MonoBehaviour
         CacheHeldItemTransforms();
         UpdateHeldItemVisual();
     }
-
     private void Update()
     {
         ReadMovementInput();
         currentInteractableNpc = FindNearestInteractableNpc();
 
-        if (Input.GetButtonDown("Jump"))
+        if (canJump && Input.GetButtonDown("Jump"))
         {
             jumpPressed = true;
+        }
+        else if (!canJump)
+        {
+            jumpPressed = false;
         }
 
         HandleDialogueInput();
@@ -197,9 +202,14 @@ public class PlayerController : MonoBehaviour
         velocity.x = currentPlanarVelocity.x;
         velocity.z = currentPlanarVelocity.z;
 
-        if (jumpPressed && player.IsGrounded)
+        if (canJump && jumpPressed && player.IsGrounded)
         {
             velocity.y = jumpForce;
+        }
+
+        else if (!canJump && velocity.y > 0f)
+        {
+            velocity.y = 0f;
         }
 
         rb.velocity = velocity;
