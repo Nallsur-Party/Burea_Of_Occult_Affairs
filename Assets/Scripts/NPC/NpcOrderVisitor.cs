@@ -189,12 +189,36 @@ public class NpcOrderVisitor : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        if (IsNpcCollision(collision))
+        {
+            return;
+        }
+
         if (collision.gameObject.CompareTag("Player")
+            && !IsNpcMoving()
             && currentState != VisitorState.PushingAway
             && currentState != VisitorState.WaitingAtCounter)
         {
             PushAway();
         }
+    }
+
+    private bool IsNpcMoving()
+    {
+        return currentState == VisitorState.GoingToCounter
+            || currentState == VisitorState.Leaving
+            || currentState == VisitorState.PushingAway;
+    }
+
+    private bool IsNpcCollision(Collision collision)
+    {
+        if (collision == null)
+        {
+            return false;
+        }
+
+        NpcOrderVisitor otherNpc = collision.collider.GetComponentInParent<NpcOrderVisitor>();
+        return otherNpc != null && otherNpc != this;
     }
 
     private void PushAway()
