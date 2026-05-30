@@ -461,7 +461,7 @@ public class NpcOrderVisitor : MonoBehaviour
         }
         else if (currentState == VisitorState.WaitingForProblemResolution)
         {
-            EnsureRitualStayTarget();
+            EnsureActiveRouteTarget();
         }
 
         if (currentTarget == null && !useCustomTarget)
@@ -1012,6 +1012,126 @@ public class NpcOrderVisitor : MonoBehaviour
         nStayOccupant = this;
     }
 
+    private void EnsureActiveRouteTarget()
+    {
+        switch (currentState)
+        {
+            case VisitorState.WaitingInQueue:
+                EnsureQueueTarget();
+                break;
+
+            case VisitorState.GoingToCounter:
+            case VisitorState.WaitingAtCounter:
+                EnsureCounterTarget();
+                break;
+
+            case VisitorState.WaitingForProblemResolution:
+                EnsureRitualStayTarget();
+                break;
+
+            case VisitorState.Leaving:
+                EnsureLeavingRouteTarget();
+                break;
+        }
+    }
+
+    private void EnsureQueueTarget()
+    {
+        if (npcQueueManager != null)
+        {
+            npcQueueManager.RefreshQueuePosition(this);
+            return;
+        }
+
+        if (currentTarget != null && useCustomTarget)
+        {
+            return;
+        }
+
+        SetTargetPosition(queuePosition);
+    }
+
+    private void EnsureCounterTarget()
+    {
+        if (counterPoint == null)
+        {
+            return;
+        }
+
+        if (currentTarget != counterPoint || useCustomTarget)
+        {
+            SetTargetTransform(counterPoint);
+        }
+    }
+
+    private void EnsureLeavingRouteTarget()
+    {
+        if (isRitualRouteActive)
+        {
+            if (ritualRoutePhase == RitualRoutePhase.WaitingAtStayPoint)
+            {
+                EnsureRitualStayTarget();
+                return;
+            }
+
+            if (ritualRoutePhase == RitualRoutePhase.ApproachingStayPoint && ritualStayPoint != null)
+            {
+                if (currentTarget != ritualStayPoint || useCustomTarget)
+                {
+                    SetTargetTransform(ritualStayPoint);
+                }
+                return;
+            }
+
+            if (ritualRoutePhase == RitualRoutePhase.ApproachingRoute
+                && ritualApproachRoutePoints != null
+                && ritualApproachIndex >= 0
+                && ritualApproachIndex < ritualApproachRoutePoints.Length)
+            {
+                Transform currentApproachWaypoint = ritualApproachRoutePoints[ritualApproachIndex];
+                if (currentApproachWaypoint != null && (currentTarget != currentApproachWaypoint || useCustomTarget))
+                {
+                    SetTargetTransform(currentApproachWaypoint);
+                }
+                return;
+            }
+
+            if (ritualRoutePhase == RitualRoutePhase.Exiting
+                && ritualExitRoutePoints != null
+                && ritualExitIndex >= 0
+                && ritualExitIndex < ritualExitRoutePoints.Length)
+            {
+                Transform currentExitWaypoint = ritualExitRoutePoints[ritualExitIndex];
+                if (currentExitWaypoint != null && (currentTarget != currentExitWaypoint || useCustomTarget))
+                {
+                    SetTargetTransform(currentExitWaypoint);
+                }
+                return;
+            }
+        }
+
+        if (!isSequentialExitActive || sequentialExitRoutePoints == null || sequentialExitRoutePoints.Length == 0)
+        {
+            return;
+        }
+
+        int routeIndex = sequentialExitIndex;
+        if (routeIndex < 0)
+        {
+            routeIndex = 0;
+        }
+        else if (routeIndex >= sequentialExitRoutePoints.Length)
+        {
+            routeIndex = sequentialExitRoutePoints.Length - 1;
+        }
+
+        Transform currentWaypoint = sequentialExitRoutePoints[routeIndex];
+        if (currentWaypoint != null && (currentTarget != currentWaypoint || useCustomTarget))
+        {
+            SetTargetTransform(currentWaypoint);
+        }
+    }
+
     private void EnsureRitualStayTarget()
     {
         if (ritualStayPoint == null)
@@ -1055,30 +1175,8 @@ public class NpcOrderVisitor : MonoBehaviour
             case VisitorState.PushingAway:
                 currentState = previousState;
                 isPushed = false;
-                switch (previousState)
-                {
-                    case VisitorState.WaitingInQueue:
-                        if (npcQueueManager != null)
-                        {
-                            npcQueueManager.RefreshQueuePosition(this);
-                        }
-                        else
-                        {
-                            SendToQueuePosition(queuePosition);
-                        }
-                        break;
-                    case VisitorState.WaitingAtCounter:
-                    case VisitorState.GoingToCounter:
-                        SendToCounter();
-                        break;
-                    case VisitorState.Leaving:
-                        RestoreInterruptedTarget();
-                        currentState = VisitorState.Leaving;
-                        break;
-                    default:
-                        RestoreInterruptedTarget();
-                        break;
-                }
+                RestoreInterruptedTarget();
+                EnsureActiveRouteTarget();
                 break;
 
             case VisitorState.Leaving:
@@ -1279,6 +1377,11 @@ public class NpcOrderVisitor : MonoBehaviour
 
     private void RestoreInterruptedTarget()
     {
+        if (interruptedTarget == null && !interruptedUseCustomTarget)
+        {
+            return;
+        }
+
         currentTarget = interruptedTarget;
         useCustomTarget = interruptedUseCustomTarget;
         customTargetPosition = interruptedCustomTargetPosition;
