@@ -15,6 +15,7 @@ public class NPC
         Other
     }
 
+    [SerializeField] private string persistentId;
     [SerializeField] private string npcName;
     [SerializeField] private GenderType gender;
     [SerializeField] private int age;
@@ -43,6 +44,7 @@ public class NPC
     [NonSerialized] private bool shouldRepeatConversationLimitLine = true;
     [NonSerialized] private Dictionary<NPCQuestionType, bool> shouldRepeatQuestionLimitLineByType = new Dictionary<NPCQuestionType, bool>();
 
+    public string PersistentId => persistentId;
     public string Name => npcName;
     public GenderType Gender => gender;
     public int Age => age;
@@ -69,12 +71,78 @@ public class NPC
         this.gender = gender;
         this.age = age;
         this.trait = trait;
+        EnsurePersistentId();
     }
 
     public NPC(string npcName, GenderType gender, int age, NPCTraitType trait, string problemName, IEnumerable<string> symptomIds, IEnumerable<string> symptoms)
         : this(npcName, gender, age, trait)
     {
         SetProblem(problemName, symptomIds, symptoms);
+    }
+
+    public NPCArchiveEntry CreateSnapshot()
+    {
+        EnsurePersistentId();
+
+        return new NPCArchiveEntry
+        {
+            PersistentId = persistentId,
+            Name = npcName,
+            Gender = gender,
+            Age = age,
+            Trait = trait,
+            ProblemName = problemName,
+            SymptomIds = symptomIds != null ? new List<string>(symptomIds) : new List<string>(),
+            Symptoms = symptoms != null ? new List<string>(symptoms) : new List<string>(),
+            PreparedConversationLines = preparedConversationLines != null ? new List<string>(preparedConversationLines) : new List<string>(),
+            PreparedFallbackLines = preparedFallbackLines != null ? new List<string>(preparedFallbackLines) : new List<string>()
+        };
+    }
+
+    public static NPC FromSnapshot(NPCArchiveEntry snapshot)
+    {
+        if (snapshot == null)
+        {
+            return null;
+        }
+
+        NPC npc = new NPC(snapshot.Name, snapshot.Gender, snapshot.Age, snapshot.Trait);
+        npc.ApplySnapshot(snapshot);
+        return npc;
+    }
+
+    public void ApplySnapshot(NPCArchiveEntry snapshot)
+    {
+        if (snapshot == null)
+        {
+            return;
+        }
+
+        persistentId = NormalizePersistentId(snapshot.PersistentId);
+        npcName = snapshot.Name;
+        gender = snapshot.Gender;
+        age = snapshot.Age;
+        trait = snapshot.Trait;
+
+        ResetDialogueState();
+
+        if (!string.IsNullOrWhiteSpace(snapshot.ProblemName))
+        {
+            SetProblem(
+                snapshot.ProblemName,
+                snapshot.SymptomIds,
+                snapshot.Symptoms);
+        }
+        else
+        {
+            problemName = null;
+            symptomIds.Clear();
+            symptoms.Clear();
+            InitializeRitualState(0);
+        }
+
+        SetPreparedConversationLines(snapshot.PreparedConversationLines);
+        SetPreparedFallbackLines(snapshot.PreparedFallbackLines);
     }
 
     public void SetProblem(string newProblemName, IEnumerable<string> newSymptomIds, IEnumerable<string> newSymptoms)
@@ -401,6 +469,21 @@ public class NPC
         nextQuestionRepeatIndexByType.Clear();
         shouldRepeatConversationLimitLine = true;
         shouldRepeatQuestionLimitLineByType.Clear();
+    }
+
+    private void EnsurePersistentId()
+    {
+        persistentId = NormalizePersistentId(persistentId);
+    }
+
+    private static string NormalizePersistentId(string value)
+    {
+        if (!string.IsNullOrWhiteSpace(value))
+        {
+            return value.Trim();
+        }
+
+        return Guid.NewGuid().ToString("N");
     }
 
     private List<string> GetOrCreateQuestionAnswerHistory(NPCQuestionType questionType)

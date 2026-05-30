@@ -57,6 +57,7 @@ public class NpcOrderVisitor : MonoBehaviour
 
     [Header("NPC Data")]
     [SerializeField] private NPCGenerator npcGenerator;
+    [SerializeField] private NPCArchiveService npcArchiveService;
     [SerializeField] private bool generateNpcDataOnAwake = true;
     [SerializeField] private NPC npcData;
     [SerializeField] private bool renameGameObjectToNpcName = true;
@@ -127,6 +128,13 @@ public class NpcOrderVisitor : MonoBehaviour
         if (npcGenerator == null)
         {
             npcGenerator = FindObjectOfType<NPCGenerator>();
+        }
+
+        if (npcArchiveService == null)
+        {
+            npcArchiveService = NPCArchiveService.Instance != null
+                ? NPCArchiveService.Instance
+                : FindObjectOfType<NPCArchiveService>();
         }
 
         if (dialogueBubble == null)
@@ -1183,9 +1191,27 @@ public class NpcOrderVisitor : MonoBehaviour
         ResetLeavingState();
         currentState = VisitorState.Idle;
         ClearTarget();
+        ArchiveNpcBeforeLeaving();
         onLeftScene.Invoke();
         HideDialogue();
         gameObject.SetActive(false);
+    }
+
+    private void ArchiveNpcBeforeLeaving()
+    {
+        if (npcArchiveService == null)
+        {
+            npcArchiveService = NPCArchiveService.Instance != null
+                ? NPCArchiveService.Instance
+                : FindObjectOfType<NPCArchiveService>();
+        }
+
+        if (npcArchiveService == null || npcData == null)
+        {
+            return;
+        }
+
+        npcArchiveService.ArchiveNpc(npcData);
     }
 
     private Vector3 GetTargetPosition(Transform targetPoint)

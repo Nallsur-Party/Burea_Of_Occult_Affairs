@@ -9,6 +9,7 @@ public class NPCSpawner : MonoBehaviour
     private GameObject npcPawnPrefab;
     [SerializeField] private Transform spawnParent;
     [SerializeField] private NPCGenerator npcGenerator;
+    [SerializeField] private NPCArchiveService npcArchiveService;
     [SerializeField] private NPCQueueManager npcQueueManager;
     [SerializeField] private Transform routeRoot;
     [SerializeField] private Transform startPoint;
@@ -32,6 +33,13 @@ public class NPCSpawner : MonoBehaviour
         if (npcGenerator == null)
         {
             npcGenerator = FindObjectOfType<NPCGenerator>();
+        }
+
+        if (npcArchiveService == null)
+        {
+            npcArchiveService = NPCArchiveService.Instance != null
+                ? NPCArchiveService.Instance
+                : FindObjectOfType<NPCArchiveService>();
         }
 
         if (npcQueueManager == null)
@@ -63,6 +71,16 @@ public class NPCSpawner : MonoBehaviour
     public void SpawnNPC()
     {
         TrySpawnNPC();
+    }
+
+    public void SpawnArchivedNPC()
+    {
+        TrySpawnArchivedNPC();
+    }
+
+    public void SpawnArchivedNPC(string persistentId)
+    {
+        TrySpawnArchivedNPC(persistentId);
     }
 
     public void StartAutoSpawn()
@@ -127,15 +145,108 @@ public class NPCSpawner : MonoBehaviour
 
     private bool TrySpawnNPC()
     {
+        if (npcGenerator == null || !npcGenerator.IsCatalogLoaded)
+        {
+            Debug.LogError("NPCGenerator is not available or catalog not loaded!", this);
+            return false;
+        }
+
         if (npcPawnPrefab == null)
         {
             Debug.LogError("NPC Pawn Prefab is not assigned!", this);
             return false;
         }
 
-        if (npcGenerator == null || !npcGenerator.IsCatalogLoaded)
+        if (npcQueueManager == null)
         {
-            Debug.LogError("NPCGenerator is not available or catalog not loaded!", this);
+            Debug.LogError("NPCQueueManager not found in scene!", this);
+            return false;
+        }
+
+        if (!npcQueueManager.HasFreeSlot)
+        {
+            Debug.Log("NPC spawn skipped because queue is full.", this);
+            return false;
+        }
+
+        NPC npcData = npcGenerator != null ? CreateGeneratedNpc() : null;
+        if (npcData == null)
+        {
+            Debug.LogError("Failed to generate NPC data for spawned visitor.", this);
+            return false;
+        }
+
+        return TrySpawnNpcInstance(npcData, "generated");
+    }
+
+    public bool TrySpawnArchivedNPC(string persistentId = null)
+    {
+        if (npcPawnPrefab == null)
+        {
+            Debug.LogError("NPC Pawn Prefab is not assigned!", this);
+            return false;
+        }
+
+        if (npcArchiveService == null)
+        {
+            npcArchiveService = NPCArchiveService.Instance != null
+                ? NPCArchiveService.Instance
+                : FindObjectOfType<NPCArchiveService>();
+        }
+
+        if (npcArchiveService == null)
+        {
+            Debug.LogError("NPCArchiveService not found in scene!", this);
+            return false;
+        }
+
+        if (npcQueueManager == null)
+        {
+            Debug.LogError("NPCQueueManager not found in scene!", this);
+            return false;
+        }
+
+        if (!npcQueueManager.HasFreeSlot)
+        {
+            Debug.Log("NPC spawn skipped because queue is full.", this);
+            return false;
+        }
+
+        NPC npcData;
+        bool takenFromArchive = !string.IsNullOrWhiteSpace(persistentId)
+            ? npcArchiveService.TryTakeArchivedNpc(persistentId, out npcData)
+            : npcArchiveService.TryTakeArchivedNpc(out npcData);
+
+        if (!takenFromArchive || npcData == null)
+        {
+            Debug.Log("No archived NPC was available to spawn.", this);
+            return false;
+        }
+
+        if (!TrySpawnNpcInstance(npcData, "archived"))
+        {
+            npcArchiveService.ArchiveNpc(npcData);
+            return false;
+        }
+
+        return true;
+    }
+
+    private NPC CreateGeneratedNpc()
+    {
+        if (npcGenerator == null)
+        {
+            return null;
+        }
+
+        npcGenerator.GenerateNpc();
+        return npcGenerator.GeneratedNpc;
+    }
+
+    private bool TrySpawnNpcInstance(NPC npcData, string spawnSourceLabel)
+    {
+        if (npcData == null)
+        {
             return false;
         }
 
@@ -161,13 +272,7 @@ public class NPCSpawner : MonoBehaviour
             return false;
         }
 
-        if (!npcOrderVisitor.TryGenerateAndSetNpcData(npcGenerator))
-        {
-            Debug.LogError("Failed to generate NPC data for spawned visitor.", spawnedNpcObject);
-            Destroy(spawnedNpcObject);
-            return false;
-        }
-
+        npcOrderVisitor.SetNpcData(npcData);
         npcOrderVisitor.ConfigureRoute(startPoint, counterPoint, exitPoints, true);
         npcOrderVisitor.SetSequentialExitRoutePoints(GetSequentialExitRoutePoints());
         npcOrderVisitor.SetRitualStayPoint(GetRitualStayPoint());
@@ -176,7 +281,7 @@ public class NPCSpawner : MonoBehaviour
 
         npcQueueManager.EnqueueNPC(npcOrderVisitor);
 
-        Debug.Log($"Spawned NPC: {npcOrderVisitor.NpcData?.Name}", spawnedNpcObject);
+        Debug.Log($"Spawned {spawnSourceLabel} NPC: {npcOrderVisitor.NpcData?.Name}", spawnedNpcObject);
         return true;
     }
 

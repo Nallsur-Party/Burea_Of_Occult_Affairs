@@ -2029,18 +2029,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 81cd173cb0472394f9f31cdd0a3a9e01, type: 3}
---- !u!114 &941586187 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8186630649736212584, guid: 95513bd84ecdd5f4e9383d15fe1f53d9,
-    type: 3}
-  m_PrefabInstance: {fileID: 1975491025}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d6cf6a9f4b94dfdbd73c7bb6e4e7a31, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &954747639
 GameObject:
   m_ObjectHideFlags: 0
@@ -4702,7 +4690,7 @@ PrefabInstance:
         type: 3}
       propertyPath: healthBar
       value: 
-      objectReference: {fileID: 941586187}
+      objectReference: {fileID: 0}
     - target: {fileID: 3728247049770033207, guid: 95513bd84ecdd5f4e9383d15fe1f53d9,
         type: 3}
       propertyPath: startPoint
@@ -4718,6 +4706,11 @@ PrefabInstance:
       propertyPath: npcGenerator
       value: 
       objectReference: {fileID: 91537269}
+    - target: {fileID: 3944591959528422360, guid: 95513bd84ecdd5f4e9383d15fe1f53d9,
+        type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4317440973462819152, guid: 95513bd84ecdd5f4e9383d15fe1f53d9,
         type: 3}
       propertyPath: m_Radius
@@ -4774,9 +4767,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 902825666}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 8517750717323937059, guid: 95513bd84ecdd5f4e9383d15fe1f53d9, type: 3}
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6602822495450322406, guid: 95513bd84ecdd5f4e9383d15fe1f53d9,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: 95513bd84ecdd5f4e9383d15fe1f53d9, type: 3}
 --- !u!1 &1975493037
 GameObject:
