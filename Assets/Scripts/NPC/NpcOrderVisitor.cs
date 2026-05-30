@@ -707,6 +707,13 @@ public class NpcOrderVisitor : MonoBehaviour
         }
 
         ResetLeavingState();
+        if (!TryClaimNStayOccupancy())
+        {
+            isRitualRouteActive = false;
+            ritualRoutePhase = RitualRoutePhase.None;
+            return;
+        }
+
         isRitualRouteActive = true;
 
         if (ritualApproachRoutePoints != null && ritualApproachRoutePoints.Length > 0)
@@ -729,6 +736,7 @@ public class NpcOrderVisitor : MonoBehaviour
         {
             isRitualRouteActive = false;
             ritualRoutePhase = RitualRoutePhase.None;
+            ReleaseNStayOccupancy();
             return;
         }
 
@@ -752,8 +760,6 @@ public class NpcOrderVisitor : MonoBehaviour
         {
             return;
         }
-
-        ReleaseNStayOccupancy();
 
         if (ritualExitRoutePoints != null && ritualExitRoutePoints.Length > 0)
         {
@@ -939,8 +945,6 @@ public class NpcOrderVisitor : MonoBehaviour
                         StartRitualExitRoute();
                         return true;
                     }
-
-                    ClaimNStayOccupancy();
                     ritualRoutePhase = RitualRoutePhase.WaitingAtStayPoint;
                     currentState = VisitorState.WaitingForProblemResolution;
                     EnsureRitualStayTarget();
@@ -982,8 +986,6 @@ public class NpcOrderVisitor : MonoBehaviour
                     StartRitualExitRoute();
                     return true;
                 }
-
-                ClaimNStayOccupancy();
                 ritualRoutePhase = RitualRoutePhase.WaitingAtStayPoint;
                 currentState = VisitorState.WaitingForProblemResolution;
                 EnsureRitualStayTarget();
@@ -1012,9 +1014,15 @@ public class NpcOrderVisitor : MonoBehaviour
         return false;
     }
 
-    private void ClaimNStayOccupancy()
+    private bool TryClaimNStayOccupancy()
     {
+        if (IsNStayOccupiedByAnother(this))
+        {
+            return false;
+        }
+
         nStayOccupant = this;
+        return true;
     }
 
     private void EnsureActiveRouteTarget()
