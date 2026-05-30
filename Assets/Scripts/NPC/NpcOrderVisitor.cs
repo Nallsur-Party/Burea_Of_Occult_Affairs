@@ -528,13 +528,7 @@ public class NpcOrderVisitor : MonoBehaviour
     {
         if (exitPoints == null || exitPoints.Length == 0)
         {
-            currentState = VisitorState.Idle;
-            currentTarget = null;
-            isSequentialExitActive = false;
-            isRitualRouteActive = false;
-            ritualRoutePhase = RitualRoutePhase.None;
-            ritualApproachIndex = -1;
-            ritualExitIndex = -1;
+            ResetLeavingState();
             return;
         }
 
@@ -571,12 +565,7 @@ public class NpcOrderVisitor : MonoBehaviour
             npcQueueManager.DequeueNPC(this);
         }
 
-        isSequentialExitActive = false;
-        sequentialExitIndex = -1;
-        isRitualRouteActive = false;
-        ritualRoutePhase = RitualRoutePhase.None;
-        ritualApproachIndex = -1;
-        ritualExitIndex = -1;
+        ResetLeavingState();
         SetTargetTransform(exitPoints[exitIndex]);
         currentState = VisitorState.Leaving;
     }
@@ -667,12 +656,9 @@ public class NpcOrderVisitor : MonoBehaviour
             npcQueueManager.DequeueNPC(this);
         }
 
+        ResetLeavingState();
         isSequentialExitActive = true;
         sequentialExitIndex = 0;
-        isRitualRouteActive = false;
-        ritualRoutePhase = RitualRoutePhase.None;
-        ritualApproachIndex = -1;
-        ritualExitIndex = -1;
         SetTargetTransform(sequentialExitRoutePoints[0]);
         currentState = VisitorState.Leaving;
     }
@@ -696,12 +682,8 @@ public class NpcOrderVisitor : MonoBehaviour
             npcQueueManager.DequeueNPC(this);
         }
 
-        isSequentialExitActive = false;
-        sequentialExitIndex = -1;
+        ResetLeavingState();
         isRitualRouteActive = true;
-        ritualRoutePhase = RitualRoutePhase.None;
-        ritualApproachIndex = -1;
-        ritualExitIndex = -1;
 
         if (ritualApproachRoutePoints != null && ritualApproachRoutePoints.Length > 0)
         {
@@ -766,7 +748,6 @@ public class NpcOrderVisitor : MonoBehaviour
             return;
         }
 
-        isRitualRouteActive = true;
         ritualRoutePhase = RitualRoutePhase.Exiting;
         ritualExitIndex = 0;
         SetTargetTransform(ritualExitRoutePoints[0]);
@@ -1068,46 +1049,8 @@ public class NpcOrderVisitor : MonoBehaviour
     {
         if (isRitualRouteActive)
         {
-            if (ritualRoutePhase == RitualRoutePhase.WaitingAtStayPoint)
-            {
-                EnsureRitualStayTarget();
-                return;
-            }
-
-            if (ritualRoutePhase == RitualRoutePhase.ApproachingStayPoint && ritualStayPoint != null)
-            {
-                if (currentTarget != ritualStayPoint || useCustomTarget)
-                {
-                    SetTargetTransform(ritualStayPoint);
-                }
-                return;
-            }
-
-            if (ritualRoutePhase == RitualRoutePhase.ApproachingRoute
-                && ritualApproachRoutePoints != null
-                && ritualApproachIndex >= 0
-                && ritualApproachIndex < ritualApproachRoutePoints.Length)
-            {
-                Transform currentApproachWaypoint = ritualApproachRoutePoints[ritualApproachIndex];
-                if (currentApproachWaypoint != null && (currentTarget != currentApproachWaypoint || useCustomTarget))
-                {
-                    SetTargetTransform(currentApproachWaypoint);
-                }
-                return;
-            }
-
-            if (ritualRoutePhase == RitualRoutePhase.Exiting
-                && ritualExitRoutePoints != null
-                && ritualExitIndex >= 0
-                && ritualExitIndex < ritualExitRoutePoints.Length)
-            {
-                Transform currentExitWaypoint = ritualExitRoutePoints[ritualExitIndex];
-                if (currentExitWaypoint != null && (currentTarget != currentExitWaypoint || useCustomTarget))
-                {
-                    SetTargetTransform(currentExitWaypoint);
-                }
-                return;
-            }
+            EnsureRitualRouteTarget();
+            return;
         }
 
         if (!isSequentialExitActive || sequentialExitRoutePoints == null || sequentialExitRoutePoints.Length == 0)
@@ -1115,34 +1058,34 @@ public class NpcOrderVisitor : MonoBehaviour
             return;
         }
 
-        int routeIndex = sequentialExitIndex;
-        if (routeIndex < 0)
-        {
-            routeIndex = 0;
-        }
-        else if (routeIndex >= sequentialExitRoutePoints.Length)
-        {
-            routeIndex = sequentialExitRoutePoints.Length - 1;
-        }
+        EnsureRouteTarget(sequentialExitRoutePoints, sequentialExitIndex);
+    }
 
-        Transform currentWaypoint = sequentialExitRoutePoints[routeIndex];
-        if (currentWaypoint != null && (currentTarget != currentWaypoint || useCustomTarget))
+    private void EnsureRitualRouteTarget()
+    {
+        switch (ritualRoutePhase)
         {
-            SetTargetTransform(currentWaypoint);
+            case RitualRoutePhase.WaitingAtStayPoint:
+                EnsureRitualStayTarget();
+                return;
+
+            case RitualRoutePhase.ApproachingStayPoint:
+                EnsureTargetTransform(ritualStayPoint);
+                return;
+
+            case RitualRoutePhase.ApproachingRoute:
+                EnsureRouteTarget(ritualApproachRoutePoints, ritualApproachIndex);
+                return;
+
+            case RitualRoutePhase.Exiting:
+                EnsureRouteTarget(ritualExitRoutePoints, ritualExitIndex);
+                return;
         }
     }
 
     private void EnsureRitualStayTarget()
     {
-        if (ritualStayPoint == null)
-        {
-            return;
-        }
-
-        if (currentTarget != ritualStayPoint || useCustomTarget)
-        {
-            SetTargetTransform(ritualStayPoint);
-        }
+        EnsureTargetTransform(ritualStayPoint);
     }
 
     private void ReleaseNStayOccupancy()
@@ -1205,12 +1148,7 @@ public class NpcOrderVisitor : MonoBehaviour
     private void FinishLeavingScene()
     {
         ReleaseNStayOccupancy();
-        isSequentialExitActive = false;
-        sequentialExitIndex = -1;
-        isRitualRouteActive = false;
-        ritualRoutePhase = RitualRoutePhase.None;
-        ritualApproachIndex = -1;
-        ritualExitIndex = -1;
+        ResetLeavingState();
         currentState = VisitorState.Idle;
         ClearTarget();
         onLeftScene.Invoke();
@@ -1394,22 +1332,7 @@ public class NpcOrderVisitor : MonoBehaviour
             return;
         }
 
-        bool movingRight = delta.x > 0f;
-        bool shouldFaceRight = movingRight;
-
-        if (invertFlipX)
-        {
-            shouldFaceRight = !shouldFaceRight;
-        }
-
-        if (facesRightByDefault)
-        {
-            spriteRenderer.flipX = !shouldFaceRight;
-        }
-        else
-        {
-            spriteRenderer.flipX = shouldFaceRight;
-        }
+        ApplySpriteFacing(delta.x > 0f);
     }
 
     private void UpdateAnimator()
@@ -1425,28 +1348,28 @@ public class NpcOrderVisitor : MonoBehaviour
         float speedZ = localVelocity.z;
         bool isMovingForward = speedZ >= speedX;
         bool isMovingBackward = speedZ <= -speedX;
+        bool isMoving = planarSpeed > 0.001f;
 
         bool isLookingDown = false;
         bool isLookingHorizontal = false;
         bool isPlayerNear = false;
-        bool canLookAtPlayer = false;
+        bool canFacePlayer = false;
         if (playerController != null)
         {
             Vector3 playerPosition = playerController.transform.position;
             float distanceToPlayer = Vector3.Distance(transform.position, playerPosition);
             isPlayerNear = distanceToPlayer <= lookAtPlayerRadius;
-            canLookAtPlayer = isPlayerNear && (currentState == VisitorState.WaitingAtCounter || currentState == VisitorState.WaitingInQueue);
-            if (canLookAtPlayer)
+            canFacePlayer = isPlayerNear
+                && !isMoving
+                && CanFacePlayerInCurrentState();
+            if (canFacePlayer)
             {
                 Vector3 localDirection = transform.InverseTransformDirection((playerPosition - transform.position).normalized);
                 float angle = Mathf.Atan2(localDirection.x, localDirection.z) * Mathf.Rad2Deg;
 
-                // Горизонтальный сектор примерно 45…135 градусов в боковых четвертях
                 isLookingHorizontal = Mathf.Abs(angle) >= 45f && Mathf.Abs(angle) <= 135f;
-                // Если игрок ниже и не в боковой области, считаем взгляд вниз
                 isLookingDown = playerPosition.z < transform.position.z && !isLookingHorizontal;
-                // Флипим спрайт в зависимости от X позиции игрока если NPC на стойке или в очереди
-                UpdateLookDirection();
+                ApplySpriteFacing(playerPosition.x >= transform.position.x);
             }
         }
 
@@ -1457,32 +1380,59 @@ public class NpcOrderVisitor : MonoBehaviour
         animator.SetBool(IsMovingBackwardHash, isMovingBackward);
         animator.SetBool(IsLookingDownHash, isLookingDown);
         animator.SetBool(IsLookingHorizontalHash, isLookingHorizontal);
-        animator.SetBool(IsPlayerNearHash, canLookAtPlayer);
+        animator.SetBool(IsPlayerNearHash, canFacePlayer);
     }
 
-    private void UpdateLookDirection()
+    private bool CanFacePlayerInCurrentState()
     {
-        if (playerController == null || spriteRenderer == null)
+        return currentState == VisitorState.WaitingAtCounter
+            || currentState == VisitorState.WaitingInQueue
+            || currentState == VisitorState.WaitingForProblemResolution;
+    }
+
+    private void ApplySpriteFacing(bool faceRight)
+    {
+        if (spriteRenderer == null)
         {
             return;
         }
 
-        bool playerIsToRight = playerController.transform.position.x > transform.position.x;
-        bool shouldFaceRight = playerIsToRight;
+        bool shouldFaceRight = invertFlipX ? !faceRight : faceRight;
+        spriteRenderer.flipX = facesRightByDefault ? !shouldFaceRight : shouldFaceRight;
+    }
 
-        if (invertFlipX)
+    private void EnsureTargetTransform(Transform target)
+    {
+        if (target == null)
         {
-            shouldFaceRight = !shouldFaceRight;
+            return;
         }
 
-        if (facesRightByDefault)
+        if (currentTarget != target || useCustomTarget)
         {
-            spriteRenderer.flipX = !shouldFaceRight;
+            SetTargetTransform(target);
         }
-        else
+    }
+
+    private void EnsureRouteTarget(IReadOnlyList<Transform> routePoints, int routeIndex)
+    {
+        if (routePoints == null || routePoints.Count == 0)
         {
-            spriteRenderer.flipX = shouldFaceRight;
+            return;
         }
+
+        int clampedIndex = Mathf.Clamp(routeIndex, 0, routePoints.Count - 1);
+        EnsureTargetTransform(routePoints[clampedIndex]);
+    }
+
+    private void ResetLeavingState()
+    {
+        isSequentialExitActive = false;
+        sequentialExitIndex = -1;
+        isRitualRouteActive = false;
+        ritualRoutePhase = RitualRoutePhase.None;
+        ritualApproachIndex = -1;
+        ritualExitIndex = -1;
     }
 
     private void OnDrawGizmosSelected()
