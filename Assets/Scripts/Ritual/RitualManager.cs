@@ -177,7 +177,7 @@ public class RitualManager : MonoBehaviour
             LogAttempt(npc, RitualAttemptResult.Completed, item, action, FormatStep(expectedStep));
             if (!npc.TryContinueResolvedExitRoute())
             {
-                npc.LeaveRandomExit();
+                Debug.LogWarning($"Ritual Debug | NPC {npc.name} could not continue the resolved ritual exit route.", npc);
             }
             return RitualAttemptResult.Completed;
         }

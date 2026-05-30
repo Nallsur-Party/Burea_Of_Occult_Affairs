@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class NPCSpawner : MonoBehaviour
 {
@@ -13,8 +14,11 @@ public class NPCSpawner : MonoBehaviour
     [SerializeField] private Transform startPoint;
     [SerializeField] private Transform counterPoint;
     [SerializeField] private Transform[] exitPoints;
-    [SerializeField] private Transform[] zExitRoutePoints;
-    [SerializeField] private Transform[] nExitRoutePoints;
+    [SerializeField, InspectorName("Usual Exit Route Points"), FormerlySerializedAs("zExitRoutePoints")] private Transform[] usualExitRoutePoints;
+    [SerializeField, InspectorName("Ritual Stay Point")] private Transform ritualStayPoint;
+    [SerializeField, InspectorName("Ritual Approach Route Points")] private Transform[] ritualApproachRoutePoints;
+    [SerializeField, InspectorName("Ritual Exit Route Points")] private Transform[] ritualExitRoutePoints;
+    [SerializeField, HideInInspector, FormerlySerializedAs("ritualRoutePoints"), FormerlySerializedAs("nExitRoutePoints")] private Transform[] legacyRitualRoutePoints;
     [SerializeField] private float autoSpawnInterval = 2f;
     [SerializeField] private bool autoSpawnEnabledByDefault = true;
 
@@ -166,7 +170,9 @@ public class NPCSpawner : MonoBehaviour
 
         npcOrderVisitor.ConfigureRoute(startPoint, counterPoint, exitPoints, true);
         npcOrderVisitor.SetSequentialExitRoutePoints(GetSequentialExitRoutePoints());
-        npcOrderVisitor.SetHoldUntilCuredExitRoutePoints(GetHoldUntilCuredExitRoutePoints());
+        npcOrderVisitor.SetRitualStayPoint(GetRitualStayPoint());
+        npcOrderVisitor.SetRitualApproachRoutePoints(GetRitualApproachRoutePoints());
+        npcOrderVisitor.SetRitualExitRoutePoints(GetRitualExitRoutePoints());
 
         npcQueueManager.EnqueueNPC(npcOrderVisitor);
 
@@ -219,9 +225,9 @@ public class NPCSpawner : MonoBehaviour
             };
         }
 
-        if (zExitRoutePoints == null || zExitRoutePoints.Length == 0)
+        if (usualExitRoutePoints == null || usualExitRoutePoints.Length == 0)
         {
-            zExitRoutePoints = new Transform[]
+            usualExitRoutePoints = new Transform[]
             {
                 FindExitPoint("ExitPoint_Z0", "ExitPoint_Z"),
                 FindExitPoint("ExitPoint_Z1"),
@@ -229,11 +235,17 @@ public class NPCSpawner : MonoBehaviour
             };
         }
 
-        if (nExitRoutePoints == null || nExitRoutePoints.Length == 0)
+        if (ritualStayPoint == null)
         {
-            nExitRoutePoints = new Transform[]
+            ritualStayPoint = FindExitPoint("ExitPoint_NStay", "ExitPoint_Nstay");
+        }
+
+        ApplyLegacyRitualRouteFallback();
+
+        if (ritualExitRoutePoints == null || ritualExitRoutePoints.Length == 0)
+        {
+            ritualExitRoutePoints = new Transform[]
             {
-                FindExitPoint("ExitPoint_NStay"),
                 FindExitPoint("ExitPoint_N")
             };
         }
@@ -265,9 +277,9 @@ public class NPCSpawner : MonoBehaviour
 
     private Transform[] GetSequentialExitRoutePoints()
     {
-        if (zExitRoutePoints != null && zExitRoutePoints.Length > 0)
+        if (usualExitRoutePoints != null && usualExitRoutePoints.Length > 0)
         {
-            return BuildRoute(zExitRoutePoints);
+            return BuildRoute(usualExitRoutePoints);
         }
 
         return BuildRoute(
@@ -277,17 +289,53 @@ public class NPCSpawner : MonoBehaviour
         );
     }
 
-    private Transform[] GetHoldUntilCuredExitRoutePoints()
+    private Transform GetRitualStayPoint()
     {
-        if (nExitRoutePoints != null && nExitRoutePoints.Length > 0)
+        return ritualStayPoint;
+    }
+
+    private Transform[] GetRitualApproachRoutePoints()
+    {
+        if (ritualApproachRoutePoints != null && ritualApproachRoutePoints.Length > 0)
         {
-            return BuildRoute(nExitRoutePoints);
+            return BuildRoute(ritualApproachRoutePoints);
         }
 
-        return BuildRoute(
-            FindExitPoint("ExitPoint_NStay"),
-            FindExitPoint("ExitPoint_N")
-        );
+        if (legacyRitualRoutePoints != null && legacyRitualRoutePoints.Length > 0)
+        {
+            Transform resolvedStayPoint = GetResolvedRitualStayPoint();
+            if (resolvedStayPoint != null)
+            {
+                return BuildRouteBeforeStayPoint(legacyRitualRoutePoints, resolvedStayPoint);
+            }
+
+            return BuildRoute(legacyRitualRoutePoints);
+        }
+
+        return BuildRoute();
+    }
+
+    private Transform[] GetRitualExitRoutePoints()
+    {
+        if (ritualExitRoutePoints != null && ritualExitRoutePoints.Length > 0)
+        {
+            return BuildRoute(ritualExitRoutePoints);
+        }
+
+        if (legacyRitualRoutePoints != null && legacyRitualRoutePoints.Length > 0)
+        {
+            Transform resolvedStayPoint = GetResolvedRitualStayPoint();
+            if (resolvedStayPoint != null)
+            {
+                Transform[] exitRoute = BuildRouteAfterStayPoint(legacyRitualRoutePoints, resolvedStayPoint);
+                if (exitRoute.Length > 0)
+                {
+                    return exitRoute;
+                }
+            }
+        }
+
+        return BuildRoute(FindExitPoint("ExitPoint_N"));
     }
 
     private static Transform[] BuildRoute(params Transform[] points)
@@ -303,6 +351,107 @@ public class NPCSpawner : MonoBehaviour
             if (points[i] != null)
             {
                 route.Add(points[i]);
+            }
+        }
+
+        return route.ToArray();
+    }
+
+    private void ApplyLegacyRitualRouteFallback()
+    {
+        if (legacyRitualRoutePoints == null || legacyRitualRoutePoints.Length == 0)
+        {
+            return;
+        }
+
+        Transform resolvedStayPoint = GetResolvedRitualStayPoint();
+        if (resolvedStayPoint == null)
+        {
+            return;
+        }
+
+        if (ritualApproachRoutePoints == null || ritualApproachRoutePoints.Length == 0)
+        {
+            ritualApproachRoutePoints = BuildRouteBeforeStayPoint(legacyRitualRoutePoints, resolvedStayPoint);
+        }
+
+        if (ritualExitRoutePoints == null || ritualExitRoutePoints.Length == 0)
+        {
+            Transform[] exitRoute = BuildRouteAfterStayPoint(legacyRitualRoutePoints, resolvedStayPoint);
+            ritualExitRoutePoints = exitRoute.Length > 0
+                ? exitRoute
+                : BuildRoute(FindExitPoint("ExitPoint_N"));
+        }
+    }
+
+    private Transform GetResolvedRitualStayPoint()
+    {
+        if (ritualStayPoint != null)
+        {
+            return ritualStayPoint;
+        }
+
+        ritualStayPoint = FindExitPoint("ExitPoint_NStay", "ExitPoint_Nstay");
+        return ritualStayPoint;
+    }
+
+    private static Transform[] BuildRouteBeforeStayPoint(IReadOnlyList<Transform> sourcePoints, Transform stayPoint)
+    {
+        List<Transform> route = new List<Transform>();
+        if (sourcePoints == null || sourcePoints.Count == 0)
+        {
+            return route.ToArray();
+        }
+
+        for (int i = 0; i < sourcePoints.Count; i++)
+        {
+            Transform waypoint = sourcePoints[i];
+            if (waypoint == null)
+            {
+                continue;
+            }
+
+            if (waypoint == stayPoint)
+            {
+                break;
+            }
+
+            route.Add(waypoint);
+        }
+
+        return route.ToArray();
+    }
+
+    private static Transform[] BuildRouteAfterStayPoint(IReadOnlyList<Transform> sourcePoints, Transform stayPoint)
+    {
+        List<Transform> route = new List<Transform>();
+        if (sourcePoints == null || sourcePoints.Count == 0)
+        {
+            return route.ToArray();
+        }
+
+        bool hasPassedStayPoint = stayPoint == null;
+        for (int i = 0; i < sourcePoints.Count; i++)
+        {
+            Transform waypoint = sourcePoints[i];
+            if (waypoint == null)
+            {
+                continue;
+            }
+
+            if (!hasPassedStayPoint)
+            {
+                if (waypoint == stayPoint)
+                {
+                    hasPassedStayPoint = true;
+                }
+
+                continue;
+            }
+
+            if (waypoint != stayPoint)
+            {
+                route.Add(waypoint);
             }
         }
 

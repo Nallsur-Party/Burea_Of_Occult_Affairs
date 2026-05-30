@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 [RequireComponent(typeof(Rigidbody))]
 public class NpcOrderVisitor : MonoBehaviour
@@ -31,7 +33,10 @@ public class NpcOrderVisitor : MonoBehaviour
     [SerializeField] private Transform counterPoint;
     [SerializeField] private Transform[] exitPoints;
     [SerializeField] private Transform[] sequentialExitRoutePoints;
-    [SerializeField] private Transform[] holdUntilCuredExitRoutePoints;
+    [SerializeField] private Transform ritualStayPoint;
+    [SerializeField] private Transform[] ritualApproachRoutePoints;
+    [SerializeField] private Transform[] ritualExitRoutePoints;
+    [SerializeField, HideInInspector, FormerlySerializedAs("holdUntilCuredExitRoutePoints")] private Transform[] legacyRitualRoutePoints;
     [SerializeField] private bool snapToStartPointOnAwake = true;
     [SerializeField] private bool beginRouteOnAwake = true;
 
@@ -80,8 +85,19 @@ public class NpcOrderVisitor : MonoBehaviour
     private Vector3 interruptedCustomTargetPosition;
     private bool isSequentialExitActive;
     private int sequentialExitIndex = -1;
-    private bool isHoldUntilCuredExitActive;
-    private int holdUntilCuredExitIndex = -1;
+    private bool isRitualRouteActive;
+    private RitualRoutePhase ritualRoutePhase = RitualRoutePhase.None;
+    private int ritualApproachIndex = -1;
+    private int ritualExitIndex = -1;
+
+    private enum RitualRoutePhase
+    {
+        None,
+        ApproachingRoute,
+        ApproachingStayPoint,
+        WaitingAtStayPoint,
+        Exiting
+    }
 
     public bool IsWaitingAtCounter => currentState == VisitorState.WaitingAtCounter;
     public bool IsInQueue => currentState == VisitorState.WaitingInQueue;
@@ -441,7 +457,11 @@ public class NpcOrderVisitor : MonoBehaviour
     {
         if (currentState == VisitorState.WaitingForProblemResolution && npcData != null && npcData.IsCured)
         {
-            ContinueHoldUntilCuredExitRoute();
+            ContinueRitualExitRoute();
+        }
+        else if (currentState == VisitorState.WaitingForProblemResolution)
+        {
+            EnsureRitualStayTarget();
         }
 
         if (currentTarget == null && !useCustomTarget)
@@ -511,6 +531,10 @@ public class NpcOrderVisitor : MonoBehaviour
             currentState = VisitorState.Idle;
             currentTarget = null;
             isSequentialExitActive = false;
+            isRitualRouteActive = false;
+            ritualRoutePhase = RitualRoutePhase.None;
+            ritualApproachIndex = -1;
+            ritualExitIndex = -1;
             return;
         }
 
@@ -533,7 +557,7 @@ public class NpcOrderVisitor : MonoBehaviour
 
         if (exitPoints[exitIndex].name.Contains("N"))
         {
-            StartHoldUntilCuredExitRoute();
+            StartRitualRoute();
             return;
         }
 
@@ -549,8 +573,10 @@ public class NpcOrderVisitor : MonoBehaviour
 
         isSequentialExitActive = false;
         sequentialExitIndex = -1;
-        isHoldUntilCuredExitActive = false;
-        holdUntilCuredExitIndex = -1;
+        isRitualRouteActive = false;
+        ritualRoutePhase = RitualRoutePhase.None;
+        ritualApproachIndex = -1;
+        ritualExitIndex = -1;
         SetTargetTransform(exitPoints[exitIndex]);
         currentState = VisitorState.Leaving;
     }
@@ -570,7 +596,7 @@ public class NpcOrderVisitor : MonoBehaviour
 
         if (string.Equals(exitName, "N", System.StringComparison.OrdinalIgnoreCase))
         {
-            StartHoldUntilCuredExitRoute();
+            StartRitualRoute();
             return;
         }
 
@@ -586,16 +612,42 @@ public class NpcOrderVisitor : MonoBehaviour
 
     public void SetSequentialExitRoutePoints(Transform[] routePoints)
     {
-        sequentialExitRoutePoints = routePoints;
+        sequentialExitRoutePoints = BuildRoute(routePoints);
         sequentialExitIndex = -1;
         isSequentialExitActive = false;
     }
 
+    public void SetRitualStayPoint(Transform stayPoint)
+    {
+        ritualStayPoint = stayPoint;
+    }
+
+    public void SetRitualApproachRoutePoints(Transform[] routePoints)
+    {
+        ritualApproachRoutePoints = BuildRoute(routePoints);
+    }
+
+    public void SetRitualExitRoutePoints(Transform[] routePoints)
+    {
+        ritualExitRoutePoints = BuildRoute(routePoints);
+    }
+
+    public void SetRitualRoutePoints(Transform stayPoint, Transform[] approachRoutePoints, Transform[] exitRoutePoints)
+    {
+        ritualStayPoint = stayPoint;
+        ritualApproachRoutePoints = BuildRoute(approachRoutePoints);
+        ritualExitRoutePoints = BuildRoute(exitRoutePoints);
+    }
+
     public void SetHoldUntilCuredExitRoutePoints(Transform[] routePoints)
     {
-        holdUntilCuredExitRoutePoints = routePoints;
-        holdUntilCuredExitIndex = -1;
-        isHoldUntilCuredExitActive = false;
+        legacyRitualRoutePoints = BuildRoute(routePoints);
+        ritualApproachRoutePoints = null;
+        ritualExitRoutePoints = null;
+        ritualRoutePhase = RitualRoutePhase.None;
+        ritualApproachIndex = -1;
+        ritualExitIndex = -1;
+        isRitualRouteActive = false;
     }
 
     private void StartSequentialExitRoute()
@@ -617,18 +669,17 @@ public class NpcOrderVisitor : MonoBehaviour
 
         isSequentialExitActive = true;
         sequentialExitIndex = 0;
-        isHoldUntilCuredExitActive = false;
-        holdUntilCuredExitIndex = -1;
+        isRitualRouteActive = false;
+        ritualRoutePhase = RitualRoutePhase.None;
+        ritualApproachIndex = -1;
+        ritualExitIndex = -1;
         SetTargetTransform(sequentialExitRoutePoints[0]);
         currentState = VisitorState.Leaving;
     }
 
-    private void StartHoldUntilCuredExitRoute()
+    private void StartRitualRoute()
     {
-        if (holdUntilCuredExitRoutePoints == null || holdUntilCuredExitRoutePoints.Length == 0)
-        {
-            return;
-        }
+        EnsureRitualRouteConfiguration();
 
         if (IsNStayOccupiedByAnother(this))
         {
@@ -647,69 +698,218 @@ public class NpcOrderVisitor : MonoBehaviour
 
         isSequentialExitActive = false;
         sequentialExitIndex = -1;
-        isHoldUntilCuredExitActive = true;
-        holdUntilCuredExitIndex = 0;
-        SetTargetTransform(holdUntilCuredExitRoutePoints[0]);
+        isRitualRouteActive = true;
+        ritualRoutePhase = RitualRoutePhase.None;
+        ritualApproachIndex = -1;
+        ritualExitIndex = -1;
+
+        if (ritualApproachRoutePoints != null && ritualApproachRoutePoints.Length > 0)
+        {
+            ritualRoutePhase = RitualRoutePhase.ApproachingRoute;
+            ritualApproachIndex = 0;
+            SetTargetTransform(ritualApproachRoutePoints[0]);
+        }
+        else if (ritualStayPoint != null)
+        {
+            ritualRoutePhase = RitualRoutePhase.ApproachingStayPoint;
+            SetTargetTransform(ritualStayPoint);
+        }
+        else if (ritualExitRoutePoints != null && ritualExitRoutePoints.Length > 0)
+        {
+            StartRitualExitRoute();
+            return;
+        }
+        else
+        {
+            isRitualRouteActive = false;
+            ritualRoutePhase = RitualRoutePhase.None;
+            return;
+        }
+
         currentState = VisitorState.Leaving;
     }
 
     public bool TryContinueResolvedExitRoute()
     {
-        if (!isHoldUntilCuredExitActive || currentState != VisitorState.WaitingForProblemResolution)
+        if (!isRitualRouteActive || currentState != VisitorState.WaitingForProblemResolution)
         {
             return false;
         }
 
-        ContinueHoldUntilCuredExitRoute();
+        ContinueRitualExitRoute();
         return true;
     }
 
-    private void ContinueHoldUntilCuredExitRoute()
+    private void ContinueRitualExitRoute()
     {
-        if (!isHoldUntilCuredExitActive || holdUntilCuredExitRoutePoints == null)
+        if (!isRitualRouteActive)
         {
             return;
         }
 
         ReleaseNStayOccupancy();
 
-        if (holdUntilCuredExitIndex + 1 >= holdUntilCuredExitRoutePoints.Length)
+        if (ritualExitRoutePoints != null && ritualExitRoutePoints.Length > 0)
+        {
+            StartRitualExitRoute();
+            return;
+        }
+
+        FinishLeavingScene();
+    }
+
+    private void StartRitualExitRoute()
+    {
+        if (ritualExitRoutePoints == null || ritualExitRoutePoints.Length == 0)
         {
             FinishLeavingScene();
             return;
         }
 
-        holdUntilCuredExitIndex++;
-        Transform nextWaypoint = holdUntilCuredExitRoutePoints[holdUntilCuredExitIndex];
-        if (nextWaypoint == null)
-        {
-            FinishLeavingScene();
-            return;
-        }
-
-        SetTargetTransform(nextWaypoint);
+        isRitualRouteActive = true;
+        ritualRoutePhase = RitualRoutePhase.Exiting;
+        ritualExitIndex = 0;
+        SetTargetTransform(ritualExitRoutePoints[0]);
         currentState = VisitorState.Leaving;
     }
 
-    private bool IsWaitingWaypointInHoldRoute()
+    private void EnsureRitualRouteConfiguration()
     {
-        if (!isHoldUntilCuredExitActive
-            || holdUntilCuredExitRoutePoints == null
-            || holdUntilCuredExitIndex < 0
-            || holdUntilCuredExitIndex >= holdUntilCuredExitRoutePoints.Length)
+        if (legacyRitualRoutePoints == null || legacyRitualRoutePoints.Length == 0)
         {
-            return false;
+            return;
         }
 
-        Transform currentWaypoint = holdUntilCuredExitRoutePoints[holdUntilCuredExitIndex];
-        if (currentWaypoint == null)
+        Transform resolvedStayPoint = ritualStayPoint ?? FindStayPointInLegacyRoute(legacyRitualRoutePoints);
+        if (resolvedStayPoint != null && ritualStayPoint == null)
         {
-            return false;
+            ritualStayPoint = resolvedStayPoint;
         }
 
-        string waypointName = currentWaypoint.name;
-        return !string.IsNullOrWhiteSpace(waypointName)
-            && (waypointName.Contains("NStay") || waypointName.Contains("Stay"));
+        if (resolvedStayPoint != null)
+        {
+            if (ritualApproachRoutePoints == null || ritualApproachRoutePoints.Length == 0)
+            {
+                ritualApproachRoutePoints = BuildRouteBeforeStayPoint(legacyRitualRoutePoints, resolvedStayPoint);
+            }
+
+            if (ritualExitRoutePoints == null || ritualExitRoutePoints.Length == 0)
+            {
+                ritualExitRoutePoints = BuildRouteAfterStayPoint(legacyRitualRoutePoints, resolvedStayPoint);
+            }
+        }
+        else
+        {
+            if (ritualApproachRoutePoints == null || ritualApproachRoutePoints.Length == 0)
+            {
+                ritualApproachRoutePoints = BuildRoute(legacyRitualRoutePoints);
+            }
+        }
+    }
+
+    private static Transform FindStayPointInLegacyRoute(IReadOnlyList<Transform> routePoints)
+    {
+        if (routePoints == null)
+        {
+            return null;
+        }
+
+        for (int i = 0; i < routePoints.Count; i++)
+        {
+            Transform waypoint = routePoints[i];
+            if (waypoint == null)
+            {
+                continue;
+            }
+
+            string waypointName = waypoint.name;
+            if (!string.IsNullOrWhiteSpace(waypointName)
+                && (waypointName.Contains("NStay") || waypointName.Contains("Stay")))
+            {
+                return waypoint;
+            }
+        }
+
+        return null;
+    }
+
+    private static Transform[] BuildRoute(params Transform[] points)
+    {
+        List<Transform> route = new List<Transform>();
+        if (points == null)
+        {
+            return route.ToArray();
+        }
+
+        for (int i = 0; i < points.Length; i++)
+        {
+            if (points[i] != null)
+            {
+                route.Add(points[i]);
+            }
+        }
+
+        return route.ToArray();
+    }
+
+    private static Transform[] BuildRouteBeforeStayPoint(IReadOnlyList<Transform> sourcePoints, Transform stayPoint)
+    {
+        List<Transform> route = new List<Transform>();
+        if (sourcePoints == null)
+        {
+            return route.ToArray();
+        }
+
+        for (int i = 0; i < sourcePoints.Count; i++)
+        {
+            Transform waypoint = sourcePoints[i];
+            if (waypoint == null)
+            {
+                continue;
+            }
+
+            if (waypoint == stayPoint)
+            {
+                break;
+            }
+
+            route.Add(waypoint);
+        }
+
+        return route.ToArray();
+    }
+
+    private static Transform[] BuildRouteAfterStayPoint(IReadOnlyList<Transform> sourcePoints, Transform stayPoint)
+    {
+        List<Transform> route = new List<Transform>();
+        if (sourcePoints == null)
+        {
+            return route.ToArray();
+        }
+
+        bool hasPassedStayPoint = false;
+        for (int i = 0; i < sourcePoints.Count; i++)
+        {
+            Transform waypoint = sourcePoints[i];
+            if (waypoint == null)
+            {
+                continue;
+            }
+
+            if (!hasPassedStayPoint)
+            {
+                if (waypoint == stayPoint)
+                {
+                    hasPassedStayPoint = true;
+                }
+
+                continue;
+            }
+
+            route.Add(waypoint);
+        }
+
+        return route.ToArray();
     }
 
     private static bool IsNStayOccupiedByAnother(NpcOrderVisitor requester)
@@ -722,9 +922,107 @@ public class NpcOrderVisitor : MonoBehaviour
         return nStayOccupant != null && nStayOccupant != requester;
     }
 
+    private bool HandleRitualRouteArrival()
+    {
+        switch (ritualRoutePhase)
+        {
+            case RitualRoutePhase.ApproachingRoute:
+                if (ritualStayPoint != null && currentTarget == ritualStayPoint)
+                {
+                    if (npcData != null && npcData.IsCured)
+                    {
+                        StartRitualExitRoute();
+                        return true;
+                    }
+
+                    ClaimNStayOccupancy();
+                    ritualRoutePhase = RitualRoutePhase.WaitingAtStayPoint;
+                    currentState = VisitorState.WaitingForProblemResolution;
+                    EnsureRitualStayTarget();
+                    return true;
+                }
+
+                if (ritualApproachRoutePoints != null && ritualApproachIndex + 1 < ritualApproachRoutePoints.Length)
+                {
+                    ritualApproachIndex++;
+                    Transform nextApproachWaypoint = ritualApproachRoutePoints[ritualApproachIndex];
+                    if (nextApproachWaypoint != null)
+                    {
+                        SetTargetTransform(nextApproachWaypoint);
+                        currentState = VisitorState.Leaving;
+                        return true;
+                    }
+                }
+
+                if (ritualStayPoint != null)
+                {
+                    ritualRoutePhase = RitualRoutePhase.ApproachingStayPoint;
+                    SetTargetTransform(ritualStayPoint);
+                    currentState = VisitorState.Leaving;
+                    return true;
+                }
+
+                if (ritualExitRoutePoints != null && ritualExitRoutePoints.Length > 0)
+                {
+                    StartRitualExitRoute();
+                    return true;
+                }
+
+                FinishLeavingScene();
+                return true;
+
+            case RitualRoutePhase.ApproachingStayPoint:
+                if (npcData != null && npcData.IsCured)
+                {
+                    StartRitualExitRoute();
+                    return true;
+                }
+
+                ClaimNStayOccupancy();
+                ritualRoutePhase = RitualRoutePhase.WaitingAtStayPoint;
+                currentState = VisitorState.WaitingForProblemResolution;
+                EnsureRitualStayTarget();
+                return true;
+
+            case RitualRoutePhase.WaitingAtStayPoint:
+                return true;
+
+            case RitualRoutePhase.Exiting:
+                if (ritualExitRoutePoints != null && ritualExitIndex + 1 < ritualExitRoutePoints.Length)
+                {
+                    ritualExitIndex++;
+                    Transform nextExitWaypoint = ritualExitRoutePoints[ritualExitIndex];
+                    if (nextExitWaypoint != null)
+                    {
+                        SetTargetTransform(nextExitWaypoint);
+                        currentState = VisitorState.Leaving;
+                        return true;
+                    }
+                }
+
+                FinishLeavingScene();
+                return true;
+        }
+
+        return false;
+    }
+
     private void ClaimNStayOccupancy()
     {
         nStayOccupant = this;
+    }
+
+    private void EnsureRitualStayTarget()
+    {
+        if (ritualStayPoint == null)
+        {
+            return;
+        }
+
+        if (currentTarget != ritualStayPoint || useCustomTarget)
+        {
+            SetTargetTransform(ritualStayPoint);
+        }
     }
 
     private void ReleaseNStayOccupancy()
@@ -751,7 +1049,7 @@ public class NpcOrderVisitor : MonoBehaviour
                 break;
 
             case VisitorState.WaitingForProblemResolution:
-                ClearTarget();
+                EnsureRitualStayTarget();
                 break;
 
             case VisitorState.PushingAway:
@@ -784,27 +1082,9 @@ public class NpcOrderVisitor : MonoBehaviour
                 break;
 
             case VisitorState.Leaving:
-                if (isHoldUntilCuredExitActive)
+                if (isRitualRouteActive && HandleRitualRouteArrival())
                 {
-                    if (IsWaitingWaypointInHoldRoute() && (npcData == null || !npcData.IsCured))
-                    {
-                        ClaimNStayOccupancy();
-                        currentState = VisitorState.WaitingForProblemResolution;
-                        ClearTarget();
-                        break;
-                    }
-
-                    if (holdUntilCuredExitRoutePoints != null && holdUntilCuredExitIndex + 1 < holdUntilCuredExitRoutePoints.Length)
-                    {
-                        holdUntilCuredExitIndex++;
-                        Transform nextHoldWaypoint = holdUntilCuredExitRoutePoints[holdUntilCuredExitIndex];
-                        if (nextHoldWaypoint != null)
-                        {
-                            SetTargetTransform(nextHoldWaypoint);
-                            currentState = VisitorState.Leaving;
-                            break;
-                        }
-                    }
+                    break;
                 }
 
                 if (isSequentialExitActive && sequentialExitRoutePoints != null && sequentialExitIndex + 1 < sequentialExitRoutePoints.Length)
@@ -829,8 +1109,10 @@ public class NpcOrderVisitor : MonoBehaviour
         ReleaseNStayOccupancy();
         isSequentialExitActive = false;
         sequentialExitIndex = -1;
-        isHoldUntilCuredExitActive = false;
-        holdUntilCuredExitIndex = -1;
+        isRitualRouteActive = false;
+        ritualRoutePhase = RitualRoutePhase.None;
+        ritualApproachIndex = -1;
+        ritualExitIndex = -1;
         currentState = VisitorState.Idle;
         ClearTarget();
         onLeftScene.Invoke();
