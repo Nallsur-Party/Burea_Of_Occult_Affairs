@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6380206237659848771}
   - component: {fileID: 3708043392199942633}
   - component: {fileID: 320507868644829544}
+  - component: {fileID: 8667221072683586471}
   m_Layer: 0
   m_Name: NPC Manager
   m_TagString: Untagged
@@ -53,7 +54,7 @@ MonoBehaviour:
   npcNameListXml: {fileID: 4900000, guid: 6d8ad7b7c03f0394187d393f19ebf4f6, type: 3}
   minAge: 18
   maxAge: 65
-  noProblemChance: 0.15
+  noProblemChance: 0.1
   namePool:
     maleNames: []
     femaleNames: []
@@ -61,6 +62,7 @@ MonoBehaviour:
     surnames: []
   loadOnAwake: 1
   generatedNpc:
+    persistentId: 
     npcName: 
     gender: 2
     age: 58
@@ -78,6 +80,9 @@ MonoBehaviour:
     lieTokens: 0
     detectiveQuestionTokens: 0
     spentDetectiveQuestionCount: 0
+    health: 0
+    maxHealth: 0
+    isCured: 0
 --- !u!114 &3708043392199942633
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -90,10 +95,40 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f702c157436754041b6f5e3f358e2703, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  npcPawnPrefab: {fileID: 3188153488741869461, guid: 95513bd84ecdd5f4e9383d15fe1f53d9, type: 3}
-  spawnParent: {fileID: 0}
+  npcPawnPrefab: {fileID: 3188153488741869461, guid: 95513bd84ecdd5f4e9383d15fe1f53d9,
+    type: 3}
+  spawnParent: {fileID: 7181312806285078053}
   npcGenerator: {fileID: 6380206237659848771}
+  npcArchiveService: {fileID: 0}
   npcQueueManager: {fileID: 320507868644829544}
+  debugArchivedNpcPersistentId: 7dc776b8bbe4450ea40486f38d3f942d
+  routeRoot: {fileID: 0}
+  startPoint: {fileID: 0}
+  counterPoint: {fileID: 0}
+  exitPoints: []
+  usualExitRoutePoints:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  ritualStayPoint: {fileID: 0}
+  ritualApproachRoutePoints:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  ritualExitRoutePoints:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  legacyRitualRoutePoints:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  autoSpawnInterval: 2
+  autoSpawnEnabledByDefault: 1
 --- !u!114 &320507868644829544
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -106,3 +141,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 205017572eddbb147b36d4324738af51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  queuePoints:
+  - {fileID: 0}
+  - {fileID: 0}
+--- !u!114 &8667221072683586471
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1668305320217490482}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09e82948895b45f186b0b5f8524a9970, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  archiveFileName: npc_archive.json
+  loadArchiveOnAwake: 1
+  savePrettyPrinted: 1
+  archivedNpcs: []

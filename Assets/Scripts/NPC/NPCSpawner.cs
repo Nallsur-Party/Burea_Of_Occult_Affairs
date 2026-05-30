@@ -11,6 +11,8 @@ public class NPCSpawner : MonoBehaviour
     [SerializeField] private NPCGenerator npcGenerator;
     [SerializeField] private NPCArchiveService npcArchiveService;
     [SerializeField] private NPCQueueManager npcQueueManager;
+    [SerializeField, Tooltip("Persistent ID used by the debug ContextMenu action that spawns a specific archived NPC.")]
+    private string debugArchivedNpcPersistentId;
     [SerializeField] private Transform routeRoot;
     [SerializeField] private Transform startPoint;
     [SerializeField] private Transform counterPoint;
@@ -25,6 +27,8 @@ public class NPCSpawner : MonoBehaviour
 
     private Coroutine autoSpawnCoroutine;
     private bool isAutoSpawnEnabled;
+    private string pendingArchivedNpcPersistentId;
+    private bool pendingArchivedNpcUseLatest;
 
     private void Awake()
     {
@@ -68,14 +72,22 @@ public class NPCSpawner : MonoBehaviour
         }
     }
 
+    [ContextMenu("Spawn NPC")]
     public void SpawnNPC()
     {
         TrySpawnNPC();
     }
 
+    [ContextMenu("Spawn Archived NPC")]
     public void SpawnArchivedNPC()
     {
         TrySpawnArchivedNPC();
+    }
+
+    [ContextMenu("Spawn Archived NPC By Id")]
+    public void SpawnArchivedNPCById()
+    {
+        TrySpawnArchivedNPC(debugArchivedNpcPersistentId);
     }
 
     public void SpawnArchivedNPC(string persistentId)
@@ -132,7 +144,11 @@ public class NPCSpawner : MonoBehaviour
                 break;
             }
 
-            if (npcQueueManager.HasFreeSlot)
+            if (HasPendingArchivedNpcRequest())
+            {
+                TrySpawnPendingArchivedNpc();
+            }
+            else if (npcQueueManager.HasFreeSlot)
             {
                 TrySpawnNPC();
             }
@@ -166,6 +182,12 @@ public class NPCSpawner : MonoBehaviour
         if (!npcQueueManager.HasFreeSlot)
         {
             Debug.Log("NPC spawn skipped because queue is full.", this);
+            return false;
+        }
+
+        if (HasPendingArchivedNpcRequest())
+        {
+            Debug.Log("NPC spawn skipped because an archived NPC is waiting to spawn.", this);
             return false;
         }
 
@@ -208,28 +230,48 @@ public class NPCSpawner : MonoBehaviour
 
         if (!npcQueueManager.HasFreeSlot)
         {
-            Debug.Log("NPC spawn skipped because queue is full.", this);
+            QueueArchivedNpcSpawn(persistentId);
             return false;
         }
 
         NPC npcData;
-        bool takenFromArchive = !string.IsNullOrWhiteSpace(persistentId)
+        bool takenFromArchive = !pendingArchivedNpcUseLatest && !string.IsNullOrWhiteSpace(persistentId)
             ? npcArchiveService.TryTakeArchivedNpc(persistentId, out npcData)
             : npcArchiveService.TryTakeArchivedNpc(out npcData);
 
         if (!takenFromArchive || npcData == null)
         {
             Debug.Log("No archived NPC was available to spawn.", this);
+            ClearPendingArchivedNpcSpawn();
             return false;
         }
 
         if (!TrySpawnNpcInstance(npcData, "archived"))
         {
             npcArchiveService.ArchiveNpc(npcData);
+            ClearPendingArchivedNpcSpawn();
             return false;
         }
 
+        ClearPendingArchivedNpcSpawn();
         return true;
+    }
+
+    private bool TrySpawnPendingArchivedNpc()
+    {
+        if (!HasPendingArchivedNpcRequest())
+        {
+            return false;
+        }
+
+        if (npcQueueManager == null || !npcQueueManager.HasFreeSlot)
+        {
+            return false;
+        }
+
+        return pendingArchivedNpcUseLatest
+            ? TrySpawnArchivedNPC()
+            : TrySpawnArchivedNPC(pendingArchivedNpcPersistentId);
     }
 
     private NPC CreateGeneratedNpc()
@@ -283,6 +325,32 @@ public class NPCSpawner : MonoBehaviour
 
         Debug.Log($"Spawned {spawnSourceLabel} NPC: {npcOrderVisitor.NpcData?.Name}", spawnedNpcObject);
         return true;
+    }
+
+    private void QueueArchivedNpcSpawn(string persistentId)
+    {
+        if (string.IsNullOrWhiteSpace(persistentId))
+        {
+            pendingArchivedNpcPersistentId = null;
+            pendingArchivedNpcUseLatest = true;
+            Debug.Log("Queued archived NPC spawn request for the latest archived NPC. It will spawn as soon as a slot is available.", this);
+            return;
+        }
+
+        pendingArchivedNpcPersistentId = persistentId.Trim();
+        pendingArchivedNpcUseLatest = false;
+        Debug.Log($"Queued archived NPC spawn request for id '{pendingArchivedNpcPersistentId}'. It will spawn as soon as a slot is available.", this);
+    }
+
+    private bool HasPendingArchivedNpcRequest()
+    {
+        return pendingArchivedNpcUseLatest || !string.IsNullOrWhiteSpace(pendingArchivedNpcPersistentId);
+    }
+
+    private void ClearPendingArchivedNpcSpawn()
+    {
+        pendingArchivedNpcPersistentId = null;
+        pendingArchivedNpcUseLatest = false;
     }
 
     public void SpawnMultipleNPCs(int count)

@@ -118,6 +118,34 @@ public class NPCArchiveService : MonoBehaviour
         }
     }
 
+    [ContextMenu("Print Archived NPCs")]
+    public void PrintArchivedNpcs()
+    {
+        if (archivedNpcs == null || archivedNpcs.Count == 0)
+        {
+            Debug.Log("NPC archive is empty.", this);
+            return;
+        }
+
+        Debug.Log($"NPC archive contains {archivedNpcs.Count} NPC(s):", this);
+
+        for (int i = 0; i < archivedNpcs.Count; i++)
+        {
+            NPCArchiveEntry snapshot = archivedNpcs[i];
+            if (snapshot == null)
+            {
+                Debug.Log($"[{i}] <null snapshot>", this);
+                continue;
+            }
+
+            string problemLabel = string.IsNullOrWhiteSpace(snapshot.ProblemName) ? "No problem" : snapshot.ProblemName;
+            string npcName = string.IsNullOrWhiteSpace(snapshot.Name) ? "Unnamed NPC" : snapshot.Name;
+            Debug.Log(
+                $"[{i}] Id={snapshot.PersistentId} | Name={npcName} | Gender={snapshot.Gender} | Age={snapshot.Age} | Trait={snapshot.Trait} | Problem={problemLabel}",
+                this);
+        }
+    }
+
     public bool ArchiveNpc(NPC npc)
     {
         if (npc == null)
@@ -200,6 +228,20 @@ public class NPCArchiveService : MonoBehaviour
         snapshot = null;
 
         int index = FindSnapshotIndex(persistentId);
+        if (index < 0)
+        {
+            return false;
+        }
+
+        snapshot = archivedNpcs[index];
+        return snapshot != null;
+    }
+
+    public bool TryGetArchivedSnapshot(string persistentId, out NPCArchiveEntry snapshot, out int index)
+    {
+        snapshot = null;
+        index = FindSnapshotIndex(persistentId);
+
         if (index < 0)
         {
             return false;
