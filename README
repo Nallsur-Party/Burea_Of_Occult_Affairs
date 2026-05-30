@@ -3,32 +3,66 @@
 Unity game about occult diagnostics in an eternal-winter post-Soviet city.
 
 ## What This Project Is
-You play a ministry clerk-investigator. Citizens arrive with strange symptoms. You interrogate them, infer the underlying occult problem, and perform the correct ritual sequence.
+You are a clerk in an ordinary bureau that deals with anomalies as civic problems.
+- Paranormal is already part of the system.
+- This is not a sudden invasion or epic fantasy magic.
+- It is another report of an extra door, a missing reflection, or a child hearing voices.
+- Ritual / Sanation is treated as procedure, operation, or disinfection rather than magic.
+
+## World
+- The paranormal is normal and bureaucratic.
+- There are people with abnormal traces, apartments with spatial distortions, whispering objects, dream leaks, and entities clinging to people.
+- Most of this is handled like housing complaints, illness, or crime.
+- Not "OH GOD, DEMON!" but "The third entrance is acting up again. Fill out the form."
+
+## State
+- Not a harsh dystopia, not the USSR.
+- A crumbling post-Soviet system that still works.
+- Money is scarce, equipment is old, procedures contradict each other.
+- Supervisors shift responsibility, employees steal supplies, departments exist mostly on paper.
+- The state still tries to function. Crooked, slow, irritating.
+
+## Occult Affairs Bureau
+- Not a secret society in cloaks.
+- An ordinary office that sits between a clinic, maintenance service, passport desk, and social welfare.
+- People come with everyday anomalies.
+- The clerk must diagnose the problem and perform sanation.
+
+## Sanation / Ritual
+- Sanation is not magical ritual in the fantasy sense.
+- It is a procedure, treatment, operation, disinfection.
+- Official documents say "Perform sanation of residual abnormal trace category B."
+- In game terms, it still appears as ritual / sanation actions.
+- The room looks more like a procedural cabinet, lab, or repair workshop than a temple.
+
+## Atmosphere
+- Not horror, not comedy.
+- Melancholy, tired city, mundane despair.
+- Buildings are falling apart, people smoke on stairwells, some drink, some try to work honestly.
+- The game should feel like "public service for the supernatural."
+
+## Current Play Loop
+1. NPC arrives at the counter or queue.
+2. Player talks to NPC and asks targeted questions.
+3. Symptoms and clues are gathered from dialogue.
+4. Player chooses the right ritual / sanation for the diagnosed problem.
+5. Sanation steps are performed as item + action.
+6. Correct procedure cures the NPC; mistakes deal damage and reset progress.
 
 ## Documentation Map
-- `README`: quick overview.
-- `ARCHITECTURE.md`: systems, runtime flow, script responsibilities.
-- `GAME_RULES.md`: loop, controls, deduction/ritual rules.
-- `DESIGN_PILLARS.md`: high-level creative principles.
-- `TECH_CONSTRAINTS.md`: technical boundaries.
-- `CURRENT_LIMITATIONS.md`: known current limitations.
-- `AI_CONTEXT.md`: coding guardrails for future AI edits.
-- `TODO.md`: roadmap and planned expansions.
+- `README`: project overview and world.
+- `ARCHITECTURE.md`: architecture expectations and structure.
+- `GAME_RULES.md`: rules, mechanics, and terminology.
+- `AI_CONTEXT.md`: rules and guardrails for AI work.
+- `CURRENT_LIMITATIONS.md`: current technical limitations.
+- `TODO.md`: roadmap and planned features.
 
-## Current Play Loop (Short)
-1. NPC arrives to queue/counter.
-2. Player talks to NPC and asks questions.
-3. Symptoms are inferred from dialogue lines.
-4. Player uses diary to eliminate wrong traces and identify the problem.
-5. Player executes ritual steps (item + action) in correct order.
-6. NPC is cured on success, or ritual fails and damages health on mistakes.
-
-## Core Data Files
-- `NPC/NPCProblems.xml`
-- `NPC/NPCSymptomeLines.xml`
-- `NPC/NPCTraitFallbackLines.xml`
-- `NPC/NPCSymptomCategories.xml`
-- `NPC/NameList.xml`
+## Important Data Files
+- `Assets/Scripts/NPC/NPCProblems.xml`
+- `Assets/Scripts/NPC/NPCSymptomeLines.xml`
+- `Assets/Scripts/NPC/NPCTraitFallbackLines.xml`
+- `Assets/Scripts/NPC/NPCSymptomCategories.xml`
+- `Assets/Scripts/NPC/NameList.xml`
 
 ## Note
-Some Russian strings still show encoding artifacts (mojibake) in source output.
+Some Russian strings may still show encoding artifacts in source files.
