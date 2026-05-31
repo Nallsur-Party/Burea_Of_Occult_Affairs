@@ -458,18 +458,37 @@ public class NpcOrderVisitor : MonoBehaviour
         string symptomsText = npcData.Symptoms.Count > 0
             ? BuildSymptomsDebugText()
             : "No symptoms";
-        string problemText = npcData.HasProblem ? npcData.ProblemName : "No problem";
+        string problemText = npcData.IsParanormalCase && npcData.HasProblem
+            ? npcData.ProblemName
+            : npcData.IsNonParanormalCase
+                ? npcData.NonParanormalConditionName ?? "Non-paranormal case"
+                : "No case";
         string safeResponseText = string.IsNullOrWhiteSpace(responseText) ? "No response" : responseText;
 
         Debug.Log(
-            $"NPC Debug | Action: {actionLabel} | Response: {safeResponseText} | NPC: {npcData.Name} | Gender: {npcData.Gender} | Age: {npcData.Age} | Trait: {npcData.Trait} | Problem: {problemText} | Symptoms: {symptomsText} | TruthTokens: {npcData.RemainingTruthTokens} | LieTokens: {npcData.RemainingLieTokens} | QuestionTokens: {npcData.RemainingDetectiveQuestionTokens} | SpentQuestions: {npcData.SpentDetectiveQuestionCount}",
+            $"NPC Debug | Action: {actionLabel} | Response: {safeResponseText} | NPC: {npcData.Name} | Gender: {npcData.Gender} | Age: {npcData.Age} | Trait: {npcData.Trait} | CaseType: {npcData.CaseType} | Problem: {problemText} | Symptoms: {symptomsText} | TruthTokens: {npcData.RemainingTruthTokens} | LieTokens: {npcData.RemainingLieTokens} | QuestionTokens: {npcData.RemainingDetectiveQuestionTokens} | SpentQuestions: {npcData.SpentDetectiveQuestionCount}",
             this
         );
     }
 
     private string BuildSymptomsDebugText()
     {
-        if (npcData == null || npcData.SymptomIds.Count == 0 || npcData.Symptoms.Count == 0)
+        if (npcData == null)
+        {
+            return "No symptoms";
+        }
+
+        if (npcData.CaseType == NPCCaseType.NonParanormal)
+        {
+            if (npcData.NonParanormalSymptoms.Count == 0)
+            {
+                return "No symptoms";
+            }
+
+            return string.Join(", ", npcData.NonParanormalSymptoms);
+        }
+
+        if (npcData.CaseType != NPCCaseType.Paranormal || npcData.SymptomIds.Count == 0 || npcData.Symptoms.Count == 0)
         {
             return "No symptoms";
         }

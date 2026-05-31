@@ -16,11 +16,14 @@ public class NPC
     }
 
     [SerializeField] private string persistentId;
+    [SerializeField] private NPCCaseType caseType = NPCCaseType.None;
     [SerializeField] private string npcName;
     [SerializeField] private GenderType gender;
     [SerializeField] private int age;
     [SerializeField] private NPCTraitType trait;
     [SerializeField] private string problemName;
+    [SerializeField] private string nonParanormalConditionName;
+    [SerializeField] private List<string> nonParanormalSymptoms = new List<string>();
     [SerializeField] private List<string> symptomIds = new List<string>();
     [SerializeField] private List<string> symptoms = new List<string>();
     [SerializeField] private List<string> preparedConversationLines = new List<string>();
@@ -45,11 +48,14 @@ public class NPC
     [NonSerialized] private Dictionary<NPCQuestionType, bool> shouldRepeatQuestionLimitLineByType = new Dictionary<NPCQuestionType, bool>();
 
     public string PersistentId => persistentId;
+    public NPCCaseType CaseType => caseType;
     public string Name => npcName;
     public GenderType Gender => gender;
     public int Age => age;
     public NPCTraitType Trait => trait;
     public string ProblemName => problemName;
+    public string NonParanormalConditionName => nonParanormalConditionName;
+    public IReadOnlyList<string> NonParanormalSymptoms => nonParanormalSymptoms;
     public IReadOnlyList<string> SymptomIds => symptomIds;
     public IReadOnlyList<string> Symptoms => symptoms;
     public IReadOnlyList<string> PreparedConversationLines => preparedConversationLines;
@@ -60,6 +66,9 @@ public class NPC
     public int RemainingDetectiveQuestionTokens => detectiveQuestionTokens;
     public int SpentDetectiveQuestionCount => spentDetectiveQuestionCount;
     public bool HasProblem => !string.IsNullOrWhiteSpace(problemName);
+    public bool IsParanormalCase => caseType == NPCCaseType.Paranormal;
+    public bool IsNonParanormalCase => caseType == NPCCaseType.NonParanormal;
+    public bool IsBureauPatient => caseType == NPCCaseType.Paranormal;
     public int Health => health;
     public int MaxHealth => maxHealth;
     public bool IsCured => isCured;
@@ -87,11 +96,14 @@ public class NPC
         return new NPCArchiveEntry
         {
             PersistentId = persistentId,
+            CaseType = caseType,
             Name = npcName,
             Gender = gender,
             Age = age,
             Trait = trait,
             ProblemName = problemName,
+            NonParanormalConditionName = nonParanormalConditionName,
+            NonParanormalSymptoms = nonParanormalSymptoms != null ? new List<string>(nonParanormalSymptoms) : new List<string>(),
             SymptomIds = symptomIds != null ? new List<string>(symptomIds) : new List<string>(),
             Symptoms = symptoms != null ? new List<string>(symptoms) : new List<string>(),
             PreparedConversationLines = preparedConversationLines != null ? new List<string>(preparedConversationLines) : new List<string>(),
@@ -119,6 +131,7 @@ public class NPC
         }
 
         persistentId = NormalizePersistentId(snapshot.PersistentId);
+        caseType = snapshot.CaseType;
         npcName = snapshot.Name;
         gender = snapshot.Gender;
         age = snapshot.Age;
@@ -126,28 +139,34 @@ public class NPC
 
         ResetDialogueState();
 
-        if (!string.IsNullOrWhiteSpace(snapshot.ProblemName))
+        if (caseType == NPCCaseType.Paranormal && !string.IsNullOrWhiteSpace(snapshot.ProblemName))
         {
             SetProblem(
                 snapshot.ProblemName,
                 snapshot.SymptomIds,
                 snapshot.Symptoms);
         }
+        else if (caseType == NPCCaseType.NonParanormal)
+        {
+            SetNonParanormalCondition(
+                snapshot.NonParanormalConditionName ?? snapshot.ProblemName,
+                snapshot.NonParanormalSymptoms ?? snapshot.Symptoms);
+        }
         else
         {
-            problemName = null;
-            symptomIds.Clear();
-            symptoms.Clear();
-            InitializeRitualState(0);
+            ClearCase();
         }
 
         SetPreparedConversationLines(snapshot.PreparedConversationLines);
         SetPreparedFallbackLines(snapshot.PreparedFallbackLines);
     }
 
-    public void SetProblem(string newProblemName, IEnumerable<string> newSymptomIds, IEnumerable<string> newSymptoms)
+    public void SetParanormalProblem(string newProblemName, IEnumerable<string> newSymptomIds, IEnumerable<string> newSymptoms)
     {
+        caseType = NPCCaseType.Paranormal;
         problemName = string.IsNullOrWhiteSpace(newProblemName) ? null : newProblemName.Trim();
+        nonParanormalConditionName = null;
+        nonParanormalSymptoms.Clear();
         symptomIds.Clear();
         symptoms.Clear();
         ResetDialogueState();
@@ -187,15 +206,46 @@ public class NPC
         InitializeRitualState(DefaultRitualMaxHealth);
     }
 
+    public void SetNonParanormalCondition(string conditionName, IEnumerable<string> conditionSymptoms)
+    {
+        caseType = NPCCaseType.NonParanormal;
+        symptomIds.Clear();
+        symptoms.Clear();
+        problemName = null;
+        nonParanormalConditionName = string.IsNullOrWhiteSpace(conditionName) ? null : conditionName.Trim();
+        nonParanormalSymptoms.Clear();
+        ResetDialogueState();
+
+        if (conditionSymptoms != null)
+        {
+            foreach (string symptom in conditionSymptoms)
+            {
+                if (string.IsNullOrWhiteSpace(symptom))
+                {
+                    continue;
+                }
+
+                nonParanormalSymptoms.Add(symptom.Trim());
+            }
+        }
+
+        InitializeRitualState(0);
+    }
+
+    public void SetProblem(string newProblemName, IEnumerable<string> newSymptomIds, IEnumerable<string> newSymptoms)
+    {
+        SetParanormalProblem(newProblemName, newSymptomIds, newSymptoms);
+    }
+
     public void SetProblem(NPCProblemDefinition problem)
     {
         if (problem == null)
         {
-            ClearProblem();
+            ClearCase();
             return;
         }
 
-        SetProblem(problem.Name, problem.SymptomIds, problem.Symptoms);
+        SetParanormalProblem(problem.Name, problem.SymptomIds, problem.Symptoms);
     }
 
     public void SetPreparedConversationLines(IEnumerable<string> lines)
@@ -230,7 +280,15 @@ public class NPC
 
     public void ClearProblem()
     {
+        ClearCase();
+    }
+
+    public void ClearCase()
+    {
+        caseType = NPCCaseType.None;
         problemName = null;
+        nonParanormalConditionName = null;
+        nonParanormalSymptoms.Clear();
         symptomIds.Clear();
         symptoms.Clear();
         preparedConversationLines.Clear();
@@ -298,6 +356,16 @@ public class NPC
         }
 
         return symptomIds.Contains(symptomId.Trim());
+    }
+
+    public bool HasNonParanormalSymptom(string symptom)
+    {
+        if (string.IsNullOrWhiteSpace(symptom))
+        {
+            return false;
+        }
+
+        return nonParanormalSymptoms.Contains(symptom.Trim());
     }
 
     public bool HasRememberedAnswer(NPCQuestionType questionType, out string answer)

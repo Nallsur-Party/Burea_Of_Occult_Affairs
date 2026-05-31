@@ -116,7 +116,12 @@ public class NPCGenerator : MonoBehaviour
     [SerializeField] private int minAge = 18;
     [SerializeField] private int maxAge = 65;
     [SerializeField, Range(0f, 1f)] private float noProblemChance = 0.15f;
+    [SerializeField, Range(0f, 1f)] private float nonParanormalChance = 0.35f;
     [SerializeField] private NamePool namePool = new NamePool();
+
+    [Header("Non-Paranormal Cases")]
+    [SerializeField] private List<string> nonParanormalConditions = new List<string> { "Cough", "Cold", "Placebo" };
+    [SerializeField] private List<string> nonParanormalSymptoms = new List<string> { "cough", "sneezing", "sore throat" };
 
     [Header("Debug")]
     [SerializeField] private bool loadOnAwake = true;
@@ -180,17 +185,31 @@ public class NPCGenerator : MonoBehaviour
         string npcName = namePool.GetRandomName(gender);
         int age = UnityEngine.Random.Range(Mathf.Min(minAge, maxAge), Mathf.Max(minAge, maxAge) + 1);
         NPCTraitType trait = NPCDialogueUtility.GetRandomTrait();
+        List<string> preparedFallbackLines = null;
 
         generatedNpc = new NPC(npcName, gender, age, trait);
-        generatedNpc.SetPreparedFallbackLines(BuildPreparedFallbackLines(generatedNpc));
 
-        if (problemCatalog == null || problemCatalog.Problems.Count == 0 || UnityEngine.Random.value <= noProblemChance)
+        float roll = UnityEngine.Random.value;
+        if (roll <= noProblemChance)
         {
+            generatedNpc.ClearCase();
+            preparedFallbackLines = BuildPreparedFallbackLines(generatedNpc);
+            generatedNpc.SetPreparedFallbackLines(preparedFallbackLines);
+            return;
+        }
+
+        if (roll <= noProblemChance + nonParanormalChance || problemCatalog == null || problemCatalog.Problems.Count == 0)
+        {
+            generatedNpc.SetNonParanormalCondition(GetRandomNonParanormalCondition(), GetRandomNonParanormalSymptoms());
+            preparedFallbackLines = BuildPreparedFallbackLines(generatedNpc);
+            generatedNpc.SetPreparedFallbackLines(preparedFallbackLines);
             return;
         }
 
         NPCProblemDefinition problem = problemCatalog.Problems[UnityEngine.Random.Range(0, problemCatalog.Problems.Count)];
         generatedNpc.SetProblem(problem);
+        preparedFallbackLines = BuildPreparedFallbackLines(generatedNpc);
+        generatedNpc.SetPreparedFallbackLines(preparedFallbackLines);
         generatedNpc.SetPreparedConversationLines(BuildPreparedConversationLines(generatedNpc));
     }
 
@@ -199,17 +218,26 @@ public class NPCGenerator : MonoBehaviour
         EnsureCatalogLoaded();
 
         NPC npc = new NPC(npcName, gender, age, NPCDialogueUtility.GetRandomTrait());
-        npc.SetPreparedFallbackLines(BuildPreparedFallbackLines(npc));
+        List<string> preparedFallbackLines;
 
         if (string.IsNullOrWhiteSpace(problemName))
         {
+            preparedFallbackLines = BuildPreparedFallbackLines(npc);
+            npc.SetPreparedFallbackLines(preparedFallbackLines);
             return npc;
         }
 
         if (problemCatalog != null && problemCatalog.TryGetProblem(problemName, out NPCProblemDefinition problem))
         {
             npc.SetProblem(problem);
+            preparedFallbackLines = BuildPreparedFallbackLines(npc);
+            npc.SetPreparedFallbackLines(preparedFallbackLines);
             npc.SetPreparedConversationLines(BuildPreparedConversationLines(npc));
+        }
+        else
+        {
+            preparedFallbackLines = BuildPreparedFallbackLines(npc);
+            npc.SetPreparedFallbackLines(preparedFallbackLines);
         }
 
         return npc;
@@ -341,5 +369,56 @@ public class NPCGenerator : MonoBehaviour
     {
         Array values = Enum.GetValues(typeof(NPC.GenderType));
         return (NPC.GenderType)values.GetValue(UnityEngine.Random.Range(0, values.Length));
+    }
+
+    private string GetRandomNonParanormalCondition()
+    {
+        return GetRandomListEntry(nonParanormalConditions, "Unknown condition");
+    }
+
+    private List<string> GetRandomNonParanormalSymptoms()
+    {
+        List<string> symptoms = new List<string>();
+
+        if (nonParanormalSymptoms == null || nonParanormalSymptoms.Count == 0)
+        {
+            return symptoms;
+        }
+
+        int symptomCount = Mathf.Clamp(UnityEngine.Random.Range(1, 3), 1, nonParanormalSymptoms.Count);
+        List<string> pool = new List<string>(nonParanormalSymptoms);
+
+        for (int i = 0; i < symptomCount && pool.Count > 0; i++)
+        {
+            int index = UnityEngine.Random.Range(0, pool.Count);
+            symptoms.Add(pool[index]);
+            pool.RemoveAt(index);
+        }
+
+        return symptoms;
+    }
+
+    private static string GetRandomListEntry(IReadOnlyList<string> values, string fallbackValue)
+    {
+        if (values == null || values.Count == 0)
+        {
+            return fallbackValue;
+        }
+
+        List<string> candidates = new List<string>();
+        for (int i = 0; i < values.Count; i++)
+        {
+            if (!string.IsNullOrWhiteSpace(values[i]))
+            {
+                candidates.Add(values[i].Trim());
+            }
+        }
+
+        if (candidates.Count == 0)
+        {
+            return fallbackValue;
+        }
+
+        return candidates[UnityEngine.Random.Range(0, candidates.Count)];
     }
 }

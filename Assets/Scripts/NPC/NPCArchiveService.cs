@@ -141,14 +141,22 @@ public class NPCArchiveService : MonoBehaviour
             string problemLabel = string.IsNullOrWhiteSpace(snapshot.ProblemName) ? "No problem" : snapshot.ProblemName;
             string npcName = string.IsNullOrWhiteSpace(snapshot.Name) ? "Unnamed NPC" : snapshot.Name;
             Debug.Log(
-                $"[{i}] Id={snapshot.PersistentId} | Name={npcName} | Gender={snapshot.Gender} | Age={snapshot.Age} | Trait={snapshot.Trait} | Problem={problemLabel}",
+                $"[{i}] Id={snapshot.PersistentId} | CaseType={snapshot.CaseType} | Name={npcName} | Gender={snapshot.Gender} | Age={snapshot.Age} | Trait={snapshot.Trait} | Problem={problemLabel}",
                 this);
         }
     }
 
+    [ContextMenu("Clear Archived NPCs")]
+    public void ClearArchivedNpcs()
+    {
+        int previousCount = archivedNpcs != null ? archivedNpcs.Count : 0;
+        ClearArchive();
+        Debug.Log($"Cleared NPC archive. Removed {previousCount} archived NPC(s).", this);
+    }
+
     public bool ArchiveNpc(NPC npc)
     {
-        if (npc == null)
+        if (npc == null || !npc.IsBureauPatient)
         {
             return false;
         }
