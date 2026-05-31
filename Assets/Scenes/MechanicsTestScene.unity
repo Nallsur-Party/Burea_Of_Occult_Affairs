@@ -4685,6 +4685,11 @@ PrefabInstance:
       propertyPath: npcArchiveService
       value: 
       objectReference: {fileID: 506465164}
+    - target: {fileID: 4007385806142948219, guid: 95513bd84ecdd5f4e9383d15fe1f53d9,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
