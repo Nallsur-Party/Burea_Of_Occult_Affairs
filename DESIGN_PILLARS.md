@@ -14,3 +14,6 @@ The occult emerges from ordinary bureaucracy, broken infrastructure, old instruc
 
 ## No Power Fantasy
 Player is a clerk-investigator, not a hero; success is measured by correct diagnosis and completed procedure.
+
+## Case Classification
+NPC requests should be classified before treatment. The bureau only handles `Paranormal` cases; `None` and `NonParanormal` represent ordinary visitors, false alarms, or non-bureau complaints that should be filtered out and released.

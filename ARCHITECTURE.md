@@ -22,7 +22,8 @@ If you add new code, place it in the proper feature folder:
 ### NPC/
 
 #### NPC/Data/
-- `NPC.cs`: NPC state model with identity, problem, symptoms, tokens, health.
+- `NPC.cs`: NPC state model with identity, case type, paranormal problem, non-paranormal condition, symptoms, tokens, health.
+- `NPCCaseType.cs`: NPC case classification.
 - `NPCProblemDefinition.cs`, `NPCProblemCatalog.cs`
 - `NPCSymptomCategoryDefinition.cs`, `NPCSymptomCategoryCatalog.cs`
 - `NPCSymptomLinesCatalog.cs`
@@ -81,15 +82,17 @@ If you add new code, place it in the proper feature folder:
 - `NPCHealthBar.cs`
 
 ## Runtime Flow
-1. `NPC/Generation` creates NPC with hidden problem and symptom IDs.
+1. `NPC/Generation` creates NPC with hidden case type and associated data.
 2. `NPC/Queue` brings NPC to the counter and manages waiting order.
 3. Player interaction triggers `NPC/Dialogue` responses.
 4. Player infers the problem via diary UI and symptom logic.
-5. `Ritual/` validates ritual / sanation item+action sequence against the problem.
-6. NPC is cured (success) or damaged/reset (failure), then leaves via route.
+5. `Ritual/` validates ritual / sanation item+action sequence against the paranormal problem only.
+6. `Paranormal` NPC can be cured; `None` and `NonParanormal` NPC leave without bureau treatment.
 
 ## Important invariants
-- Ritual / Sanation lookup key is the NPC problem name.
+- Ritual / Sanation lookup key is the NPC paranormal problem name.
+- `NPC.CaseType` is the primary routing flag for archive, dialogue interpretation, and treatment eligibility.
+- `None` means no case, `Paranormal` means a bureau patient, and `NonParanormal` means a false or non-bureau case.
 - If no ritual catalog asset is assigned, runtime default catalog is used.
 - `NpcOrderVisitor` owns NPC scene lifecycle and exit behavior.
 - Dialogue bubble ownership stays on NPC side, not player side.

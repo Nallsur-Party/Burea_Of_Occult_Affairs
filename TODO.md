@@ -1,9 +1,10 @@
 ﻿# TODO
 
 ## Core
-- [ ] Fix mojibake/encoding issues in Russian texts.
 - [ ] Improve ritual feedback readability for players.
 - [ ] Improve diary clarity for symptom-to-problem deduction.
+- [ ] Expand non-paranormal case content and diagnosis flow.
+- [ ] Add UI/debug tooling for filtering NPC by `CaseType`.
 
 ## Orders / Requests
 - [ ] Add non-afflicted visitors with orders.
