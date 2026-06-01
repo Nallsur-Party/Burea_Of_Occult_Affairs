@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 1cd89966bc77b83448bdb7d6666fc88c
+guid: 36b3411c22480004eaa06bbe23b718f0
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -93,11 +93,24 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Idle MC23step-Sheet_0
+      name: Idle MC steps-Sheet_0
       rect:
         serializedVersion: 2
         x: 0
@@ -111,14 +124,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9408e279bdb3cb748915b406d51f57b0
-      internalID: 2143922027
+      spriteID: 9b2a2c0a26fc05e4b9873f385cf9930e
+      internalID: 958743045
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Idle MC23step-Sheet_1
+      name: Idle MC steps-Sheet_1
       rect:
         serializedVersion: 2
         x: 176
@@ -132,14 +145,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 84516e5616bb2b54d992b8a279f7668f
-      internalID: 954019487
+      spriteID: 2def83d2d20ee5b47a5179fb3019f1e3
+      internalID: -249649457
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Idle MC23step-Sheet_2
+      name: Idle MC steps-Sheet_2
       rect:
         serializedVersion: 2
         x: 352
@@ -153,14 +166,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c6dfc5b994f609940a43bea7a6716ad0
-      internalID: -1355433289
+      spriteID: 5e370278aef9b7d408bdd08e21bd0418
+      internalID: 430334353
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Idle MC23step-Sheet_3
+      name: Idle MC steps-Sheet_3
       rect:
         serializedVersion: 2
         x: 528
@@ -174,14 +187,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a6335091d44b8e546bf3f8bf5f5263dd
-      internalID: -192839132
+      spriteID: 04bed81ae8d9a3a469033a4f2e2aedb6
+      internalID: -1777399934
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Idle MC23step-Sheet_4
+      name: Idle MC steps-Sheet_4
       rect:
         serializedVersion: 2
         x: 704
@@ -195,14 +208,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9572ff31bd4cc2a4e85f2239f25cb022
-      internalID: -530283769
+      spriteID: ca73a6dcc5f8705409d78f03374d340c
+      internalID: -255619005
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Idle MC23step-Sheet_5
+      name: Idle MC steps-Sheet_5
       rect:
         serializedVersion: 2
         x: 880
@@ -216,8 +229,29 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 422c560cc60739f4092ee3c3993c7fb7
-      internalID: -2075148879
+      spriteID: 22bcc8380c3909b478c8c9c026f92f67
+      internalID: -789136685
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Idle MC steps-Sheet_6
+      rect:
+        serializedVersion: 2
+        x: 1056
+        y: 0
+        width: 176
+        height: 176
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a944a86a41bf5d643bc76ff14e20a35f
+      internalID: -766354435
       vertices: []
       indices: 
       edges: []
@@ -225,7 +259,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: d36ac02dbf6e43e4c9f5822e8e7b5c85
+    spriteID: 7d0be26c13752b9459994a8516af590c
     internalID: 0
     vertices: []
     indices: 
@@ -233,12 +267,13 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Idle MC23step-Sheet_0: 2143922027
-      Idle MC23step-Sheet_1: 954019487
-      Idle MC23step-Sheet_2: -1355433289
-      Idle MC23step-Sheet_3: -192839132
-      Idle MC23step-Sheet_4: -530283769
-      Idle MC23step-Sheet_5: -2075148879
+      Idle MC steps-Sheet_0: 958743045
+      Idle MC steps-Sheet_1: -249649457
+      Idle MC steps-Sheet_2: 430334353
+      Idle MC steps-Sheet_3: -1777399934
+      Idle MC steps-Sheet_4: -255619005
+      Idle MC steps-Sheet_5: -789136685
+      Idle MC steps-Sheet_6: -766354435
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

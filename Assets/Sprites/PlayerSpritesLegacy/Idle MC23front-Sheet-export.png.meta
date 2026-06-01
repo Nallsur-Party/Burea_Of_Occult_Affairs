@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 1cd89966bc77b83448bdb7d6666fc88c
+guid: 986c2f24cb700ab4c860892717cf47a5
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -97,7 +97,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Idle MC23step-Sheet_0
+      name: Idle MC23front-Sheet-export_0
       rect:
         serializedVersion: 2
         x: 0
@@ -111,14 +111,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9408e279bdb3cb748915b406d51f57b0
-      internalID: 2143922027
+      spriteID: 908ff1b9ba6868142aed6ffa2fd18638
+      internalID: 896464102
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Idle MC23step-Sheet_1
+      name: Idle MC23front-Sheet-export_1
       rect:
         serializedVersion: 2
         x: 176
@@ -132,14 +132,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 84516e5616bb2b54d992b8a279f7668f
-      internalID: 954019487
+      spriteID: 5a61ebe97db01594186ba3012266c0d9
+      internalID: -711419247
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Idle MC23step-Sheet_2
+      name: Idle MC23front-Sheet-export_2
       rect:
         serializedVersion: 2
         x: 352
@@ -153,14 +153,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c6dfc5b994f609940a43bea7a6716ad0
-      internalID: -1355433289
+      spriteID: 046ed189f61fd0a469c8ffee1c843bf9
+      internalID: 1618133424
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Idle MC23step-Sheet_3
+      name: Idle MC23front-Sheet-export_3
       rect:
         serializedVersion: 2
         x: 528
@@ -174,14 +174,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a6335091d44b8e546bf3f8bf5f5263dd
-      internalID: -192839132
+      spriteID: 9b00759218e9a214eb739d020fcd3d34
+      internalID: 1882365778
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Idle MC23step-Sheet_4
+      name: Idle MC23front-Sheet-export_4
       rect:
         serializedVersion: 2
         x: 704
@@ -195,14 +195,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9572ff31bd4cc2a4e85f2239f25cb022
-      internalID: -530283769
+      spriteID: aa529aeb9bdc32941a6da5081d3a4af6
+      internalID: 518474935
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Idle MC23step-Sheet_5
+      name: Idle MC23front-Sheet-export_5
       rect:
         serializedVersion: 2
         x: 880
@@ -216,8 +216,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 422c560cc60739f4092ee3c3993c7fb7
-      internalID: -2075148879
+      spriteID: 70994f15ae0762b4bb5e6d5717ff15a7
+      internalID: -699550465
       vertices: []
       indices: 
       edges: []
@@ -225,7 +225,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: d36ac02dbf6e43e4c9f5822e8e7b5c85
+    spriteID: 860a492f296b434439883374a82714db
     internalID: 0
     vertices: []
     indices: 
@@ -233,12 +233,12 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Idle MC23step-Sheet_0: 2143922027
-      Idle MC23step-Sheet_1: 954019487
-      Idle MC23step-Sheet_2: -1355433289
-      Idle MC23step-Sheet_3: -192839132
-      Idle MC23step-Sheet_4: -530283769
-      Idle MC23step-Sheet_5: -2075148879
+      Idle MC23front-Sheet-export_0: 896464102
+      Idle MC23front-Sheet-export_1: -711419247
+      Idle MC23front-Sheet-export_2: 1618133424
+      Idle MC23front-Sheet-export_3: 1882365778
+      Idle MC23front-Sheet-export_4: 518474935
+      Idle MC23front-Sheet-export_5: -699550465
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

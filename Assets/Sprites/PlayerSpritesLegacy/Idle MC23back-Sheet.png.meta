@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 1cd89966bc77b83448bdb7d6666fc88c
+guid: d9d7df42c5eac614a9a1a99f957167cb
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -97,7 +97,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Idle MC23step-Sheet_0
+      name: Idle MC23back-Sheet_0
       rect:
         serializedVersion: 2
         x: 0
@@ -111,14 +111,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9408e279bdb3cb748915b406d51f57b0
-      internalID: 2143922027
+      spriteID: b8efc58ef4294794eb4349f5cbdcd76a
+      internalID: -1866836262
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Idle MC23step-Sheet_1
+      name: Idle MC23back-Sheet_1
       rect:
         serializedVersion: 2
         x: 176
@@ -132,14 +132,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 84516e5616bb2b54d992b8a279f7668f
-      internalID: 954019487
+      spriteID: b6a8876a6491cb540bd4b9acdd157482
+      internalID: 165199164
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Idle MC23step-Sheet_2
+      name: Idle MC23back-Sheet_2
       rect:
         serializedVersion: 2
         x: 352
@@ -153,14 +153,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c6dfc5b994f609940a43bea7a6716ad0
-      internalID: -1355433289
+      spriteID: 89451c8cca454a0428df21e5833f61aa
+      internalID: 674358774
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Idle MC23step-Sheet_3
+      name: Idle MC23back-Sheet_3
       rect:
         serializedVersion: 2
         x: 528
@@ -174,14 +174,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a6335091d44b8e546bf3f8bf5f5263dd
-      internalID: -192839132
+      spriteID: 96e9a2c60ea718e40ac89d70e2291534
+      internalID: -1544486157
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Idle MC23step-Sheet_4
+      name: Idle MC23back-Sheet_4
       rect:
         serializedVersion: 2
         x: 704
@@ -195,14 +195,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9572ff31bd4cc2a4e85f2239f25cb022
-      internalID: -530283769
+      spriteID: 05590e41508025f46914c370ea627dc7
+      internalID: 1013943413
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Idle MC23step-Sheet_5
+      name: Idle MC23back-Sheet_5
       rect:
         serializedVersion: 2
         x: 880
@@ -216,8 +216,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 422c560cc60739f4092ee3c3993c7fb7
-      internalID: -2075148879
+      spriteID: 371b1503d66f12b46844af49fec77d3b
+      internalID: -1970407157
       vertices: []
       indices: 
       edges: []
@@ -225,7 +225,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: d36ac02dbf6e43e4c9f5822e8e7b5c85
+    spriteID: abcb9f65184988744bfd390c86df1411
     internalID: 0
     vertices: []
     indices: 
@@ -233,12 +233,12 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Idle MC23step-Sheet_0: 2143922027
-      Idle MC23step-Sheet_1: 954019487
-      Idle MC23step-Sheet_2: -1355433289
-      Idle MC23step-Sheet_3: -192839132
-      Idle MC23step-Sheet_4: -530283769
-      Idle MC23step-Sheet_5: -2075148879
+      Idle MC23back-Sheet_0: -1866836262
+      Idle MC23back-Sheet_1: 165199164
+      Idle MC23back-Sheet_2: 674358774
+      Idle MC23back-Sheet_3: -1544486157
+      Idle MC23back-Sheet_4: 1013943413
+      Idle MC23back-Sheet_5: -1970407157
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

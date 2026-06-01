@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 665bd054163cb4548a11b08c45e8c27d
+guid: 7f2376c1e6215194dbf426820a49b489
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -43,7 +43,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -108,18 +108,106 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: maincharacter_actionsitem_side0022-Sheet_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 139
+        width: 70
+        height: 139
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a58a0543201ecf7448d47694ed1b27d6
+      internalID: 1213000986
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: maincharacter_actionsitem_side0022-Sheet_1
+      rect:
+        serializedVersion: 2
+        x: 70
+        y: 139
+        width: 70
+        height: 139
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5c17b5cade8cf05419eb9db4be39b749
+      internalID: 1200754018
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: maincharacter_actionsitem_side0022-Sheet_2
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 70
+        height: 139
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c44136e1ff4c3714bbb7ed9765cde1fe
+      internalID: -1547372902
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: maincharacter_actionsitem_side0022-Sheet_3
+      rect:
+        serializedVersion: 2
+        x: 70
+        y: 0
+        width: 70
+        height: 139
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 656792be436fe7147aa737f2f2f85456
+      internalID: -75375698
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
+    spriteID: 9ace4c33f7360b04681d3f8f6186abc7
     internalID: 0
     vertices: []
     indices: 
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      maincharacter_actionsitem_side0022-Sheet_0: 1213000986
+      maincharacter_actionsitem_side0022-Sheet_1: 1200754018
+      maincharacter_actionsitem_side0022-Sheet_2: -1547372902
+      maincharacter_actionsitem_side0022-Sheet_3: -75375698
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
