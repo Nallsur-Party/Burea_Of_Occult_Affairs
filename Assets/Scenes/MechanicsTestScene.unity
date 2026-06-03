@@ -1914,6 +1914,11 @@ PrefabInstance:
       propertyPath: m_Center.y
       value: -0.08822942
       objectReference: {fileID: 0}
+    - target: {fileID: 8447897871221611130, guid: a468429a45fcc1e4bb142170817d5051,
+        type: 3}
+      propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9175066928066003693, guid: a468429a45fcc1e4bb142170817d5051,
         type: 3}
       propertyPath: m_Name
@@ -5261,6 +5266,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: CeilingLight
+      objectReference: {fileID: 0}
+    - target: {fileID: 5637455707214544565, guid: f995ea9f2eb9b0344a3c4632895885c2,
+        type: 3}
+      propertyPath: m_Cookie
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
