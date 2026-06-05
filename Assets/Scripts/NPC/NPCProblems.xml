@@ -41,17 +41,14 @@
   
     <!-- ПРОСТРАНСТВО БЮРО -->
   <!-- ПРЕДМЕТЫ -->
-  <Symptom id="S21">Движение предметов</Symptom> <!--можно сдвигать время от времени объекты-->
-  <Symptom id="S22">Исчезновение предметов</Symptom> <!--Будем прятать предметы-->
-  <Symptom id="S23">Появление лишних предметов</Symptom> <!--можно просто через спавн предметов реализовать-->
+  <Symptom id="S21">Аномалии с предметами и мебелью</Symptom> <!--можно сдвигать время от времени объекты, Будем прятать предметы, можно просто через спавн предметов реализовать, двигать двери-->
   <!-- СРЕДА -->
   <Symptom id="S24">Мерцание освещения</Symptom> <!--Легко делается через регулировку света интенсивности-->
   <Symptom id="S25">Аномальные звуки</Symptom> <!--можно просто через звуки реализовать, например шаги или голоса-->
   <Symptom id="S26">Локальное похолодание</Symptom> <!--можно градусник сделать который будет показывать температуру-->
   <!-- ПРОСТРАНСТВЕННЫЕ АНОМАЛИИ -->
   <Symptom id="S27">Неправильное время на часах</Symptom> <!--меняем время на часах-->
-  <Symptom id="S28">Искажение изображения</Symptom> <!--можно менять изображение на более искаженное-->
-  <Symptom id="S29">Самопроизвольное открытие дверей</Symptom> <!--Просто двигаем дверь по Pivot-->
+  <Symptom id="S28">Искажение изображения</Symptom> <!--можно менять изображение на более искаженное, еще шейдеры можно-->
   </SymptomsPool>
 
 
@@ -95,94 +92,215 @@
     <SymptomRef>S3</SymptomRef>  <!-- Повторяющиеся сны -->
   </Problem>
 
+  <!-- Средние паранормальные следы (осмотр) -->
 
-    <!-- КОНТРАКТЫ -->
-    <Problem name="Осознанная сделка">
-      <SymptomRef>S3</SymptomRef>
-      <SymptomRef>S17</SymptomRef>
-      <SymptomRef>S20</SymptomRef>
-    </Problem>
+  <Problem name="Расслоение">
+    <SymptomRef>S13</SymptomRef> <!-- Проблемы с тенью -->
+    <SymptomRef>S15</SymptomRef> <!-- Нестабильный силуэт -->
+    <SymptomRef>S18</SymptomRef> <!-- Отсутствие моргания -->
+    <SymptomRef>S20</SymptomRef> <!-- Несовпадение фотографии -->
+  </Problem>
 
-    <Problem name="Нарушенный контракт">
-      <SymptomRef>S8</SymptomRef>
-      <SymptomRef>S20</SymptomRef>
-      <SymptomRef>S28</SymptomRef>
-    </Problem>
+  <Problem name="Отпечаток">
+    <SymptomRef>S16</SymptomRef> <!-- Неестественная температура тела -->
+    <SymptomRef>S17</SymptomRef> <!-- Следы без причины -->
+    <SymptomRef>S19</SymptomRef> <!-- Нарушение речи и/или моторики -->
+    <SymptomRef>S20</SymptomRef> <!-- Несовпадение фотографии -->
+  </Problem>
 
-    <Problem name="Неосознанный контракт">
-      <SymptomRef>S1</SymptomRef>
-      <SymptomRef>S19</SymptomRef>
-      <SymptomRef>S23</SymptomRef>
-    </Problem>
+  <Problem name="Зеркальный">
+    <SymptomRef>S13</SymptomRef> <!-- Проблемы с тенью -->
+    <SymptomRef>S14</SymptomRef> <!-- Странные отражения -->
+    <SymptomRef>S18</SymptomRef> <!-- Отсутствие моргания -->
+    <SymptomRef>S19</SymptomRef> <!-- Нарушение речи и/или моторики -->
+  </Problem>
 
+  <Problem name="Смещение">
+    <SymptomRef>S14</SymptomRef> <!-- Странные отражения -->
+    <SymptomRef>S15</SymptomRef> <!-- Нестабильный силуэт -->
+    <SymptomRef>S16</SymptomRef> <!-- Неестественная температура тела -->
+    <SymptomRef>S17</SymptomRef> <!-- Следы без причины -->
+  </Problem>
 
-    <!-- ПРОКЛЯТИЯ -->
-    <Problem name="Классическое проклятие">
-      <SymptomRef>S17</SymptomRef>
-      <SymptomRef>S20</SymptomRef>
-      <SymptomRef>S18</SymptomRef>
-    </Problem>
+  <!-- Средние паранормальные следы (рассказ + осмотр) -->
 
-    <Problem name="Наследственное проклятие">
-      <SymptomRef>S17</SymptomRef>
-      <SymptomRef>S18</SymptomRef>
-      <SymptomRef>S21</SymptomRef>
-    </Problem>
+  <Problem name="Эхо">
+    <SymptomRef>S2</SymptomRef>  <!-- Чужие воспоминания -->
+    <SymptomRef>S3</SymptomRef>  <!-- Повторяющиеся сны -->
+    <SymptomRef>S19</SymptomRef> <!-- Нарушение речи и/или моторики -->
+    <SymptomRef>S20</SymptomRef> <!-- Несовпадение фотографии -->
+  </Problem>
 
-    <Problem name="Самонавязанное">
-      <SymptomRef>S3</SymptomRef>
-      <SymptomRef>S2</SymptomRef>
-      <SymptomRef>S20</SymptomRef>
-    </Problem>
+  <Problem name="Наблюдатель">
+    <SymptomRef>S6</SymptomRef>  <!-- Ощущение наблюдения -->
+    <SymptomRef>S10</SymptomRef> <!-- Беспричинная тревога -->
+    <SymptomRef>S13</SymptomRef> <!-- Проблемы с тенью -->
+    <SymptomRef>S18</SymptomRef> <!-- Отсутствие моргания -->
+  </Problem>
 
-    <Problem name="Локальное проклятие">
-      <SymptomRef>S24</SymptomRef>
-      <SymptomRef>S25</SymptomRef>
-      <SymptomRef>S26</SymptomRef>
-      <SymptomRef>S9</SymptomRef>
-    </Problem>
+  <Problem name="Привязка">
+    <SymptomRef>S9</SymptomRef>  <!-- Навязчивое влечение к месту -->
+    <SymptomRef>S11</SymptomRef> <!-- Беспричинная тоска -->
+    <SymptomRef>S16</SymptomRef> <!-- Неестественная температура тела -->
+    <SymptomRef>S17</SymptomRef> <!-- Следы без причины -->
+  </Problem>
 
-    <Problem name="Предметное проклятие">
-      <SymptomRef>S21</SymptomRef>
-      <SymptomRef>S22</SymptomRef>
-      <SymptomRef>S17</SymptomRef>
-    </Problem>
+  <Problem name="Сбой личности">
+    <SymptomRef>S1</SymptomRef>  <!-- Провалы в памяти -->
+    <SymptomRef>S8</SymptomRef>  <!-- Не узнаёт знакомых людей -->
+    <SymptomRef>S15</SymptomRef> <!-- Нестабильный силуэт -->
+    <SymptomRef>S20</SymptomRef> <!-- Несовпадение фотографии -->
+  </Problem>
 
+  <Problem name="Зов">
+    <SymptomRef>S5</SymptomRef>  <!-- Чужой голос -->
+    <SymptomRef>S7</SymptomRef>  <!-- Ощущение присутствия -->
+    <SymptomRef>S14</SymptomRef> <!-- Странные отражения -->
+    <SymptomRef>S18</SymptomRef> <!-- Отсутствие моргания -->
+  </Problem>
 
-    <!-- РИТУАЛЫ -->
-    <Problem name="Незакрытый ритуал">
-      <SymptomRef>S11</SymptomRef>
-      <SymptomRef>S27</SymptomRef>
-      <SymptomRef>S28</SymptomRef>
-    </Problem>
+  <Problem name="Петля">
+    <SymptomRef>S4</SymptomRef>  <!-- Потеря времени -->
+    <SymptomRef>S12</SymptomRef> <!-- Повторяющиеся события -->
+    <SymptomRef>S13</SymptomRef> <!-- Проблемы с тенью -->
+    <SymptomRef>S19</SymptomRef> <!-- Нарушение речи и/или моторики -->
+  </Problem>
 
-    <Problem name="Ошибка ритуала">
-      <SymptomRef>S2</SymptomRef>
-      <SymptomRef>S17</SymptomRef>
-      <SymptomRef>S19</SymptomRef>
-    </Problem>
+  <Problem name="Десинхронизация">
+    <SymptomRef>S1</SymptomRef>  <!-- Провалы в памяти -->
+    <SymptomRef>S4</SymptomRef>  <!-- Потеря времени -->
+    <SymptomRef>S14</SymptomRef> <!-- Странные отражения -->
+    <SymptomRef>S15</SymptomRef> <!-- Нестабильный силуэт -->
+  </Problem>
 
-    <Problem name="Чужой ритуал">
-      <SymptomRef>S20</SymptomRef>
-      <SymptomRef>S7</SymptomRef>
-      <SymptomRef>S19</SymptomRef>
-    </Problem>
+  <!-- Особые паранормальные следы (пространство) -->
 
+    <Problem name="Фоновый резонанс">
+    <SymptomRef>S21</SymptomRef> <!-- Аномалии с предметами и мебелью -->
+    <SymptomRef>S22</SymptomRef> <!-- Мерцание освещения -->
+    <SymptomRef>S23</SymptomRef> <!-- Аномальные звуки -->
+    <SymptomRef>S24</SymptomRef> <!-- Локальное похолодание -->
+  </Problem>
 
-    <!-- АНОМАЛИИ -->
-    <Problem name="Искажение пространства">
-      <SymptomRef>S25</SymptomRef>
-      <SymptomRef>S24</SymptomRef>
-      <SymptomRef>S19</SymptomRef>
-    </Problem>
+  <Problem name="Пространственный сдвиг">
+    <SymptomRef>S21</SymptomRef> <!-- Аномалии с предметами и мебелью -->
+    <SymptomRef>S23</SymptomRef> <!-- Аномальные звуки -->
+    <SymptomRef>S25</SymptomRef> <!-- Неправильное время на часах -->
+    <SymptomRef>S26</SymptomRef> <!-- Искажения -->
+  </Problem>
 
-    <Problem name="Искажение времени">
-      <SymptomRef>S27</SymptomRef>
-      <SymptomRef>S28</SymptomRef>
-      <SymptomRef>S29</SymptomRef>
-      <SymptomRef>S1</SymptomRef>
-    </Problem>
+  <Problem name="Разрыв локальности">
+    <SymptomRef>S22</SymptomRef> <!-- Мерцание освещения -->
+    <SymptomRef>S24</SymptomRef> <!-- Локальное похолодание -->
+    <SymptomRef>S25</SymptomRef> <!-- Неправильное время на часах -->
+    <SymptomRef>S26</SymptomRef> <!-- Искажения -->
+  </Problem>
 
+  <!-- Тяжелые паранормальные следы (рассказ + осмотр + пространство) -->
+  <Problem name="Резонанс памяти">
+    <SymptomRef>S2</SymptomRef>  <!-- Чужие воспоминания -->
+    <SymptomRef>S4</SymptomRef>  <!-- Потеря времени -->
+    <SymptomRef>S23</SymptomRef> <!-- Аномальные звуки -->
+    <SymptomRef>S25</SymptomRef> <!-- Неправильное время на часах -->
+  </Problem>
+
+  <Problem name="Шумовой след">
+    <SymptomRef>S5</SymptomRef>  <!-- Чужой голос -->
+    <SymptomRef>S6</SymptomRef>  <!-- Ощущение наблюдения -->
+    <SymptomRef>S22</SymptomRef> <!-- Мерцание освещения -->
+    <SymptomRef>S23</SymptomRef> <!-- Аномальные звуки -->
+  </Problem>
+
+  <Problem name="Точка возврата">
+    <SymptomRef>S3</SymptomRef>  <!-- Повторяющиеся сны -->
+    <SymptomRef>S12</SymptomRef> <!-- Повторяющиеся события -->
+    <SymptomRef>S25</SymptomRef> <!-- Неправильное время на часах -->
+    <SymptomRef>S26</SymptomRef> <!-- Искажения -->
+  </Problem>
+
+  <Problem name="Холодный зов">
+    <SymptomRef>S7</SymptomRef>  <!-- Ощущение присутствия -->
+    <SymptomRef>S10</SymptomRef> <!-- Беспричинная тревога -->
+    <SymptomRef>S23</SymptomRef> <!-- Аномальные звуки -->
+    <SymptomRef>S24</SymptomRef> <!-- Локальное похолодание -->
+  </Problem>
+
+  <Problem name="Забытая комната">
+    <SymptomRef>S1</SymptomRef>  <!-- Провалы в памяти -->
+    <SymptomRef>S9</SymptomRef>  <!-- Навязчивое влечение к месту -->
+    <SymptomRef>S21</SymptomRef> <!-- Аномалии с предметами и мебелью -->
+    <SymptomRef>S26</SymptomRef> <!-- Искажения -->
+  </Problem>
+
+  <Problem name="Проекция">
+    <SymptomRef>S13</SymptomRef> <!-- Проблемы с тенью -->
+    <SymptomRef>S14</SymptomRef> <!-- Странные отражения -->
+    <SymptomRef>S22</SymptomRef> <!-- Мерцание освещения -->
+    <SymptomRef>S26</SymptomRef> <!-- Искажения -->
+  </Problem>
+
+  <Problem name="Инородный отпечаток">
+    <SymptomRef>S16</SymptomRef> <!-- Неестественная температура тела -->
+    <SymptomRef>S17</SymptomRef> <!-- Следы без причины -->
+    <SymptomRef>S21</SymptomRef> <!-- Аномалии с предметами и мебелью -->
+    <SymptomRef>S24</SymptomRef> <!-- Локальное похолодание -->
+  </Problem>
+
+  <Problem name="Нарушение контура">
+    <SymptomRef>S15</SymptomRef> <!-- Нестабильный силуэт -->
+    <SymptomRef>S18</SymptomRef> <!-- Отсутствие моргания -->
+    <SymptomRef>S22</SymptomRef> <!-- Мерцание освещения -->
+    <SymptomRef>S26</SymptomRef> <!-- Искажения -->
+  </Problem>
+
+  <Problem name="Пространственный двойник">
+    <SymptomRef>S14</SymptomRef> <!-- Странные отражения -->
+    <SymptomRef>S20</SymptomRef> <!-- Несовпадение фотографии -->
+    <SymptomRef>S21</SymptomRef> <!-- Аномалии с предметами и мебелью -->
+    <SymptomRef>S25</SymptomRef> <!-- Неправильное время на часах -->
+  </Problem>
+
+  <Problem name="Разлад">
+    <SymptomRef>S13</SymptomRef> <!-- Проблемы с тенью -->
+    <SymptomRef>S18</SymptomRef> <!-- Отсутствие моргания -->
+    <SymptomRef>S23</SymptomRef> <!-- Аномальные звуки -->
+    <SymptomRef>S24</SymptomRef> <!-- Локальное похолодание -->
+  </Problem>
+
+  <Problem name="Наблюдение извне">
+    <SymptomRef>S6</SymptomRef>  <!-- Ощущение наблюдения -->
+    <SymptomRef>S13</SymptomRef> <!-- Проблемы с тенью -->
+    <SymptomRef>S23</SymptomRef> <!-- Аномальные звуки -->
+    <SymptomRef>S25</SymptomRef> <!-- Неправильное время на часах -->
+  </Problem>
+
+  <Problem name="Петля присутствия">
+    <SymptomRef>S7</SymptomRef>  <!-- Ощущение присутствия -->
+    <SymptomRef>S18</SymptomRef> <!-- Отсутствие моргания -->
+    <SymptomRef>S22</SymptomRef> <!-- Мерцание освещения -->
+    <SymptomRef>S26</SymptomRef> <!-- Искажения -->
+  </Problem>
+
+  <Problem name="След контакта">
+    <SymptomRef>S11</SymptomRef> <!-- Беспричинная тоска -->
+    <SymptomRef>S17</SymptomRef> <!-- Следы без причины -->
+    <SymptomRef>S21</SymptomRef> <!-- Аномалии с предметами и мебелью -->
+    <SymptomRef>S24</SymptomRef> <!-- Локальное похолодание -->
+  </Problem>
+
+  <Problem name="Потерянный образ">
+    <SymptomRef>S8</SymptomRef>  <!-- Не узнаёт знакомых людей -->
+    <SymptomRef>S15</SymptomRef> <!-- Нестабильный силуэт -->
+    <SymptomRef>S20</SymptomRef> <!-- Несовпадение фотографии -->
+    <SymptomRef>S26</SymptomRef> <!-- Искажения -->
+  </Problem>
+
+  <Problem name="Эффект наложения">
+    <SymptomRef>S1</SymptomRef>  <!-- Провалы в памяти -->
+    <SymptomRef>S3</SymptomRef>  <!-- Повторяющиеся сны -->
+    <SymptomRef>S14</SymptomRef> <!-- Странные отражения -->
+    <SymptomRef>S22</SymptomRef> <!-- Мерцание освещения -->
+  </Problem>
   </Problems>
 
 </NPCData>
