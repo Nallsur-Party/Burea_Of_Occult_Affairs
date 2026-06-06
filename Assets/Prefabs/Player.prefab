@@ -385,7 +385,7 @@ SpriteRenderer:
   m_GameObject: {fileID: 9175066928066003693}
   m_Enabled: 1
   m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
@@ -475,9 +475,9 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.27673495
-  m_Height: 1.6179539
+  m_Height: 1.5923448
   m_Direction: 1
-  m_Center: {x: 0.0073634386, y: -0.101033986, z: 0.0004145503}
+  m_Center: {x: 0.0073634386, y: -0.08822942, z: 0.0004145503}
 --- !u!95 &7578609196619244046
 Animator:
   serializedVersion: 5
