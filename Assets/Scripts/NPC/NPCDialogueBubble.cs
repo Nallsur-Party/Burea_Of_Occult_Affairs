@@ -15,8 +15,10 @@ public class NPCDialogueBubble : MonoBehaviour
     private float hideTimer = -1f;
     private bool isFocused;
     private bool isVisible;
-    private Canvas[] cachedCanvases;
-    private Renderer[] cachedRenderers;
+    private SpriteRenderer[] cachedSpriteRenderers;
+    private Color[] cachedSpriteColors;
+    private TMP_Text[] cachedTexts;
+    private Color[] cachedTextColors;
 
     private void Awake()
     {
@@ -30,25 +32,12 @@ public class NPCDialogueBubble : MonoBehaviour
         ResolveReferences();
     }
 
-    private void OnEnable()
-    {
-        if (bubbleText != null)
-        {
-            bubbleText.enabled = true;
-        }
-    }
-
     private void OnDisable()
     {
         hideTimer = -1f;
         isFocused = false;
         isVisible = false;
-
-        // Prevent TMP editor/runtime update callbacks from touching this text after owner deactivation/destruction.
-        if (bubbleText != null)
-        {
-            bubbleText.enabled = false;
-        }
+        SetLocalVisualAlpha(0f);
     }
 
     private void Update()
@@ -158,7 +147,7 @@ public class NPCDialogueBubble : MonoBehaviour
 
         if (bubbleRoot == gameObject)
         {
-            SetComponentsVisible(visible);
+            SetLocalVisualAlpha(visible ? 1f : 0f);
             isVisible = visible;
             return;
         }
@@ -174,8 +163,26 @@ public class NPCDialogueBubble : MonoBehaviour
             return;
         }
 
-        cachedCanvases = bubbleRoot.GetComponentsInChildren<Canvas>(true);
-        cachedRenderers = bubbleRoot.GetComponentsInChildren<Renderer>(true);
+        cachedSpriteRenderers = bubbleRoot.GetComponentsInChildren<SpriteRenderer>(true);
+        cachedTexts = bubbleRoot.GetComponentsInChildren<TMP_Text>(true);
+
+        if (cachedSpriteRenderers != null)
+        {
+            cachedSpriteColors = new Color[cachedSpriteRenderers.Length];
+            for (int i = 0; i < cachedSpriteRenderers.Length; i++)
+            {
+                cachedSpriteColors[i] = cachedSpriteRenderers[i] != null ? cachedSpriteRenderers[i].color : Color.white;
+            }
+        }
+
+        if (cachedTexts != null)
+        {
+            cachedTextColors = new Color[cachedTexts.Length];
+            for (int i = 0; i < cachedTexts.Length; i++)
+            {
+                cachedTextColors[i] = cachedTexts[i] != null ? cachedTexts[i].color : Color.white;
+            }
+        }
     }
 
     private void ResolveReferences()
@@ -202,32 +209,42 @@ public class NPCDialogueBubble : MonoBehaviour
         }
     }
 
-    private void SetComponentsVisible(bool visible)
+    private void SetLocalVisualAlpha(float alpha)
     {
-        if (cachedCanvases == null || cachedRenderers == null)
+        if (cachedSpriteRenderers == null || cachedTexts == null)
         {
             CacheVisualComponents();
         }
 
-        if (cachedCanvases != null)
+        if (cachedSpriteRenderers != null)
         {
-            for (int i = 0; i < cachedCanvases.Length; i++)
+            for (int i = 0; i < cachedSpriteRenderers.Length; i++)
             {
-                if (cachedCanvases[i] != null)
+                SpriteRenderer spriteRenderer = cachedSpriteRenderers[i];
+                if (spriteRenderer == null)
                 {
-                    cachedCanvases[i].enabled = visible;
+                    continue;
                 }
+
+                Color color = i < cachedSpriteColors.Length ? cachedSpriteColors[i] : spriteRenderer.color;
+                color.a *= alpha;
+                spriteRenderer.color = color;
             }
         }
 
-        if (cachedRenderers != null)
+        if (cachedTexts != null)
         {
-            for (int i = 0; i < cachedRenderers.Length; i++)
+            for (int i = 0; i < cachedTexts.Length; i++)
             {
-                if (cachedRenderers[i] != null)
+                TMP_Text text = cachedTexts[i];
+                if (text == null)
                 {
-                    cachedRenderers[i].enabled = visible;
+                    continue;
                 }
+
+                Color color = i < cachedTextColors.Length ? cachedTextColors[i] : text.color;
+                color.a *= alpha;
+                text.color = color;
             }
         }
     }

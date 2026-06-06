@@ -54,20 +54,32 @@ MonoBehaviour:
   npcNameListXml: {fileID: 4900000, guid: 6d8ad7b7c03f0394187d393f19ebf4f6, type: 3}
   minAge: 18
   maxAge: 65
-  noProblemChance: 0.1
+  noProblemChance: 0
+  nonParanormalChance: 0.08
   namePool:
     maleNames: []
     femaleNames: []
     otherNames: []
     surnames: []
+  nonParanormalConditions:
+  - Cough
+  - Cold
+  - Placebo
+  nonParanormalSymptoms:
+  - cough
+  - sneezing
+  - sore throat
   loadOnAwake: 1
   generatedNpc:
     persistentId: 
+    caseType: 0
     npcName: 
     gender: 2
     age: 58
     trait: 0
     problemName: "\u041F\u0440\u0435\u0434\u043C\u0435\u0442\u043D\u043E\u0435 \u043F\u0440\u043E\u043A\u043B\u044F\u0442\u0438\u0435"
+    nonParanormalConditionName: 
+    nonParanormalSymptoms: []
     symptomIds: []
     symptoms:
     - "\u0421\u0432\u044F\u0437\u0430\u043D \u0441 \u043F\u0440\u0435\u0434\u043C\u0435\u0442\u043E\u043C"
@@ -99,7 +111,7 @@ MonoBehaviour:
     type: 3}
   spawnParent: {fileID: 7181312806285078053}
   npcGenerator: {fileID: 6380206237659848771}
-  npcArchiveService: {fileID: 0}
+  npcArchiveService: {fileID: 8667221072683586471}
   npcQueueManager: {fileID: 320507868644829544}
   debugArchivedNpcPersistentId: 7dc776b8bbe4450ea40486f38d3f942d
   routeRoot: {fileID: 0}

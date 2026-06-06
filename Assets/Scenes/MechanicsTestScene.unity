@@ -376,18 +376,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 75580910}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &91537269 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6380206237659848771, guid: a627bb56f72e98b4ab851642a4f3c5c6,
-    type: 3}
-  m_PrefabInstance: {fileID: 2100086833}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 89aabc0e7a38d3b4a9a561418f0b3b4f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &98671139 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4145853908119164309, guid: fd6b03e8b2d5a0640a58153270644c1f,
@@ -905,18 +893,6 @@ Transform:
   - {fileID: 1081414510}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &506465164 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8667221072683586471, guid: a627bb56f72e98b4ab851642a4f3c5c6,
-    type: 3}
-  m_PrefabInstance: {fileID: 2100086833}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 09e82948895b45f186b0b5f8524a9970, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &517835874
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1580,26 +1556,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6388802178107742455, guid: a468429a45fcc1e4bb142170817d5051,
-        type: 3}
-      propertyPath: interactionPrompt
-      value: 
-      objectReference: {fileID: 1043229850}
-    - target: {fileID: 7424461039103929092, guid: a468429a45fcc1e4bb142170817d5051,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7714048417432754080, guid: a468429a45fcc1e4bb142170817d5051,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.9961947
-      objectReference: {fileID: 0}
-    - target: {fileID: 7714048417432754080, guid: a468429a45fcc1e4bb142170817d5051,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0.08715578
-      objectReference: {fileID: 0}
     - target: {fileID: 9175066928066003693, guid: a468429a45fcc1e4bb142170817d5051,
         type: 3}
       propertyPath: m_Name
@@ -1608,11 +1564,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 4020532227842445004, guid: a468429a45fcc1e4bb142170817d5051,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 0}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a468429a45fcc1e4bb142170817d5051, type: 3}
 --- !u!4 &627144423 stripped
 Transform:
@@ -2164,12 +2116,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1283013019166578686, guid: 81cd173cb0472394f9f31cdd0a3a9e01,
     type: 3}
   m_PrefabInstance: {fileID: 3981339237076987595}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &1043229850 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7424461039103929092, guid: a468429a45fcc1e4bb142170817d5051,
-    type: 3}
-  m_PrefabInstance: {fileID: 627144413}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1050807726
 GameObject:
@@ -4111,12 +4057,12 @@ PrefabInstance:
     - target: {fileID: 1783818679437874818, guid: 6eb105722920c5647a610279d331394a,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.9922194
+      value: 0.9961947
       objectReference: {fileID: 0}
     - target: {fileID: 1783818679437874818, guid: 6eb105722920c5647a610279d331394a,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.124501996
+      value: 0.08715578
       objectReference: {fileID: 0}
     - target: {fileID: 1783818679437874818, guid: 6eb105722920c5647a610279d331394a,
         type: 3}
@@ -4743,31 +4689,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: NPC Pawn
       objectReference: {fileID: 0}
-    - target: {fileID: 3188153488741869461, guid: 95513bd84ecdd5f4e9383d15fe1f53d9,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3728247049770033207, guid: 95513bd84ecdd5f4e9383d15fe1f53d9,
-        type: 3}
-      propertyPath: startPoint
-      value: 
-      objectReference: {fileID: 1857226861}
-    - target: {fileID: 3728247049770033207, guid: 95513bd84ecdd5f4e9383d15fe1f53d9,
-        type: 3}
-      propertyPath: counterPoint
-      value: 
-      objectReference: {fileID: 1190834474}
-    - target: {fileID: 3728247049770033207, guid: 95513bd84ecdd5f4e9383d15fe1f53d9,
-        type: 3}
-      propertyPath: npcGenerator
-      value: 
-      objectReference: {fileID: 91537269}
-    - target: {fileID: 3728247049770033207, guid: 95513bd84ecdd5f4e9383d15fe1f53d9,
-        type: 3}
-      propertyPath: npcArchiveService
-      value: 
-      objectReference: {fileID: 506465164}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4985,11 +4906,6 @@ PrefabInstance:
       objectReference: {fileID: 1570792254}
     - target: {fileID: 3708043392199942633, guid: a627bb56f72e98b4ab851642a4f3c5c6,
         type: 3}
-      propertyPath: npcArchiveService
-      value: 
-      objectReference: {fileID: 506465164}
-    - target: {fileID: 3708043392199942633, guid: a627bb56f72e98b4ab851642a4f3c5c6,
-        type: 3}
       propertyPath: usualExitRoutePoints.Array.data[0]
       value: 
       objectReference: {fileID: 708546034}
@@ -5068,16 +4984,6 @@ PrefabInstance:
       propertyPath: ritualApproachRoutePoints.Array.data[2]
       value: 
       objectReference: {fileID: 1570792254}
-    - target: {fileID: 6380206237659848771, guid: a627bb56f72e98b4ab851642a4f3c5c6,
-        type: 3}
-      propertyPath: noProblemChance
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6380206237659848771, guid: a627bb56f72e98b4ab851642a4f3c5c6,
-        type: 3}
-      propertyPath: nonParanormalChance
-      value: 0.08
-      objectReference: {fileID: 0}
     - target: {fileID: 7181312806285078053, guid: a627bb56f72e98b4ab851642a4f3c5c6,
         type: 3}
       propertyPath: m_LocalPosition.x

@@ -338,6 +338,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: DialogUi
       objectReference: {fileID: 0}
+    - target: {fileID: 5721162392491873354, guid: 6eb105722920c5647a610279d331394a,
+        type: 3}
+      propertyPath: targetCamera
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 6692436076781391672, guid: 6eb105722920c5647a610279d331394a,
         type: 3}
       propertyPath: m_text
@@ -419,11 +424,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 7442235037274357332, guid: 6eb105722920c5647a610279d331394a,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 4622079414132004597}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6eb105722920c5647a610279d331394a, type: 3}
 --- !u!114 &344670296066659486 stripped
 MonoBehaviour:
@@ -437,28 +438,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e49d5db60fa9260409cd202d02a955dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &4007385806142948219 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7442235037274357332, guid: 6eb105722920c5647a610279d331394a,
-    type: 3}
-  m_PrefabInstance: {fileID: 5824624903963540783}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &4622079414132004597
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4007385806142948219}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e0069fa913fe3684abdb1d1fd23090cf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  targetCamera: {fileID: 0}
-  fullBillboard: 1
-  freezeY: 1
-  useMainCamera: 1
 --- !u!4 &5193878379442088877 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1783818679437874818, guid: 6eb105722920c5647a610279d331394a,

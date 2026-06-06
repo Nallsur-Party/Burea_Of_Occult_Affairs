@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4732025485414486976}
   - component: {fileID: 2027386153075709674}
   - component: {fileID: 7595658539223112204}
+  - component: {fileID: 5393247561494111696}
   m_Layer: 0
   m_Name: DialogsText
   m_TagString: Untagged
@@ -173,3 +174,19 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 2027386153075709674}
   m_maskType: 0
+--- !u!114 &5393247561494111696
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2130733698525591776}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0069fa913fe3684abdb1d1fd23090cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetCamera: {fileID: 0}
+  fullBillboard: 1
+  freezeY: 1
+  useMainCamera: 1
