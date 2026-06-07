@@ -4931,6 +4931,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 320507868644829544, guid: a627bb56f72e98b4ab851642a4f3c5c6,
         type: 3}
+      propertyPath: queuePoints.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 320507868644829544, guid: a627bb56f72e98b4ab851642a4f3c5c6,
+        type: 3}
       propertyPath: queuePoints.Array.data[0]
       value: 
       objectReference: {fileID: 922830466}

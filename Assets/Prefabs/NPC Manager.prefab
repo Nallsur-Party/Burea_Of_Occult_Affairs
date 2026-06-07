@@ -153,9 +153,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 205017572eddbb147b36d4324738af51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  queuePoints:
-  - {fileID: 0}
-  - {fileID: 0}
+  queuePoints: []
 --- !u!114 &8667221072683586471
 MonoBehaviour:
   m_ObjectHideFlags: 0
