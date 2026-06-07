@@ -85,8 +85,6 @@ public class PlayerController : MonoBehaviour
     private bool jumpPressed;
     private NpcOrderVisitor currentInteractableNpc;
     private NpcOrderVisitor activeDialogueNpc;
-    private NPCSpawner npcSpawner;
-    private NPCQueueManager npcQueueManager;
     private RitualItemType[] ritualItems;
     private Transform activeHeldItem;
     private RitualItemType? activeHeldItemType;
@@ -116,8 +114,6 @@ public class PlayerController : MonoBehaviour
 
         bodyCollider = GetComponent<Collider>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
-        npcSpawner = FindObjectOfType<NPCSpawner>();
-        npcQueueManager = FindObjectOfType<NPCQueueManager>();
         ritualManager = FindObjectOfType<RitualManager>();
 
         if (ritualManager == null)
@@ -151,8 +147,6 @@ public class PlayerController : MonoBehaviour
 
         HandleDialogueInput();
         HandleRitualInput();
-        HandleDebugNpcCommands();
-
         UpdateGroundedState();
         UpdateFacing();
         UpdateAnimator();
@@ -316,54 +310,6 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.R))
         {
             PerformRitualStep();
-        }
-    }
-
-    private void HandleDebugNpcCommands()
-    {
-        if (Input.GetKeyDown(KeyCode.Z))
-        {
-            SendNpcToExit("Z");
-        }
-        else if (Input.GetKeyDown(KeyCode.N))
-        {
-            SendNpcToExit("N");
-        }
-        else if (Input.GetKeyDown(KeyCode.P))
-        {
-            SpawnNPC();
-        }
-    }
-
-    private void SpawnNPC()
-    {
-        if (npcSpawner != null)
-        {
-            npcSpawner.SpawnNPC();
-        }
-        else
-        {
-            Debug.LogWarning("NPCSpawner not found in scene!");
-        }
-    }
-
-    private void SendNpcToExit(string exitName)
-    {
-        if (npcQueueManager == null)
-        {
-            Debug.LogWarning("NPCQueueManager not found!");
-            return;
-        }
-
-        NpcOrderVisitor npcToSend = npcQueueManager.GetNextWaitingNPC();
-        if (npcToSend != null)
-        {
-            npcToSend.LeaveThroughExitByName(exitName);
-            Debug.Log($"Sending NPC {npcToSend.gameObject.name} to exit {exitName}");
-        }
-        else
-        {
-            Debug.Log($"No NPC waiting at counter to send to exit {exitName}");
         }
     }
 
