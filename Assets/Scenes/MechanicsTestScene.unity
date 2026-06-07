@@ -530,7 +530,7 @@ PrefabInstance:
     - target: {fileID: 198249590245221689, guid: f995ea9f2eb9b0344a3c4632895885c2,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4.885
+      value: 4.67
       objectReference: {fileID: 0}
     - target: {fileID: 198249590245221689, guid: f995ea9f2eb9b0344a3c4632895885c2,
         type: 3}
@@ -759,7 +759,7 @@ PrefabInstance:
     - target: {fileID: 198249590245221689, guid: f995ea9f2eb9b0344a3c4632895885c2,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4.885
+      value: 4.67
       objectReference: {fileID: 0}
     - target: {fileID: 198249590245221689, guid: f995ea9f2eb9b0344a3c4632895885c2,
         type: 3}
@@ -1829,7 +1829,7 @@ PrefabInstance:
     - target: {fileID: 198249590245221689, guid: f995ea9f2eb9b0344a3c4632895885c2,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4.885
+      value: 4.67
       objectReference: {fileID: 0}
     - target: {fileID: 198249590245221689, guid: f995ea9f2eb9b0344a3c4632895885c2,
         type: 3}
@@ -3292,7 +3292,7 @@ MonoBehaviour:
   m_IsGlobal: 1
   priority: 0
   blendDistance: 0
-  weight: 0.355
+  weight: 1
   sharedProfile: {fileID: 11400000, guid: 2038a5284b4cd02488325ebfbeb905a7, type: 2}
 --- !u!4 &1333673950
 Transform:
@@ -5633,7 +5633,7 @@ PrefabInstance:
     - target: {fileID: 198249590245221689, guid: f995ea9f2eb9b0344a3c4632895885c2,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4.885
+      value: 4.67
       objectReference: {fileID: 0}
     - target: {fileID: 198249590245221689, guid: f995ea9f2eb9b0344a3c4632895885c2,
         type: 3}
