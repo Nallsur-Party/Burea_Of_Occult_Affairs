@@ -1,0 +1,269 @@
+<NewsTemplates>
+    <!-- ==================== MINOR ==================== -->
+
+    <!-- Complaint + Minor -->
+    <Template eventType="Complaint" severity="Minor" gender="male">
+        <Line>В Бюро поступила жалоба от гражданина {NAME} {TRACE_TEXT}.</Line>
+        <Line>Гражданин {NAME} обратился с жалобой {TRACE_TEXT}.</Line>
+        <Line>{NAME} {TRACE_TEXT} обратился за разъяснениями в государственные органы.</Line>
+    </Template>
+    <Template eventType="Complaint" severity="Minor" gender="female">
+        <Line>В Бюро поступила жалоба от гражданки {NAME} {TRACE_TEXT}.</Line>
+        <Line>Гражданка {NAME} обратилась с жалобой {TRACE_TEXT}.</Line>
+        <Line>{NAME} {TRACE_TEXT} обратилась за разъяснениями в государственные органы.</Line>
+    </Template>
+
+    <!-- MediaReport + Minor (пол не важен) -->
+    <Template eventType="MediaReport" severity="Minor" gender="any">
+        <Line>Местные СМИ сообщают о необычном происшествии {TRACE_TEXT}.</Line>
+        <Line>Журналисты зафиксировали аномальное явление {TRACE_TEXT}.</Line>
+        <Line>В городских новостях упоминается случай {TRACE_TEXT}.</Line>
+    </Template>
+
+    <!-- Disorientation + Minor -->
+    <Template eventType="Disorientation" severity="Minor" gender="male">
+        <Line>Гражданин {NAME} {TRACE_TEXT} не смог самостоятельно найти дорогу домой.</Line>
+        <Line>Стало известно, что {NAME} {TRACE_TEXT} несколько часов блуждал в знакомом районе.</Line>
+        <Line>{NAME} {TRACE_TEXT} был обнаружен в другой части города.</Line>
+        <Line>{NAME} {TRACE_TEXT} не смог определить своё местоположение.</Line>
+    </Template>
+    <Template eventType="Disorientation" severity="Minor" gender="female">
+        <Line>Гражданка {NAME} {TRACE_TEXT} не смогла самостоятельно найти дорогу домой.</Line>
+        <Line>Стало известно, что {NAME} {TRACE_TEXT} несколько часов блуждала в знакомом районе.</Line>
+        <Line>{NAME} {TRACE_TEXT} была обнаружена в другой части города.</Line>
+        <Line>{NAME} {TRACE_TEXT} не смогла определить своё местоположение.</Line>
+    </Template>
+
+    <!-- Missing + Minor -->
+    <Template eventType="Missing" severity="Minor" gender="male">
+        <Line>{NAME} {TRACE_TEXT} временно отсутствует по месту жительства.</Line>
+        <Line>Родственники сообщили, что {NAME} {TRACE_TEXT} не выходит на связь.</Line>
+        <Line>Проводятся мероприятия по установлению местонахождения {NAME} {TRACE_TEXT}.</Line>
+    </Template>
+    <Template eventType="Missing" severity="Minor" gender="female">
+        <Line>{NAME} {TRACE_TEXT} временно отсутствует по месту жительства.</Line>
+        <Line>Родственники сообщили, что {NAME} {TRACE_TEXT} не выходит на связь.</Line>
+        <Line>Проводятся мероприятия по установлению местонахождения {NAME} {TRACE_TEXT}.</Line>
+    </Template>
+
+    <!-- Conflict + Minor -->
+    <Template eventType="Conflict" severity="Minor" gender="male">
+        <Line>Соседи сообщают о бытовом конфликте с участием {NAME} {TRACE_TEXT}.</Line>
+        <Line>Участковый зафиксировал инцидент с {NAME} {TRACE_TEXT}.</Line>
+        <Line>Причиной обращения в полицию послужил конфликт с {NAME} {TRACE_TEXT}.</Line>
+    </Template>
+    <Template eventType="Conflict" severity="Minor" gender="female">
+        <Line>Соседи сообщают о бытовом конфликте с участием {NAME} {TRACE_TEXT}.</Line>
+        <Line>Участковый зафиксировал инцидент с {NAME} {TRACE_TEXT}.</Line>
+        <Line>Причиной обращения в полицию послужил конфликт с {NAME} {TRACE_TEXT}.</Line>
+    </Template>
+
+    <!-- ==================== MODERATE ==================== -->
+
+    <!-- Hospitalization + Moderate -->
+    <Template eventType="Hospitalization" severity="Moderate" gender="male">
+        <Line>Гражданин {NAME} {TRACE_TEXT} был госпитализирован.</Line>
+        <Line>Бригада скорой помощи доставила {NAME} {TRACE_TEXT} в медицинское учреждение.</Line>
+        <Line>Состояние {NAME} {TRACE_TEXT} потребовало экстренной госпитализации.</Line>
+        <Line>{NAME} {TRACE_TEXT} помещён в стационар.</Line>
+    </Template>
+    <Template eventType="Hospitalization" severity="Moderate" gender="female">
+        <Line>Гражданка {NAME} {TRACE_TEXT} была госпитализирована.</Line>
+        <Line>Бригада скорой помощи доставила {NAME} {TRACE_TEXT} в медицинское учреждение.</Line>
+        <Line>Состояние {NAME} {TRACE_TEXT} потребовало экстренной госпитализации.</Line>
+        <Line>{NAME} {TRACE_TEXT} помещена в стационар.</Line>
+    </Template>
+
+    <!-- ApartmentIncident + Moderate -->
+    <Template eventType="ApartmentIncident" severity="Moderate" gender="male">
+        <Line>Жители дома сообщают о происшествии в квартире {NAME} {TRACE_TEXT}.</Line>
+        <Line>Сотрудники Бюро выехали по адресу {NAME} {TRACE_TEXT}.</Line>
+        <Line>В жилом помещении {NAME} {TRACE_TEXT} зафиксированы аномальные проявления.</Line>
+    </Template>
+    <Template eventType="ApartmentIncident" severity="Moderate" gender="female">
+        <Line>Жители дома сообщают о происшествии в квартире {NAME} {TRACE_TEXT}.</Line>
+        <Line>Сотрудники Бюро выехали по адресу {NAME} {TRACE_TEXT}.</Line>
+        <Line>В жилом помещении {NAME} {TRACE_TEXT} зафиксированы аномальные проявления.</Line>
+    </Template>
+
+    <!-- Conflict + Moderate -->
+    <Template eventType="Conflict" severity="Moderate" gender="male">
+        <Line>Конфликт с участием {NAME} {TRACE_TEXT} перерос в серьёзное происшествие.</Line>
+        <Line>Правоохранительные органы вмешались в конфликт с {NAME} {TRACE_TEXT}.</Line>
+        <Line>{NAME} стал фигурантом разбирательства {TRACE_TEXT}.</Line>
+    </Template>
+    <Template eventType="Conflict" severity="Moderate" gender="female">
+        <Line>Конфликт с участием {NAME} {TRACE_TEXT} перерос в серьёзное происшествие.</Line>
+        <Line>Правоохранительные органы вмешались в конфликт с {NAME} {TRACE_TEXT}.</Line>
+        <Line>{NAME} стала фигурантом разбирательства {TRACE_TEXT}.</Line>
+    </Template>
+
+    <!-- MediaReport + Moderate (пол не важен, но имя может быть упомянуто) -->
+    <Template eventType="MediaReport" severity="Moderate" gender="any">
+        <Line>СМИ сообщают о необычном инциденте {TRACE_TEXT} с участием {NAME}.</Line>
+        <Line>Журналисты обратили внимание на аномалию {TRACE_TEXT}, связанную с {NAME}.</Line>
+        <Line>В новостях рассказывают о происшествии {TRACE_TEXT}, связанном с {NAME}.</Line>
+    </Template>
+
+    <!-- Disorientation + Moderate -->
+    <Template eventType="Disorientation" severity="Moderate" gender="male">
+        <Line>{NAME} {TRACE_TEXT} был найден в незнакомом районе без ориентации.</Line>
+        <Line>Спасатели эвакуировали {NAME} {TRACE_TEXT}.</Line>
+        <Line>Продолжительная дезориентация {NAME} {TRACE_TEXT} привлекла внимание служб.</Line>
+        <Line>{NAME} {TRACE_TEXT} доставлен в пункт временного размещения.</Line>
+    </Template>
+    <Template eventType="Disorientation" severity="Moderate" gender="female">
+        <Line>{NAME} {TRACE_TEXT} была найдена в незнакомом районе без ориентации.</Line>
+        <Line>Спасатели эвакуировали {NAME} {TRACE_TEXT}.</Line>
+        <Line>Продолжительная дезориентация {NAME} {TRACE_TEXT} привлекла внимание служб.</Line>
+        <Line>{NAME} {TRACE_TEXT} доставлена в пункт временного размещения.</Line>
+    </Template>
+
+    <!-- Missing + Moderate -->
+    <Template eventType="Missing" severity="Moderate" gender="male">
+        <Line>{NAME} {TRACE_TEXT} объявлен в розыск.</Line>
+        <Line>По факту исчезновения {NAME} {TRACE_TEXT} возбуждено дело.</Line>
+        <Line>Волонтёры ищут {NAME} {TRACE_TEXT}.</Line>
+    </Template>
+    <Template eventType="Missing" severity="Moderate" gender="female">
+        <Line>{NAME} {TRACE_TEXT} объявлена в розыск.</Line>
+        <Line>По факту исчезновения {NAME} {TRACE_TEXT} возбуждено дело.</Line>
+        <Line>Волонтёры ищут {NAME} {TRACE_TEXT}.</Line>
+    </Template>
+
+    <!-- Complaint + Moderate -->
+    <Template eventType="Complaint" severity="Moderate" gender="male">
+        <Line>Поступила официальная жалоба от {NAME} {TRACE_TEXT}.</Line>
+        <Line>{NAME} {TRACE_TEXT} требует проведения проверки.</Line>
+        <Line>Жалоба {NAME} {TRACE_TEXT} передана в вышестоящую инстанцию.</Line>
+    </Template>
+    <Template eventType="Complaint" severity="Moderate" gender="female">
+        <Line>Поступила официальная жалоба от {NAME} {TRACE_TEXT}.</Line>
+        <Line>{NAME} {TRACE_TEXT} требует проведения проверки.</Line>
+        <Line>Жалоба {NAME} {TRACE_TEXT} передана в вышестоящую инстанцию.</Line>
+    </Template>
+
+    <!-- DistrictIncident + Moderate (пол не важен, но имя может быть упомянуто) -->
+    <Template eventType="DistrictIncident" severity="Moderate" gender="any">
+        <Line>Жители района сообщают о происшествии {TRACE_TEXT}.</Line>
+        <Line>В районе проживания {NAME} зафиксирована аномальная активность {TRACE_TEXT}.</Line>
+        <Line>Администрация района информирует об инциденте {TRACE_TEXT}.</Line>
+    </Template>
+
+    <!-- ==================== MAJOR ==================== -->
+
+    <!-- ApartmentIncident + Major -->
+    <Template eventType="ApartmentIncident" severity="Major" gender="male">
+        <Line>Квартира {NAME} {TRACE_TEXT} признана опасной зоной.</Line>
+        <Line>Жильцы дома эвакуированы после инцидента {TRACE_TEXT} в квартире {NAME}.</Line>
+        <Line>Специалисты Бюро оцепили помещение {NAME} {TRACE_TEXT}.</Line>
+    </Template>
+    <Template eventType="ApartmentIncident" severity="Major" gender="female">
+        <Line>Квартира {NAME} {TRACE_TEXT} признана опасной зоной.</Line>
+        <Line>Жильцы дома эвакуированы после инцидента {TRACE_TEXT} в квартире {NAME}.</Line>
+        <Line>Специалисты Бюро оцепили помещение {NAME} {TRACE_TEXT}.</Line>
+    </Template>
+
+    <!-- DistrictIncident + Major -->
+    <Template eventType="DistrictIncident" severity="Major" gender="any">
+        <Line>В районе проживания {NAME} {TRACE_TEXT} введён особый режим.</Line>
+        <Line>Аномальное происшествие {TRACE_TEXT} затронуло несколько домов.</Line>
+        <Line>Жителей района просят временно покинуть свои дома {TRACE_TEXT}.</Line>
+    </Template>
+
+    <!-- BPDResponse + Major -->
+    <Template eventType="BPDResponse" severity="Major" gender="any">
+        <Line>Бюро по паранормальным делам направило бригаду {TRACE_TEXT}.</Line>
+        <Line>Сотрудники БПД выехали по вызову {TRACE_TEXT}.</Line>
+        <Line>Проводится санация объекта {TRACE_TEXT}.</Line>
+    </Template>
+
+    <!-- MediaReport + Major -->
+    <Template eventType="MediaReport" severity="Major" gender="any">
+        <Line>Федеральные СМИ сообщают о чрезвычайном происшествии {TRACE_TEXT}.</Line>
+        <Line>Новостные каналы транслируют информацию об аномалии {TRACE_TEXT}.</Line>
+        <Line>Репортаж с места событий {TRACE_TEXT} попал в эфир.</Line>
+    </Template>
+
+    <!-- Complaint + Major -->
+    <Template eventType="Complaint" severity="Major" gender="any">
+        <Line>Коллективная жалоба от жителей {TRACE_TEXT} поступила в Бюро.</Line>
+        <Line>Граждане требуют расследования {TRACE_TEXT}.</Line>
+        <Line>Обращение {TRACE_TEXT} зарегистрировано в особом порядке.</Line>
+    </Template>
+
+    <!-- Missing + Major -->
+    <Template eventType="Missing" severity="Major" gender="male">
+        <Line>{NAME} {TRACE_TEXT} пропал без вести при невыясненных обстоятельствах.</Line>
+        <Line>Поиски {NAME} {TRACE_TEXT} продолжаются более недели.</Line>
+        <Line>Следствие не может установить местонахождение {NAME} {TRACE_TEXT}.</Line>
+    </Template>
+    <Template eventType="Missing" severity="Major" gender="female">
+        <Line>{NAME} {TRACE_TEXT} пропала без вести при невыясненных обстоятельствах.</Line>
+        <Line>Поиски {NAME} {TRACE_TEXT} продолжаются более недели.</Line>
+        <Line>Следствие не может установить местонахождение {NAME} {TRACE_TEXT}.</Line>
+    </Template>
+
+    <!-- Hospitalization + Major -->
+    <Template eventType="Hospitalization" severity="Major" gender="male">
+        <Line>{NAME} {TRACE_TEXT} доставлен в закрытое отделение.</Line>
+        <Line>Состояние {NAME} {TRACE_TEXT} оценивается как тяжёлое.</Line>
+        <Line>Медицинские службы не комментируют случай {NAME} {TRACE_TEXT}.</Line>
+    </Template>
+    <Template eventType="Hospitalization" severity="Major" gender="female">
+        <Line>{NAME} {TRACE_TEXT} доставлена в закрытое отделение.</Line>
+        <Line>Состояние {NAME} {TRACE_TEXT} оценивается как тяжёлое.</Line>
+        <Line>Медицинские службы не комментируют случай {NAME} {TRACE_TEXT}.</Line>
+    </Template>
+
+    <!-- Conflict + Major -->
+    <Template eventType="Conflict" severity="Major" gender="male">
+        <Line>Конфликт с участием {NAME} {TRACE_TEXT} привёл к серьёзным последствиям.</Line>
+        <Line>Силовые структуры вмешались в конфликт с {NAME} {TRACE_TEXT}.</Line>
+        <Line>{NAME} задержан {TRACE_TEXT}.</Line>
+    </Template>
+    <Template eventType="Conflict" severity="Major" gender="female">
+        <Line>Конфликт с участием {NAME} {TRACE_TEXT} привёл к серьёзным последствиям.</Line>
+        <Line>Силовые структуры вмешались в конфликт с {NAME} {TRACE_TEXT}.</Line>
+        <Line>{NAME} задержана {TRACE_TEXT}.</Line>
+    </Template>
+
+    <!-- ==================== CATASTROPHIC ==================== -->
+
+    <!-- BPDResponse + Catastrophic (завуалированные новости, пол не важен) -->
+    <Template eventType="BPDResponse" severity="Catastrophic" gender="any">
+        <Line>В связи с проведением аварийно-восстановительных работ движение транспорта в нескольких районах временно ограничено. Оснований для беспокойства нет.</Line>
+        <Line>Специалисты Бюро проводят плановые мероприятия в районе проживания гражданина {NAME}. Просим граждан сохранять спокойствие.</Line>
+        <Line>Бюро по паранормальным делам сообщает, что ситуация находится под контролем. Дополнительная информация будет предоставлена позже.</Line>
+        <Line>В связи с техническими работами доступ в некоторые районы города временно закрыт. Приносим извинения за неудобства.</Line>
+    </Template>
+
+    <!-- DistrictIncident + Catastrophic -->
+    <Template eventType="DistrictIncident" severity="Catastrophic" gender="any">
+        <Line>Целый район города {TRACE_TEXT} находится в зоне отчуждения.</Line>
+        <Line>Эвакуация жителей района {TRACE_TEXT} завершена.</Line>
+        <Line>Власти ввели чрезвычайное положение {TRACE_TEXT}.</Line>
+    </Template>
+
+    <!-- Death + Catastrophic -->
+    <Template eventType="Death" severity="Catastrophic" gender="male">
+        <Line>По неподтверждённым данным, гражданин {NAME} {TRACE_TEXT} погиб в результате аномального происшествия.</Line>
+        <Line>Бюро выражает соболезнования семье гражданина {NAME}.</Line>
+        <Line>Обстоятельства гибели {NAME} {TRACE_TEXT} выясняются.</Line>
+        <Line>Гражданин {NAME} {TRACE_TEXT} числится погибшим.</Line>
+    </Template>
+    <Template eventType="Death" severity="Catastrophic" gender="female">
+        <Line>По неподтверждённым данным, гражданка {NAME} {TRACE_TEXT} погибла в результате аномального происшествия.</Line>
+        <Line>Бюро выражает соболезнования семье гражданки {NAME}.</Line>
+        <Line>Обстоятельства гибели {NAME} {TRACE_TEXT} выясняются.</Line>
+        <Line>Гражданка {NAME} {TRACE_TEXT} числится погибшей.</Line>
+    </Template>
+
+    <!-- MediaReport + Catastrophic -->
+    <Template eventType="MediaReport" severity="Catastrophic" gender="any">
+        <Line>Все федеральные каналы транслируют экстренное сообщение {TRACE_TEXT}.</Line>
+        <Line>СМИ говорят о катастрофе {TRACE_TEXT}.</Line>
+        <Line>Информация о происшествии {TRACE_TEXT} попала в мировые новости.</Line>
+    </Template>
+
+</NewsTemplates>
