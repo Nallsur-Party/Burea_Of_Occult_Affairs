@@ -78,6 +78,39 @@ public class NewsTextMeshProPresenter : MonoBehaviour
         targetText.text = newsText;
     }
 
+    public bool PinLatestArchivedNpcToTv(out string reason)
+    {
+        reason = null;
+
+        if (NPCArchiveService.Instance == null)
+        {
+            reason = "NPCArchiveService instance is not available.";
+            return false;
+        }
+
+        if (!TryGetLatestArchivedNpc(out NPC npc, out NPCArchiveEntry snapshot, out reason))
+        {
+            return false;
+        }
+
+        if (snapshot == null || string.IsNullOrWhiteSpace(snapshot.PersistentId))
+        {
+            reason = "latest archived NPC has no persistent id.";
+            return false;
+        }
+
+        archivedNpcPersistentId = snapshot.PersistentId.Trim();
+        useLatestArchivedNpc = false;
+
+        if (targetText == null)
+        {
+            targetText = GetComponent<TMP_Text>();
+        }
+
+        Refresh();
+        return true;
+    }
+
     private bool TryGetArchivedNpc(out NPC npc, out NPCArchiveEntry snapshot, out string reason)
     {
         npc = null;
@@ -109,6 +142,22 @@ public class NewsTextMeshProPresenter : MonoBehaviour
             return npc != null;
         }
 
+        return TryGetLatestArchivedNpc(out npc, out snapshot, out reason);
+    }
+
+    private bool TryGetLatestArchivedNpc(out NPC npc, out NPCArchiveEntry snapshot, out string reason)
+    {
+        npc = null;
+        snapshot = null;
+        reason = null;
+
+        NPCArchiveService archiveService = NPCArchiveService.Instance;
+        if (archiveService == null)
+        {
+            reason = "NPCArchiveService instance is not available.";
+            return false;
+        }
+
         IReadOnlyList<NPCArchiveEntry> archivedNpcs = archiveService.ArchivedNpcs;
         if (archivedNpcs == null || archivedNpcs.Count == 0)
         {
@@ -124,9 +173,12 @@ public class NewsTextMeshProPresenter : MonoBehaviour
                 continue;
             }
 
-            npc = NPC.FromSnapshot(snapshot);
-            if (npc == null)
+            string validationReason;
+            if (!NPCArchiveValidation.TryBuildNpc(snapshot, out npc, out validationReason))
             {
+                reason = string.IsNullOrWhiteSpace(validationReason)
+                    ? $"archived NPC at index {index} could not be validated."
+                    : validationReason;
                 continue;
             }
 

@@ -3194,42 +3194,6 @@ Transform:
   - {fileID: 1857226861}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1422306819 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7145433698428821222, guid: 6b706bc3252e13f439b304f386d7f4f6,
-    type: 3}
-  m_PrefabInstance: {fileID: 6689020624878852737}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1422306822 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1716291642780597258, guid: 6b706bc3252e13f439b304f386d7f4f6,
-    type: 3}
-  m_PrefabInstance: {fileID: 6689020624878852737}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1422306819}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9541d86e2fd84c1d9990edf0852d74ab, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1422306825
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1422306819}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2eb3384ad02f470d859b4494bcaac108, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  archivedNpcPersistentId: 
-  useLatestArchivedNpc: 1
-  targetText: {fileID: 1422306822}
-  emptyStateText: ...
-  refreshOnStart: 1
-  logWarnings: 1
 --- !u!1 &1428747587
 GameObject:
   m_ObjectHideFlags: 0
@@ -5772,6 +5736,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 16277527}
     m_Modifications:
+    - target: {fileID: 1716291642780597258, guid: 6b706bc3252e13f439b304f386d7f4f6,
+        type: 3}
+      propertyPath: m_text
+      value: text
+      objectReference: {fileID: 0}
+    - target: {fileID: 1716291642780597258, guid: 6b706bc3252e13f439b304f386d7f4f6,
+        type: 3}
+      propertyPath: m_fontSize
+      value: 22.9
+      objectReference: {fileID: 0}
     - target: {fileID: 1930564085818331758, guid: 6b706bc3252e13f439b304f386d7f4f6,
         type: 3}
       propertyPath: m_Name
@@ -5831,10 +5805,6 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 7145433698428821222, guid: 6b706bc3252e13f439b304f386d7f4f6,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1422306825}
     - targetCorrespondingSourceObject: {fileID: 7145433698428821222, guid: 6b706bc3252e13f439b304f386d7f4f6,
         type: 3}
       insertIndex: -1

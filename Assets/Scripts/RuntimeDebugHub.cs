@@ -21,6 +21,7 @@ public class RuntimeDebugHub : MonoBehaviour
     private TMPPageTypewriter typewriter;
     private NPCSpawner npcSpawner;
     private NPCQueueManager npcQueueManager;
+    private NewsTextMeshProPresenter newsPresenter;
 
     private Canvas debugCanvas;
     private RectTransform panelRoot;
@@ -31,6 +32,7 @@ public class RuntimeDebugHub : MonoBehaviour
     private Button typewriterActivateButton;
     private Button typewriterDeactivateButton;
     private Button spawnNpcButton;
+    private Button pinLatestNpcToTvButton;
     private Button exitZButton;
     private Button exitNButton;
     private readonly List<Button> actionButtons = new List<Button>();
@@ -203,6 +205,29 @@ public class RuntimeDebugHub : MonoBehaviour
         npcSpawner.SpawnNPC();
     }
 
+    public void PinLatestArchivedNpcToTv()
+    {
+        if (!CanUseNewsDebug())
+        {
+            return;
+        }
+
+        string reason;
+        if (!newsPresenter.PinLatestArchivedNpcToTv(out reason))
+        {
+            if (!string.IsNullOrWhiteSpace(reason))
+            {
+                Debug.LogWarning($"RuntimeDebugHub could not pin the latest archived NPC to TV: {reason}", this);
+            }
+
+            RefreshUiState();
+            return;
+        }
+
+        Debug.Log("RuntimeDebugHub | Pinned the latest archived NPC to the TV.", this);
+        RefreshUiState();
+    }
+
     public void SendNpcToExit(string exitName)
     {
         if (!CanUseNpcDebug())
@@ -271,12 +296,14 @@ public class RuntimeDebugHub : MonoBehaviour
         typewriterActivateButton = CreateButton(panelRoot, "Typewriter: Activate", ActivateTypewriter);
         typewriterDeactivateButton = CreateButton(panelRoot, "Typewriter: Deactivate", DeactivateTypewriter);
         spawnNpcButton = CreateButton(panelRoot, "NPC: Spawn", SpawnNpc);
+        pinLatestNpcToTvButton = CreateButton(panelRoot, "TV: Pin Latest NPC", PinLatestArchivedNpcToTv);
         exitZButton = CreateButton(panelRoot, "NPC: Exit Z", () => SendNpcToExit("Z"));
         exitNButton = CreateButton(panelRoot, "NPC: Exit N", () => SendNpcToExit("N"));
 
         actionButtons.Add(typewriterActivateButton);
         actionButtons.Add(typewriterDeactivateButton);
         actionButtons.Add(spawnNpcButton);
+        actionButtons.Add(pinLatestNpcToTvButton);
         actionButtons.Add(exitZButton);
         actionButtons.Add(exitNButton);
 
@@ -410,6 +437,7 @@ public class RuntimeDebugHub : MonoBehaviour
         typewriter = FindSceneComponentIncludingInactive<TMPPageTypewriter>();
         npcSpawner = FindSceneComponentIncludingInactive<NPCSpawner>();
         npcQueueManager = FindSceneComponentIncludingInactive<NPCQueueManager>();
+        newsPresenter = FindSceneComponentIncludingInactive<NewsTextMeshProPresenter>();
     }
 
     private static T FindSceneComponentIncludingInactive<T>() where T : Component
@@ -467,25 +495,28 @@ public class RuntimeDebugHub : MonoBehaviour
 
         bool typewriterAvailable = typewriter != null;
         bool npcDebugAvailable = npcSpawner != null && npcQueueManager != null;
+        bool newsDebugAvailable = newsPresenter != null;
 
         SetActionButtonState(typewriterActivateButton, typewriterAvailable);
         SetActionButtonState(typewriterDeactivateButton, typewriterAvailable);
         SetActionButtonState(spawnNpcButton, npcDebugAvailable);
+        SetActionButtonState(pinLatestNpcToTvButton, newsDebugAvailable);
         SetActionButtonState(exitZButton, npcDebugAvailable);
         SetActionButtonState(exitNButton, npcDebugAvailable);
 
         if (statusLabel != null)
         {
-            statusLabel.text = BuildStatusText(typewriterAvailable, npcDebugAvailable);
+            statusLabel.text = BuildStatusText(typewriterAvailable, npcDebugAvailable, newsDebugAvailable);
         }
     }
 
-    private string BuildStatusText(bool typewriterAvailable, bool npcDebugAvailable)
+    private string BuildStatusText(bool typewriterAvailable, bool npcDebugAvailable, bool newsDebugAvailable)
     {
         string debugState = debugEnabled ? "ON" : "OFF";
         string typewriterState = typewriterAvailable ? "bound" : "missing";
         string npcState = npcDebugAvailable ? "ready" : "missing";
-        return $"State: {debugState}\nTypewriter: {typewriterState}\nNPC debug: {npcState}";
+        string newsState = newsDebugAvailable ? "ready" : "missing";
+        return $"State: {debugState}\nTypewriter: {typewriterState}\nNPC debug: {npcState}\nTV debug: {newsState}";
     }
 
     private void SetActionButtonState(Button button, bool available)
@@ -547,6 +578,23 @@ public class RuntimeDebugHub : MonoBehaviour
         if (npcSpawner == null || npcQueueManager == null)
         {
             Debug.LogWarning("RuntimeDebugHub could not find NPC debug targets in the current scene.", this);
+            RefreshUiState();
+            return false;
+        }
+
+        return true;
+    }
+
+    private bool CanUseNewsDebug()
+    {
+        if (!debugEnabled)
+        {
+            return false;
+        }
+
+        if (newsPresenter == null)
+        {
+            Debug.LogWarning("RuntimeDebugHub could not find a NewsTextMeshProPresenter in the current scene.", this);
             RefreshUiState();
             return false;
         }

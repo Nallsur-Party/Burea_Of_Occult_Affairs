@@ -174,45 +174,98 @@ public static class NewsGenerator
     {
         template = null;
 
-        List<TemplateData> exactMatches = new List<TemplateData>();
-        List<TemplateData> anyMatches = new List<TemplateData>();
         string preferredGender = GetPreferredGender(npc);
+        EventSeverity[] severitySearchOrder = GetSeveritySearchOrder(severity);
 
-        IReadOnlyList<TemplateData> templates = NewsDataLoader.Templates;
-        for (int i = 0; i < templates.Count; i++)
+        for (int severityIndex = 0; severityIndex < severitySearchOrder.Length; severityIndex++)
         {
-            TemplateData candidate = templates[i];
-            if (candidate == null || candidate.EventType != eventType || candidate.Severity != severity)
+            EventSeverity candidateSeverity = severitySearchOrder[severityIndex];
+            List<TemplateData> exactMatches = new List<TemplateData>();
+            List<TemplateData> anyMatches = new List<TemplateData>();
+
+            IReadOnlyList<TemplateData> templates = NewsDataLoader.Templates;
+            for (int i = 0; i < templates.Count; i++)
             {
-                continue;
+                TemplateData candidate = templates[i];
+                if (candidate == null || candidate.EventType != eventType || candidate.Severity != candidateSeverity)
+                {
+                    continue;
+                }
+
+                string normalizedGender = NormalizeGender(candidate.Gender);
+                if (normalizedGender == preferredGender)
+                {
+                    exactMatches.Add(candidate);
+                    continue;
+                }
+
+                if (normalizedGender == "any")
+                {
+                    anyMatches.Add(candidate);
+                }
             }
 
-            string normalizedGender = NormalizeGender(candidate.Gender);
-            if (normalizedGender == preferredGender)
+            if (exactMatches.Count > 0)
             {
-                exactMatches.Add(candidate);
-                continue;
+                template = exactMatches[UnityEngine.Random.Range(0, exactMatches.Count)];
+                return true;
             }
 
-            if (normalizedGender == "any")
+            if (anyMatches.Count > 0)
             {
-                anyMatches.Add(candidate);
+                template = anyMatches[UnityEngine.Random.Range(0, anyMatches.Count)];
+                return true;
             }
-        }
-
-        if (exactMatches.Count > 0)
-        {
-            template = exactMatches[UnityEngine.Random.Range(0, exactMatches.Count)];
-            return true;
-        }
-
-        if (anyMatches.Count > 0)
-        {
-            template = anyMatches[UnityEngine.Random.Range(0, anyMatches.Count)];
-            return true;
         }
 
         return false;
+    }
+
+    private static EventSeverity[] GetSeveritySearchOrder(EventSeverity selectedSeverity)
+    {
+        switch (selectedSeverity)
+        {
+            case EventSeverity.Minor:
+                return new[]
+                {
+                    EventSeverity.Minor,
+                    EventSeverity.Moderate,
+                    EventSeverity.Major,
+                    EventSeverity.Catastrophic
+                };
+            case EventSeverity.Moderate:
+                return new[]
+                {
+                    EventSeverity.Moderate,
+                    EventSeverity.Minor,
+                    EventSeverity.Major,
+                    EventSeverity.Catastrophic
+                };
+            case EventSeverity.Major:
+                return new[]
+                {
+                    EventSeverity.Major,
+                    EventSeverity.Moderate,
+                    EventSeverity.Catastrophic,
+                    EventSeverity.Minor
+                };
+            case EventSeverity.Catastrophic:
+                return new[]
+                {
+                    EventSeverity.Catastrophic,
+                    EventSeverity.Major,
+                    EventSeverity.Moderate,
+                    EventSeverity.Minor
+                };
+            default:
+                return new[]
+                {
+                    EventSeverity.Minor,
+                    EventSeverity.Moderate,
+                    EventSeverity.Major,
+                    EventSeverity.Catastrophic
+                };
+        }
     }
 
     private static string SelectTemplateLine(TemplateData template)
