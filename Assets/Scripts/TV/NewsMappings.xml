@@ -1,0 +1,117 @@
+<NewsMappings>
+  <Mapping problem="Повтор" tier="Minor">
+    <Event eventType="Complaint" />
+    <Event eventType="MediaReport" />
+  </Mapping>
+  <Mapping problem="Потерянный маршрут" tier="Minor">
+    <Event eventType="Disorientation" />
+    <Event eventType="Missing" />
+  </Mapping>
+  <Mapping problem="Незавершённый разговор" tier="Minor">
+    <Event eventType="Conflict" />
+  </Mapping>
+  <Mapping problem="Забытая встреча" tier="Minor">
+    <Event eventType="Conflict" />
+  </Mapping>
+  <Mapping problem="Пропавшее намерение" tier="Minor">
+    <Event eventType="Conflict" />
+  </Mapping>
+
+  <Mapping problem="Расслоение" tier="Moderate">
+    <Event eventType="Hospitalization" />
+    <Event eventType="Death" />
+  </Mapping>
+  <Mapping problem="Отпечаток" tier="Moderate">
+    <Event eventType="ApartmentIncident" />
+  </Mapping>
+  <Mapping problem="Зеркальный" tier="Moderate">
+    <Event eventType="MediaReport" />
+    <Event eventType="Conflict" />
+  </Mapping>
+  <Mapping problem="Смещение" tier="Moderate">
+    <Event eventType="Disorientation" />
+  </Mapping>
+  <Mapping problem="Эхо" tier="Moderate">
+    <Event eventType="Complaint" />
+    <Event eventType="DistrictIncident" />
+  </Mapping>
+  <Mapping problem="Наблюдатель" tier="Moderate">
+    <Event eventType="Missing" />
+  </Mapping>
+  <Mapping problem="Привязка" tier="Moderate">
+    <Event eventType="Missing" />
+  </Mapping>
+  <Mapping problem="Сбой личности" tier="Moderate">
+    <Event eventType="Hospitalization" />
+  </Mapping>
+  <Mapping problem="Зов" tier="Moderate">
+    <Event eventType="Missing" />
+  </Mapping>
+  <Mapping problem="Петля" tier="Moderate">
+    <Event eventType="Hospitalization" />
+  </Mapping>
+  <Mapping problem="Десинхронизация" tier="Moderate">
+    <Event eventType="Disorientation" />
+  </Mapping>
+  <Mapping problem="Фоновый резонанс" tier="Moderate">
+    <Event eventType="DistrictIncident" />
+  </Mapping>
+
+  <Mapping problem="Пространственный сдвиг" tier="Major">
+    <Event eventType="DistrictIncident" />
+  </Mapping>
+  <Mapping problem="Резонанс памяти" tier="Major">
+    <Event eventType="DistrictIncident" />
+  </Mapping>
+  <Mapping problem="Шумовой след" tier="Major">
+    <Event eventType="DistrictIncident" />
+  </Mapping>
+  <Mapping problem="Холодный зов" tier="Major">
+    <Event eventType="Missing" />
+  </Mapping>
+  <Mapping problem="Забытая комната" tier="Major">
+    <Event eventType="Missing" />
+  </Mapping>
+  <Mapping problem="Проекция" tier="Major">
+    <Event eventType="ApartmentIncident" />
+  </Mapping>
+  <Mapping problem="Инородный отпечаток" tier="Major">
+    <Event eventType="ApartmentIncident" />
+  </Mapping>
+  <Mapping problem="Нарушение контура" tier="Major">
+    <Event eventType="Hospitalization" />
+    <Event eventType="Death" />
+  </Mapping>
+  <Mapping problem="Разлад" tier="Major">
+    <Event eventType="Hospitalization" />
+  </Mapping>
+  <Mapping problem="Наблюдение извне" tier="Major">
+    <Event eventType="Missing" />
+  </Mapping>
+  <Mapping problem="Петля присутствия" tier="Major">
+    <Event eventType="Complaint" />
+  </Mapping>
+  <Mapping problem="След контакта" tier="Major">
+    <Event eventType="ApartmentIncident" />
+  </Mapping>
+  <Mapping problem="Потерянный образ" tier="Major">
+    <Event eventType="Conflict" />
+  </Mapping>
+
+  <Mapping problem="Разрыв локальности" tier="Catastrophic">
+    <Event eventType="BPDResponse" />
+    <Event eventType="DistrictIncident" />
+    <Event eventType="Death" />
+  </Mapping>
+  <Mapping problem="Точка возврата" tier="Catastrophic">
+    <Event eventType="BPDResponse" />
+  </Mapping>
+  <Mapping problem="Пространственный двойник" tier="Catastrophic">
+    <Event eventType="BPDResponse" />
+    <Event eventType="DistrictIncident" />
+  </Mapping>
+  <Mapping problem="Эффект наложения" tier="Catastrophic">
+    <Event eventType="BPDResponse" />
+    <Event eventType="Death" />
+  </Mapping>
+</NewsMappings>

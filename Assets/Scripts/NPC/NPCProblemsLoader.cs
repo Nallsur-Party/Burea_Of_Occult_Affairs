@@ -9,7 +9,8 @@ public static class NPCProblemsLoader
     {
         if (xmlAsset == null)
         {
-            throw new ArgumentNullException(nameof(xmlAsset));
+            Debug.LogWarning("NPCProblemsLoader: XML asset is not assigned.");
+            return new NPCProblemCatalog(Array.Empty<NPCProblemDefinition>());
         }
 
         return Load(xmlAsset.text);
@@ -22,17 +23,25 @@ public static class NPCProblemsLoader
             return new NPCProblemCatalog(Array.Empty<NPCProblemDefinition>());
         }
 
-        XDocument document = XDocument.Parse(xmlContent);
-        XElement root = document.Element("NPCData");
-
-        if (root == null)
+        try
         {
+            XDocument document = XDocument.Parse(xmlContent);
+            XElement root = document.Element("NPCData");
+
+            if (root == null)
+            {
+                return new NPCProblemCatalog(Array.Empty<NPCProblemDefinition>());
+            }
+
+            Dictionary<string, string> symptomsPool = LoadSymptomsPool(root.Element("SymptomsPool"));
+            List<NPCProblemDefinition> problems = LoadProblems(root.Element("Problems"), symptomsPool);
+            return new NPCProblemCatalog(problems);
+        }
+        catch (Exception exception)
+        {
+            Debug.LogWarning($"NPCProblemsLoader: failed to parse NPC problems XML: {exception.Message}");
             return new NPCProblemCatalog(Array.Empty<NPCProblemDefinition>());
         }
-
-        Dictionary<string, string> symptomsPool = LoadSymptomsPool(root.Element("SymptomsPool"));
-        List<NPCProblemDefinition> problems = LoadProblems(root.Element("Problems"), symptomsPool);
-        return new NPCProblemCatalog(problems);
     }
 
     private static Dictionary<string, string> LoadSymptomsPool(XElement symptomsPoolElement)
@@ -63,8 +72,7 @@ public static class NPCProblemsLoader
 
     private static List<NPCProblemDefinition> LoadProblems(
         XElement problemsElement,
-        IReadOnlyDictionary<string, string> symptomsPool
-    )
+        IReadOnlyDictionary<string, string> symptomsPool)
     {
         List<NPCProblemDefinition> problems = new List<NPCProblemDefinition>();
 
@@ -76,7 +84,7 @@ public static class NPCProblemsLoader
         foreach (XElement problemElement in problemsElement.Elements("Problem"))
         {
             XAttribute nameAttribute = problemElement.Attribute("name");
-            string problemName = nameAttribute?.Value?.Trim();
+            string problemName = NormalizeProblemName(nameAttribute?.Value);
 
             if (string.IsNullOrWhiteSpace(problemName))
             {
@@ -107,5 +115,18 @@ public static class NPCProblemsLoader
         }
 
         return problems;
+    }
+
+    private static string NormalizeProblemName(string value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return string.Empty;
+        }
+
+        string normalized = value.Trim();
+        normalized = normalized.Trim('\"', '\'', '«', '»');
+        normalized = normalized.Replace("Â«", string.Empty).Replace("Â»", string.Empty);
+        return normalized.Trim();
     }
 }
