@@ -82,6 +82,61 @@ public class TMPPageTypewriter : MonoBehaviour
         ResolveVisualRoot();
         CaptureSourceText();
 
+        StartPlaybackFromSourceText();
+    }
+
+    public void SetSourceText(string newSourceText, bool restartPlayback)
+    {
+        ResolveTextComponent();
+        ResolveVisualRoot();
+
+        sourceText = newSourceText ?? string.Empty;
+        hasCapturedSourceText = true;
+
+        if (restartPlayback)
+        {
+            StartPlaybackFromSourceText();
+            return;
+        }
+
+        StopPlayback();
+        ApplyIdleState();
+    }
+
+    public void SyncSourceTextFromCurrentText(bool restartPlayback)
+    {
+        ResolveTextComponent();
+        ResolveVisualRoot();
+
+        if (textComponent == null)
+        {
+            return;
+        }
+
+        SetSourceText(textComponent.text, restartPlayback);
+    }
+
+    public void RestartPlaybackFromCurrentText()
+    {
+        SyncSourceTextFromCurrentText(true);
+    }
+
+    [ContextMenu("Deactivate")]
+    public void Deactivate()
+    {
+        StopPlayback();
+        ApplyHiddenState();
+    }
+
+    [ContextMenu("Reset Playback")]
+    public void ResetPlayback()
+    {
+        StopPlayback();
+        ApplyIdleState();
+    }
+
+    private void StartPlaybackFromSourceText()
+    {
         if (textComponent == null)
         {
             return;
@@ -115,20 +170,6 @@ public class TMPPageTypewriter : MonoBehaviour
 
         RefreshPageCache(0);
         ApplyCurrentPageState();
-    }
-
-    [ContextMenu("Deactivate")]
-    public void Deactivate()
-    {
-        StopPlayback();
-        ApplyHiddenState();
-    }
-
-    [ContextMenu("Reset Playback")]
-    public void ResetPlayback()
-    {
-        StopPlayback();
-        ApplyIdleState();
     }
 
     private void RevealNextCharacter()

@@ -13,6 +13,9 @@ public class NewsTextMeshProPresenter : MonoBehaviour
     [SerializeField] private TMP_Text targetText;
     [SerializeField] private string emptyStateText = string.Empty;
 
+    [Header("Playback Sync")]
+    [SerializeField] private TMPPageTypewriter typewriter;
+
     [Header("Behaviour")]
     [SerializeField] private bool refreshOnStart = true;
     [SerializeField] private bool logWarnings = true;
@@ -22,6 +25,11 @@ public class NewsTextMeshProPresenter : MonoBehaviour
         if (targetText == null)
         {
             targetText = GetComponent<TMP_Text>();
+        }
+
+        if (typewriter == null)
+        {
+            TryResolveTypewriter();
         }
     }
 
@@ -76,6 +84,7 @@ public class NewsTextMeshProPresenter : MonoBehaviour
         }
 
         targetText.text = newsText;
+        SyncTypewriterSource(false);
     }
 
     public bool PinLatestArchivedNpcToTv(out string reason)
@@ -108,6 +117,7 @@ public class NewsTextMeshProPresenter : MonoBehaviour
         }
 
         Refresh();
+        RestartTypewriterPlayback();
         return true;
     }
 
@@ -205,6 +215,89 @@ public class NewsTextMeshProPresenter : MonoBehaviour
         {
             targetText.text = emptyStateText;
         }
+
+        SyncTypewriterSource(false);
+    }
+
+    private void SyncTypewriterSource(bool restartPlayback)
+    {
+        if (typewriter == null && !TryResolveTypewriter())
+        {
+            return;
+        }
+
+        if (typewriter == null)
+        {
+            return;
+        }
+
+        typewriter.SetSourceText(targetText != null ? targetText.text : string.Empty, restartPlayback);
+    }
+
+    private void RestartTypewriterPlayback()
+    {
+        if (typewriter == null && !TryResolveTypewriter())
+        {
+            return;
+        }
+
+        if (typewriter == null)
+        {
+            return;
+        }
+
+        typewriter.RestartPlaybackFromCurrentText();
+    }
+
+    private bool TryResolveTypewriter()
+    {
+        if (typewriter != null)
+        {
+            return true;
+        }
+
+        typewriter = FindSceneComponentIncludingInactive<TMPPageTypewriter>();
+        return typewriter != null;
+    }
+
+    private static T FindSceneComponentIncludingInactive<T>() where T : Component
+    {
+        T[] candidates = Resources.FindObjectsOfTypeAll<T>();
+        T firstLoadedCandidate = null;
+        T firstCandidate = null;
+
+        for (int i = 0; i < candidates.Length; i++)
+        {
+            T candidate = candidates[i];
+            if (candidate == null)
+            {
+                continue;
+            }
+
+            GameObject candidateObject = candidate.gameObject;
+            if (candidateObject == null || !candidateObject.scene.IsValid() || !candidateObject.scene.isLoaded)
+            {
+                continue;
+            }
+
+            if (firstCandidate == null)
+            {
+                firstCandidate = candidate;
+            }
+
+            Behaviour behaviour = candidate as Behaviour;
+            if (behaviour != null && behaviour.isActiveAndEnabled)
+            {
+                return candidate;
+            }
+
+            if (firstLoadedCandidate == null)
+            {
+                firstLoadedCandidate = candidate;
+            }
+        }
+
+        return firstLoadedCandidate != null ? firstLoadedCandidate : firstCandidate;
     }
 
     private void LogWarning(string message)
