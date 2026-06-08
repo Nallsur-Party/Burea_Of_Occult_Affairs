@@ -34,6 +34,7 @@ public class PlayerController : MonoBehaviour
     private static readonly int MoveXHash = Animator.StringToHash("MoveX");
     private static readonly int MoveZHash = Animator.StringToHash("MoveZ");
     private static readonly int MoveMagnitudeHash = Animator.StringToHash("MoveMagnitude");
+    private static readonly int RunMagnitudeHash = Animator.StringToHash("RunMagnitude");
 
     [Header("Movement")]
     [SerializeField] private float moveSpeed = 5f;
@@ -599,6 +600,7 @@ public class PlayerController : MonoBehaviour
         float moveX = moveInput;
         float moveZ = useDepthMovement ? depthInput : localVelocity.z;
         float moveMagnitude = new Vector2(moveX, moveZ).magnitude;
+        float runMagnitude = player.IsSprinting ? moveMagnitude * sprintMultiplier : 0f;
         if (moveMagnitude > 0.01f)
         {
             lastMoveX = moveX;
@@ -608,6 +610,7 @@ public class PlayerController : MonoBehaviour
         animator.SetFloat(MoveXHash, moveX);
         animator.SetFloat(MoveZHash, moveZ);
         animator.SetFloat(MoveMagnitudeHash, moveMagnitude);
+        animator.SetFloat(RunMagnitudeHash, runMagnitude);
         animator.SetFloat(LastMoveXHash, lastMoveX);
         animator.SetFloat(LastMoveZHash, lastMoveZ);
     }
