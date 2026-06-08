@@ -1,29 +1,88 @@
 using System.Collections;
 using System.Collections.Generic;
+// using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.Serialization;
 
 public class NPCSpawner : MonoBehaviour
 {
-    [SerializeField, Tooltip("Prefab asset or hidden scene prototype to instantiate for spawned NPCs.")]
+    [Header("Audio Settings")]
+    [SerializeField]
+    private AudioSource audioSource;
+
+    [SerializeField]
+    private List<AudioClip> openSounds = new List<AudioClip>(); // Звуки открывания двери
+
+    [SerializeField]
+    private List<AudioClip> closeSounds = new List<AudioClip>(); // Звуки закрытия двери
+
+    [
+        SerializeField,
+        Tooltip("Prefab asset or hidden scene prototype to instantiate for spawned NPCs.")
+    ]
     private GameObject npcPawnPrefab;
-    [SerializeField] private Transform spawnParent;
-    [SerializeField] private NPCGenerator npcGenerator;
-    [SerializeField] private NPCArchiveService npcArchiveService;
-    [SerializeField] private NPCQueueManager npcQueueManager;
-    [SerializeField, Tooltip("Persistent ID used by the debug ContextMenu action that spawns a specific archived NPC.")]
+
+    [SerializeField]
+    private Transform spawnParent;
+
+    [SerializeField]
+    private NPCGenerator npcGenerator;
+
+    [SerializeField]
+    private NPCArchiveService npcArchiveService;
+
+    [SerializeField]
+    private NPCQueueManager npcQueueManager;
+
+    [
+        SerializeField,
+        Tooltip(
+            "Persistent ID used by the debug ContextMenu action that spawns a specific archived NPC."
+        )
+    ]
     private string debugArchivedNpcPersistentId;
-    [SerializeField] private Transform routeRoot;
-    [SerializeField] private Transform startPoint;
-    [SerializeField] private Transform counterPoint;
-    [SerializeField] private Transform[] exitPoints;
-    [SerializeField, InspectorName("Usual Exit Route Points"), FormerlySerializedAs("zExitRoutePoints")] private Transform[] usualExitRoutePoints;
-    [SerializeField, InspectorName("Ritual Stay Point")] private Transform ritualStayPoint;
-    [SerializeField, InspectorName("Ritual Approach Route Points")] private Transform[] ritualApproachRoutePoints;
-    [SerializeField, InspectorName("Ritual Exit Route Points")] private Transform[] ritualExitRoutePoints;
-    [SerializeField, HideInInspector, FormerlySerializedAs("ritualRoutePoints"), FormerlySerializedAs("nExitRoutePoints")] private Transform[] legacyRitualRoutePoints;
-    [SerializeField] private float autoSpawnInterval = 2f;
-    [SerializeField] private bool autoSpawnEnabledByDefault = true;
+
+    [SerializeField]
+    private Transform routeRoot;
+
+    [SerializeField]
+    private Transform startPoint;
+
+    [SerializeField]
+    private Transform counterPoint;
+
+    [SerializeField]
+    private Transform[] exitPoints;
+
+    [
+        SerializeField,
+        InspectorName("Usual Exit Route Points"),
+        FormerlySerializedAs("zExitRoutePoints")
+    ]
+    private Transform[] usualExitRoutePoints;
+
+    [SerializeField, InspectorName("Ritual Stay Point")]
+    private Transform ritualStayPoint;
+
+    [SerializeField, InspectorName("Ritual Approach Route Points")]
+    private Transform[] ritualApproachRoutePoints;
+
+    [SerializeField, InspectorName("Ritual Exit Route Points")]
+    private Transform[] ritualExitRoutePoints;
+
+    [
+        SerializeField,
+        HideInInspector,
+        FormerlySerializedAs("ritualRoutePoints"),
+        FormerlySerializedAs("nExitRoutePoints")
+    ]
+    private Transform[] legacyRitualRoutePoints;
+
+    [SerializeField]
+    private float autoSpawnInterval = 2f;
+
+    [SerializeField]
+    private bool autoSpawnEnabledByDefault = true;
 
     private Coroutine autoSpawnCoroutine;
     private bool isAutoSpawnEnabled;
@@ -41,9 +100,10 @@ public class NPCSpawner : MonoBehaviour
 
         if (npcArchiveService == null)
         {
-            npcArchiveService = NPCArchiveService.Instance != null
-                ? NPCArchiveService.Instance
-                : FindObjectOfType<NPCArchiveService>();
+            npcArchiveService =
+                NPCArchiveService.Instance != null
+                    ? NPCArchiveService.Instance
+                    : FindObjectOfType<NPCArchiveService>();
         }
 
         if (npcQueueManager == null)
@@ -198,7 +258,14 @@ public class NPCSpawner : MonoBehaviour
             return false;
         }
 
-        return TrySpawnNpcInstance(npcData, "generated");
+        if (TrySpawnNpcInstance(npcData, "generated"))
+        {
+            Debug.Log("[DOOR AUDIO] Generated NPC spawned. Playing door sound");
+            PlayDoorSound();
+            return true;
+        }
+
+        return false;
     }
 
     public bool TrySpawnArchivedNPC(string persistentId = null)
@@ -211,9 +278,10 @@ public class NPCSpawner : MonoBehaviour
 
         if (npcArchiveService == null)
         {
-            npcArchiveService = NPCArchiveService.Instance != null
-                ? NPCArchiveService.Instance
-                : FindObjectOfType<NPCArchiveService>();
+            npcArchiveService =
+                NPCArchiveService.Instance != null
+                    ? NPCArchiveService.Instance
+                    : FindObjectOfType<NPCArchiveService>();
         }
 
         if (npcArchiveService == null)
@@ -235,9 +303,10 @@ public class NPCSpawner : MonoBehaviour
         }
 
         NPC npcData;
-        bool takenFromArchive = !pendingArchivedNpcUseLatest && !string.IsNullOrWhiteSpace(persistentId)
-            ? npcArchiveService.TryTakeArchivedNpc(persistentId, out npcData)
-            : npcArchiveService.TryTakeArchivedNpc(out npcData);
+        bool takenFromArchive =
+            !pendingArchivedNpcUseLatest && !string.IsNullOrWhiteSpace(persistentId)
+                ? npcArchiveService.TryTakeArchivedNpc(persistentId, out npcData)
+                : npcArchiveService.TryTakeArchivedNpc(out npcData);
 
         if (!takenFromArchive || npcData == null)
         {
@@ -252,6 +321,8 @@ public class NPCSpawner : MonoBehaviour
             ClearPendingArchivedNpcSpawn();
             return false;
         }
+
+        PlayDoorSound();
 
         ClearPendingArchivedNpcSpawn();
         return true;
@@ -272,6 +343,68 @@ public class NPCSpawner : MonoBehaviour
         return pendingArchivedNpcUseLatest
             ? TrySpawnArchivedNPC()
             : TrySpawnArchivedNPC(pendingArchivedNpcPersistentId);
+    }
+
+    private void PlayDoorSound()
+    {
+        Debug.Log("[DOOR AUDIO] PlayDoorSound called");
+
+        if (audioSource == null)
+        {
+            Debug.LogError("[DOOR AUDIO] AudioSource НЕ назначен!", this);
+            return;
+        }
+
+        Debug.Log(
+            $"[DOOR AUDIO] Open sounds count = {(openSounds == null ? 0 : openSounds.Count)}"
+        );
+
+        Debug.Log(
+            $"[DOOR AUDIO] Close sounds count = {(closeSounds == null ? 0 : closeSounds.Count)}"
+        );
+
+        Debug.Log(
+            $"[DOOR AUDIO] AudioSource volume = {audioSource.volume}, SpatialBlend = {audioSource.spatialBlend}"
+        );
+
+        if (openSounds != null && openSounds.Count > 0)
+        {
+            AudioClip randomOpen = openSounds[UnityEngine.Random.Range(0, openSounds.Count)];
+            Debug.Log($"[DOOR AUDIO] Playing OPEN sound: {randomOpen.name}");
+            audioSource.PlayOneShot(randomOpen);
+        }
+        else
+        {
+            Debug.LogWarning("[DOOR AUDIO] Open sounds list is empty!");
+        }
+
+        StartCoroutine(PlayCloseSoundDelayed(1.1f));
+    }
+
+    private IEnumerator PlayCloseSoundDelayed(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        Debug.Log("[DOOR AUDIO] Close sound timer finished");
+
+        if (audioSource == null)
+        {
+            Debug.LogError("[DOOR AUDIO] AudioSource lost before close sound!");
+            yield break;
+        }
+
+        if (closeSounds != null && closeSounds.Count > 0)
+        {
+            AudioClip randomClose = closeSounds[Random.Range(0, closeSounds.Count)];
+
+            Debug.Log($"[DOOR AUDIO] Playing CLOSE sound: {randomClose.name}");
+
+            audioSource.PlayOneShot(randomClose);
+        }
+        else
+        {
+            Debug.LogWarning("[DOOR AUDIO] Close sounds list is empty!");
+        }
     }
 
     private NPC CreateGeneratedNpc()
@@ -323,7 +456,10 @@ public class NPCSpawner : MonoBehaviour
 
         npcQueueManager.EnqueueNPC(npcOrderVisitor);
 
-        Debug.Log($"Spawned {spawnSourceLabel} NPC: {npcOrderVisitor.NpcData?.Name}", spawnedNpcObject);
+        Debug.Log(
+            $"Spawned {spawnSourceLabel} NPC: {npcOrderVisitor.NpcData?.Name}",
+            spawnedNpcObject
+        );
         return true;
     }
 
@@ -333,18 +469,25 @@ public class NPCSpawner : MonoBehaviour
         {
             pendingArchivedNpcPersistentId = null;
             pendingArchivedNpcUseLatest = true;
-            Debug.Log("Queued archived NPC spawn request for the latest archived NPC. It will spawn as soon as a slot is available.", this);
+            Debug.Log(
+                "Queued archived NPC spawn request for the latest archived NPC. It will spawn as soon as a slot is available.",
+                this
+            );
             return;
         }
 
         pendingArchivedNpcPersistentId = persistentId.Trim();
         pendingArchivedNpcUseLatest = false;
-        Debug.Log($"Queued archived NPC spawn request for id '{pendingArchivedNpcPersistentId}'. It will spawn as soon as a slot is available.", this);
+        Debug.Log(
+            $"Queued archived NPC spawn request for id '{pendingArchivedNpcPersistentId}'. It will spawn as soon as a slot is available.",
+            this
+        );
     }
 
     private bool HasPendingArchivedNpcRequest()
     {
-        return pendingArchivedNpcUseLatest || !string.IsNullOrWhiteSpace(pendingArchivedNpcPersistentId);
+        return pendingArchivedNpcUseLatest
+            || !string.IsNullOrWhiteSpace(pendingArchivedNpcPersistentId);
     }
 
     private void ClearPendingArchivedNpcSpawn()
@@ -394,7 +537,7 @@ public class NPCSpawner : MonoBehaviour
                 FindExitPoint("ExitPoint_Z0", "ExitPoint_Z"),
                 FindExitPoint("ExitPoint_Z1"),
                 FindExitPoint("ExitPoint_Z2"),
-                routeRoot.Find("ExitPoint_N")
+                routeRoot.Find("ExitPoint_N"),
             };
         }
 
@@ -404,7 +547,7 @@ public class NPCSpawner : MonoBehaviour
             {
                 FindExitPoint("ExitPoint_Z0", "ExitPoint_Z"),
                 FindExitPoint("ExitPoint_Z1"),
-                FindExitPoint("ExitPoint_Z2")
+                FindExitPoint("ExitPoint_Z2"),
             };
         }
 
@@ -417,10 +560,7 @@ public class NPCSpawner : MonoBehaviour
 
         if (ritualExitRoutePoints == null || ritualExitRoutePoints.Length == 0)
         {
-            ritualExitRoutePoints = new Transform[]
-            {
-                FindExitPoint("ExitPoint_N")
-            };
+            ritualExitRoutePoints = new Transform[] { FindExitPoint("ExitPoint_N") };
         }
     }
 
@@ -500,7 +640,10 @@ public class NPCSpawner : MonoBehaviour
             Transform resolvedStayPoint = GetResolvedRitualStayPoint();
             if (resolvedStayPoint != null)
             {
-                Transform[] exitRoute = BuildRouteAfterStayPoint(legacyRitualRoutePoints, resolvedStayPoint);
+                Transform[] exitRoute = BuildRouteAfterStayPoint(
+                    legacyRitualRoutePoints,
+                    resolvedStayPoint
+                );
                 if (exitRoute.Length > 0)
                 {
                     return exitRoute;
@@ -545,15 +688,20 @@ public class NPCSpawner : MonoBehaviour
 
         if (ritualApproachRoutePoints == null || ritualApproachRoutePoints.Length == 0)
         {
-            ritualApproachRoutePoints = BuildRouteBeforeStayPoint(legacyRitualRoutePoints, resolvedStayPoint);
+            ritualApproachRoutePoints = BuildRouteBeforeStayPoint(
+                legacyRitualRoutePoints,
+                resolvedStayPoint
+            );
         }
 
         if (ritualExitRoutePoints == null || ritualExitRoutePoints.Length == 0)
         {
-            Transform[] exitRoute = BuildRouteAfterStayPoint(legacyRitualRoutePoints, resolvedStayPoint);
-            ritualExitRoutePoints = exitRoute.Length > 0
-                ? exitRoute
-                : BuildRoute(FindExitPoint("ExitPoint_N"));
+            Transform[] exitRoute = BuildRouteAfterStayPoint(
+                legacyRitualRoutePoints,
+                resolvedStayPoint
+            );
+            ritualExitRoutePoints =
+                exitRoute.Length > 0 ? exitRoute : BuildRoute(FindExitPoint("ExitPoint_N"));
         }
     }
 
@@ -568,7 +716,10 @@ public class NPCSpawner : MonoBehaviour
         return ritualStayPoint;
     }
 
-    private static Transform[] BuildRouteBeforeStayPoint(IReadOnlyList<Transform> sourcePoints, Transform stayPoint)
+    private static Transform[] BuildRouteBeforeStayPoint(
+        IReadOnlyList<Transform> sourcePoints,
+        Transform stayPoint
+    )
     {
         List<Transform> route = new List<Transform>();
         if (sourcePoints == null || sourcePoints.Count == 0)
@@ -595,7 +746,10 @@ public class NPCSpawner : MonoBehaviour
         return route.ToArray();
     }
 
-    private static Transform[] BuildRouteAfterStayPoint(IReadOnlyList<Transform> sourcePoints, Transform stayPoint)
+    private static Transform[] BuildRouteAfterStayPoint(
+        IReadOnlyList<Transform> sourcePoints,
+        Transform stayPoint
+    )
     {
         List<Transform> route = new List<Transform>();
         if (sourcePoints == null || sourcePoints.Count == 0)

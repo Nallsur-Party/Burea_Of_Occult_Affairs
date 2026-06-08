@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
@@ -16,7 +17,7 @@ public class NpcOrderVisitor : MonoBehaviour
         WaitingAtCounter,
         WaitingForProblemResolution,
         PushingAway,
-        Leaving
+        Leaving,
     }
 
     private static readonly int SpeedHash = Animator.StringToHash("speed");
@@ -25,49 +26,120 @@ public class NpcOrderVisitor : MonoBehaviour
     private static readonly int IsMovingForwardHash = Animator.StringToHash("isMovingForward");
     private static readonly int IsMovingBackwardHash = Animator.StringToHash("isMovingBackward");
     private static readonly int IsLookingDownHash = Animator.StringToHash("isLookingDown");
-    private static readonly int IsLookingHorizontalHash = Animator.StringToHash("isLookingHorizontal");
+    private static readonly int IsLookingHorizontalHash = Animator.StringToHash(
+        "isLookingHorizontal"
+    );
     private static readonly int IsPlayerNearHash = Animator.StringToHash("isPlayerNear");
 
     [Header("Route")]
-    [SerializeField] private Transform startPoint;
-    [SerializeField] private Transform counterPoint;
-    [SerializeField] private Transform[] exitPoints;
-    [SerializeField] private Transform[] sequentialExitRoutePoints;
-    [SerializeField] private Transform ritualStayPoint;
-    [SerializeField] private Transform[] ritualApproachRoutePoints;
-    [SerializeField] private Transform[] ritualExitRoutePoints;
-    [SerializeField, HideInInspector, FormerlySerializedAs("holdUntilCuredExitRoutePoints")] private Transform[] legacyRitualRoutePoints;
-    [SerializeField] private bool snapToStartPointOnAwake = true;
-    [SerializeField] private bool beginRouteOnAwake = true;
+    [SerializeField]
+    private Transform startPoint;
+
+    [SerializeField]
+    private Transform counterPoint;
+
+    [SerializeField]
+    private Transform[] exitPoints;
+
+    [SerializeField]
+    private Transform[] sequentialExitRoutePoints;
+
+    [SerializeField]
+    private Transform ritualStayPoint;
+
+    [SerializeField]
+    private Transform[] ritualApproachRoutePoints;
+
+    [SerializeField]
+    private Transform[] ritualExitRoutePoints;
+
+    [SerializeField, HideInInspector, FormerlySerializedAs("holdUntilCuredExitRoutePoints")]
+    private Transform[] legacyRitualRoutePoints;
+
+    [SerializeField]
+    private bool snapToStartPointOnAwake = true;
+
+    [SerializeField]
+    private bool beginRouteOnAwake = true;
 
     [Header("Movement")]
-    [SerializeField] private float moveSpeed = 2.5f;
-    [SerializeField] private float stoppingDistance = 0.05f;
-    [SerializeField] private bool keepCurrentY = true;
-    [SerializeField] private float collisionSkin = 0.02f;
+    [SerializeField]
+    private float moveSpeed = 2.5f;
+
+    [SerializeField]
+    private float stoppingDistance = 0.05f;
+
+    [SerializeField]
+    private bool keepCurrentY = true;
+
+    [SerializeField]
+    private float collisionSkin = 0.02f;
+
+    [Header("Footsteps")] // Хедер для шагов
+    [SerializeField]
+    private AudioSource footstepAudioSource;
+
+    [SerializeField]
+    private AudioClip footstepLoopClip;
+
+    [SerializeField]
+    private float footstepInterval = 0.4f;
+
+    [SerializeField]
+    private AudioClip[] stepClips;
+
+    [SerializeField]
+    private float stepRate = 0.4f;
+    private float stepTimer;
 
     [Header("Visual")]
-    [SerializeField] private SpriteRenderer spriteRenderer;
-    [SerializeField] private bool invertFlipX;
-    [SerializeField] private bool facesRightByDefault = true;
-    [SerializeField] private Animator animator;
-    [SerializeField] private float lookAtPlayerRadius = 2f;
-    [SerializeField] private NPCDialogueBubble dialogueBubble;
-    [SerializeField] private NPCHealthBar healthBar;
+    [SerializeField]
+    private SpriteRenderer spriteRenderer;
+
+    [SerializeField]
+    private bool invertFlipX;
+
+    [SerializeField]
+    private bool facesRightByDefault = true;
+
+    [SerializeField]
+    private Animator animator;
+
+    [SerializeField]
+    private float lookAtPlayerRadius = 2f;
+
+    [SerializeField]
+    private NPCDialogueBubble dialogueBubble;
+
+    [SerializeField]
+    private NPCHealthBar healthBar;
 
     [Header("NPC Data")]
-    [SerializeField] private NPCGenerator npcGenerator;
-    [SerializeField] private NPCArchiveService npcArchiveService;
-    [SerializeField] private bool generateNpcDataOnAwake = true;
-    [SerializeField] private NPC npcData;
-    [SerializeField] private bool renameGameObjectToNpcName = true;
+    [SerializeField]
+    private NPCGenerator npcGenerator;
+
+    [SerializeField]
+    private NPCArchiveService npcArchiveService;
+
+    [SerializeField]
+    private bool generateNpcDataOnAwake = true;
+
+    [SerializeField]
+    private NPC npcData;
+
+    [SerializeField]
+    private bool renameGameObjectToNpcName = true;
 
     [Header("Events")]
-    [SerializeField] private UnityEvent onReachedCounter;
-    [SerializeField] private UnityEvent onLeftScene;
+    [SerializeField]
+    private UnityEvent onReachedCounter;
+
+    [SerializeField]
+    private UnityEvent onLeftScene;
 
     [Header("Push")]
-    [SerializeField] private float pushDistance = 1f;
+    [SerializeField]
+    private float pushDistance = 1f;
 
     private VisitorState currentState = VisitorState.Idle;
     private Transform currentTarget;
@@ -90,6 +162,8 @@ public class NpcOrderVisitor : MonoBehaviour
     private RitualRoutePhase ritualRoutePhase = RitualRoutePhase.None;
     private int ritualApproachIndex = -1;
     private int ritualExitIndex = -1;
+    private float footstepTimer;
+    private bool isFootstepPlaying;
 
     private enum RitualRoutePhase
     {
@@ -97,7 +171,7 @@ public class NpcOrderVisitor : MonoBehaviour
         ApproachingRoute,
         ApproachingStayPoint,
         WaitingAtStayPoint,
-        Exiting
+        Exiting,
     }
 
     public bool IsWaitingAtCounter => currentState == VisitorState.WaitingAtCounter;
@@ -132,9 +206,10 @@ public class NpcOrderVisitor : MonoBehaviour
 
         if (npcArchiveService == null)
         {
-            npcArchiveService = NPCArchiveService.Instance != null
-                ? NPCArchiveService.Instance
-                : FindObjectOfType<NPCArchiveService>();
+            npcArchiveService =
+                NPCArchiveService.Instance != null
+                    ? NPCArchiveService.Instance
+                    : FindObjectOfType<NPCArchiveService>();
         }
 
         if (dialogueBubble == null)
@@ -188,6 +263,11 @@ public class NpcOrderVisitor : MonoBehaviour
         {
             SendToCounter();
         }
+
+        if (footstepAudioSource != null)
+        {
+            footstepAudioSource.playOnAwake = false;
+        }
     }
 
     private void OnDisable()
@@ -202,10 +282,12 @@ public class NpcOrderVisitor : MonoBehaviour
             return;
         }
 
-        if (collision.gameObject.CompareTag("Player")
+        if (
+            collision.gameObject.CompareTag("Player")
             && !IsNpcMoving()
             && currentState != VisitorState.PushingAway
-            && currentState != VisitorState.WaitingAtCounter)
+            && currentState != VisitorState.WaitingAtCounter
+        )
         {
             PushAway();
         }
@@ -275,7 +357,10 @@ public class NpcOrderVisitor : MonoBehaviour
         NPCGenerator generator = generatorOverride != null ? generatorOverride : npcGenerator;
         if (generator == null)
         {
-            Debug.LogWarning($"{nameof(NpcOrderVisitor)} on {name} could not find {nameof(NPCGenerator)}.", this);
+            Debug.LogWarning(
+                $"{nameof(NpcOrderVisitor)} on {name} could not find {nameof(NPCGenerator)}.",
+                this
+            );
             return false;
         }
 
@@ -283,7 +368,11 @@ public class NpcOrderVisitor : MonoBehaviour
         npcData = generator.GeneratedNpc;
         npcGenerator = generator;
 
-        if (renameGameObjectToNpcName && npcData != null && !string.IsNullOrWhiteSpace(npcData.Name))
+        if (
+            renameGameObjectToNpcName
+            && npcData != null
+            && !string.IsNullOrWhiteSpace(npcData.Name)
+        )
         {
             gameObject.name = $"NPC - {npcData.Name}";
         }
@@ -378,10 +467,7 @@ public class NpcOrderVisitor : MonoBehaviour
 
     public bool IsDialogueVisible
     {
-        get
-        {
-            return dialogueBubble != null && dialogueBubble.IsVisible;
-        }
+        get { return dialogueBubble != null && dialogueBubble.IsVisible; }
     }
 
     public void SetNpcData(NPC npc)
@@ -399,7 +485,12 @@ public class NpcOrderVisitor : MonoBehaviour
         }
     }
 
-    public void ConfigureRoute(Transform startPoint, Transform counterPoint, Transform[] exitPoints, bool snapToStart = false)
+    public void ConfigureRoute(
+        Transform startPoint,
+        Transform counterPoint,
+        Transform[] exitPoints,
+        bool snapToStart = false
+    )
     {
         this.startPoint = startPoint;
         this.counterPoint = counterPoint;
@@ -418,9 +509,7 @@ public class NpcOrderVisitor : MonoBehaviour
             return "NPC data has not been generated yet.";
         }
 
-        string dialogueLine = npcGenerator != null
-            ? npcGenerator.GetDialogueLine(npcData)
-            : null;
+        string dialogueLine = npcGenerator != null ? npcGenerator.GetDialogueLine(npcData) : null;
 
         if (string.IsNullOrWhiteSpace(dialogueLine))
         {
@@ -455,15 +544,15 @@ public class NpcOrderVisitor : MonoBehaviour
             return;
         }
 
-        string symptomsText = npcData.Symptoms.Count > 0
-            ? BuildSymptomsDebugText()
-            : "No symptoms";
-        string problemText = npcData.IsParanormalCase && npcData.HasProblem
-            ? npcData.ProblemName
+        string symptomsText = npcData.Symptoms.Count > 0 ? BuildSymptomsDebugText() : "No symptoms";
+        string problemText =
+            npcData.IsParanormalCase && npcData.HasProblem ? npcData.ProblemName
             : npcData.IsNonParanormalCase
                 ? npcData.NonParanormalConditionName ?? "Non-paranormal case"
-                : "No case";
-        string safeResponseText = string.IsNullOrWhiteSpace(responseText) ? "No response" : responseText;
+            : "No case";
+        string safeResponseText = string.IsNullOrWhiteSpace(responseText)
+            ? "No response"
+            : responseText;
 
         Debug.Log(
             $"NPC Debug | Action: {actionLabel} | Response: {safeResponseText} | NPC: {npcData.Name} | Gender: {npcData.Gender} | Age: {npcData.Age} | Trait: {npcData.Trait} | CaseType: {npcData.CaseType} | Problem: {problemText} | Symptoms: {symptomsText} | TruthTokens: {npcData.RemainingTruthTokens} | LieTokens: {npcData.RemainingLieTokens} | QuestionTokens: {npcData.RemainingDetectiveQuestionTokens} | SpentQuestions: {npcData.SpentDetectiveQuestionCount}",
@@ -488,7 +577,11 @@ public class NpcOrderVisitor : MonoBehaviour
             return string.Join(", ", npcData.NonParanormalSymptoms);
         }
 
-        if (npcData.CaseType != NPCCaseType.Paranormal || npcData.SymptomIds.Count == 0 || npcData.Symptoms.Count == 0)
+        if (
+            npcData.CaseType != NPCCaseType.Paranormal
+            || npcData.SymptomIds.Count == 0
+            || npcData.Symptoms.Count == 0
+        )
         {
             return "No symptoms";
         }
@@ -506,7 +599,11 @@ public class NpcOrderVisitor : MonoBehaviour
 
     private void Update()
     {
-        if (currentState == VisitorState.WaitingForProblemResolution && npcData != null && npcData.IsCured)
+        if (
+            currentState == VisitorState.WaitingForProblemResolution
+            && npcData != null
+            && npcData.IsCured
+        )
         {
             ContinueRitualExitRoute();
         }
@@ -525,6 +622,38 @@ public class NpcOrderVisitor : MonoBehaviour
         UpdateAnimator();
     }
 
+    private void UpdateFootstepAudio(bool isMoving)
+    {
+        if (footstepAudioSource == null || stepClips == null || stepClips.Length == 0)
+            return;
+
+        if (!isMoving)
+        {
+            stepTimer = 0f;
+            return;
+        }
+
+        stepTimer -= Time.deltaTime;
+
+        if (stepTimer <= 0f)
+        {
+            stepTimer = stepRate;
+
+            AudioClip clip = stepClips[Random.Range(0, stepClips.Length)];
+            footstepAudioSource.PlayOneShot(clip, 0.8f);
+        }
+    }
+
+    private void Start()
+    {
+        if (footstepAudioSource != null)
+        {
+            footstepAudioSource.playOnAwake = false;
+            footstepAudioSource.loop = true;
+            footstepAudioSource.clip = footstepLoopClip;
+        }
+    }
+
     private void FixedUpdate()
     {
         if (currentTarget == null && !useCustomTarget)
@@ -534,7 +663,11 @@ public class NpcOrderVisitor : MonoBehaviour
 
         Vector3 targetPosition = GetTargetPosition();
         Vector3 currentPosition = rb != null ? rb.position : transform.position;
-        Vector3 nextPosition = Vector3.MoveTowards(currentPosition, targetPosition, moveSpeed * Time.fixedDeltaTime);
+        Vector3 nextPosition = Vector3.MoveTowards(
+            currentPosition,
+            targetPosition,
+            moveSpeed * Time.fixedDeltaTime
+        );
         Vector3 delta = nextPosition - currentPosition;
         delta = ResolveMovementCollisions(delta);
         nextPosition = currentPosition + delta;
@@ -589,7 +722,12 @@ public class NpcOrderVisitor : MonoBehaviour
 
     public void LeaveThroughExit(int exitIndex)
     {
-        if (exitPoints == null || exitIndex < 0 || exitIndex >= exitPoints.Length || exitPoints[exitIndex] == null)
+        if (
+            exitPoints == null
+            || exitIndex < 0
+            || exitIndex >= exitPoints.Length
+            || exitPoints[exitIndex] == null
+        )
         {
             return;
         }
@@ -672,7 +810,11 @@ public class NpcOrderVisitor : MonoBehaviour
         ritualExitRoutePoints = BuildRoute(routePoints);
     }
 
-    public void SetRitualRoutePoints(Transform stayPoint, Transform[] approachRoutePoints, Transform[] exitRoutePoints)
+    public void SetRitualRoutePoints(
+        Transform stayPoint,
+        Transform[] approachRoutePoints,
+        Transform[] exitRoutePoints
+    )
     {
         ritualStayPoint = stayPoint;
         ritualApproachRoutePoints = BuildRoute(approachRoutePoints);
@@ -818,7 +960,8 @@ public class NpcOrderVisitor : MonoBehaviour
             return;
         }
 
-        Transform resolvedStayPoint = ritualStayPoint ?? FindStayPointInLegacyRoute(legacyRitualRoutePoints);
+        Transform resolvedStayPoint =
+            ritualStayPoint ?? FindStayPointInLegacyRoute(legacyRitualRoutePoints);
         if (resolvedStayPoint != null && ritualStayPoint == null)
         {
             ritualStayPoint = resolvedStayPoint;
@@ -828,12 +971,18 @@ public class NpcOrderVisitor : MonoBehaviour
         {
             if (ritualApproachRoutePoints == null || ritualApproachRoutePoints.Length == 0)
             {
-                ritualApproachRoutePoints = BuildRouteBeforeStayPoint(legacyRitualRoutePoints, resolvedStayPoint);
+                ritualApproachRoutePoints = BuildRouteBeforeStayPoint(
+                    legacyRitualRoutePoints,
+                    resolvedStayPoint
+                );
             }
 
             if (ritualExitRoutePoints == null || ritualExitRoutePoints.Length == 0)
             {
-                ritualExitRoutePoints = BuildRouteAfterStayPoint(legacyRitualRoutePoints, resolvedStayPoint);
+                ritualExitRoutePoints = BuildRouteAfterStayPoint(
+                    legacyRitualRoutePoints,
+                    resolvedStayPoint
+                );
             }
         }
         else
@@ -861,8 +1010,10 @@ public class NpcOrderVisitor : MonoBehaviour
             }
 
             string waypointName = waypoint.name;
-            if (!string.IsNullOrWhiteSpace(waypointName)
-                && (waypointName.Contains("NStay") || waypointName.Contains("Stay")))
+            if (
+                !string.IsNullOrWhiteSpace(waypointName)
+                && (waypointName.Contains("NStay") || waypointName.Contains("Stay"))
+            )
             {
                 return waypoint;
             }
@@ -890,7 +1041,10 @@ public class NpcOrderVisitor : MonoBehaviour
         return route.ToArray();
     }
 
-    private static Transform[] BuildRouteBeforeStayPoint(IReadOnlyList<Transform> sourcePoints, Transform stayPoint)
+    private static Transform[] BuildRouteBeforeStayPoint(
+        IReadOnlyList<Transform> sourcePoints,
+        Transform stayPoint
+    )
     {
         List<Transform> route = new List<Transform>();
         if (sourcePoints == null)
@@ -917,7 +1071,10 @@ public class NpcOrderVisitor : MonoBehaviour
         return route.ToArray();
     }
 
-    private static Transform[] BuildRouteAfterStayPoint(IReadOnlyList<Transform> sourcePoints, Transform stayPoint)
+    private static Transform[] BuildRouteAfterStayPoint(
+        IReadOnlyList<Transform> sourcePoints,
+        Transform stayPoint
+    )
     {
         List<Transform> route = new List<Transform>();
         if (sourcePoints == null)
@@ -978,7 +1135,10 @@ public class NpcOrderVisitor : MonoBehaviour
                     return true;
                 }
 
-                if (ritualApproachRoutePoints != null && ritualApproachIndex + 1 < ritualApproachRoutePoints.Length)
+                if (
+                    ritualApproachRoutePoints != null
+                    && ritualApproachIndex + 1 < ritualApproachRoutePoints.Length
+                )
                 {
                     ritualApproachIndex++;
                     Transform nextApproachWaypoint = ritualApproachRoutePoints[ritualApproachIndex];
@@ -1022,7 +1182,10 @@ public class NpcOrderVisitor : MonoBehaviour
                 return true;
 
             case RitualRoutePhase.Exiting:
-                if (ritualExitRoutePoints != null && ritualExitIndex + 1 < ritualExitRoutePoints.Length)
+                if (
+                    ritualExitRoutePoints != null
+                    && ritualExitIndex + 1 < ritualExitRoutePoints.Length
+                )
                 {
                     ritualExitIndex++;
                     Transform nextExitWaypoint = ritualExitRoutePoints[ritualExitIndex];
@@ -1112,7 +1275,11 @@ public class NpcOrderVisitor : MonoBehaviour
             return;
         }
 
-        if (!isSequentialExitActive || sequentialExitRoutePoints == null || sequentialExitRoutePoints.Length == 0)
+        if (
+            !isSequentialExitActive
+            || sequentialExitRoutePoints == null
+            || sequentialExitRoutePoints.Length == 0
+        )
         {
             return;
         }
@@ -1187,7 +1354,11 @@ public class NpcOrderVisitor : MonoBehaviour
                     break;
                 }
 
-                if (isSequentialExitActive && sequentialExitRoutePoints != null && sequentialExitIndex + 1 < sequentialExitRoutePoints.Length)
+                if (
+                    isSequentialExitActive
+                    && sequentialExitRoutePoints != null
+                    && sequentialExitIndex + 1 < sequentialExitRoutePoints.Length
+                )
                 {
                     sequentialExitIndex++;
                     Transform nextWaypoint = sequentialExitRoutePoints[sequentialExitIndex];
@@ -1220,9 +1391,10 @@ public class NpcOrderVisitor : MonoBehaviour
     {
         if (npcArchiveService == null)
         {
-            npcArchiveService = NPCArchiveService.Instance != null
-                ? NPCArchiveService.Instance
-                : FindObjectOfType<NPCArchiveService>();
+            npcArchiveService =
+                NPCArchiveService.Instance != null
+                    ? NPCArchiveService.Instance
+                    : FindObjectOfType<NPCArchiveService>();
         }
 
         if (npcArchiveService == null || npcData == null)
@@ -1286,7 +1458,12 @@ public class NpcOrderVisitor : MonoBehaviour
         return moveToWall + slideDelta;
     }
 
-    private void GetCapsuleWorldPoints(CapsuleCollider capsule, out Vector3 point1, out Vector3 point2, out float radius)
+    private void GetCapsuleWorldPoints(
+        CapsuleCollider capsule,
+        out Vector3 point1,
+        out Vector3 point2,
+        out float radius
+    )
     {
         Transform capsuleTransform = capsule.transform;
         Vector3 center = capsuleTransform.TransformPoint(capsule.center);
@@ -1347,7 +1524,16 @@ public class NpcOrderVisitor : MonoBehaviour
 
         Vector3 direction = delta.normalized;
         float distance = delta.magnitude + collisionSkin;
-        return Physics.CapsuleCast(point1, point2, radius, direction, out hit, distance, ~0, QueryTriggerInteraction.Ignore);
+        return Physics.CapsuleCast(
+            point1,
+            point2,
+            radius,
+            direction,
+            out hit,
+            distance,
+            ~0,
+            QueryTriggerInteraction.Ignore
+        );
     }
 
     private Vector3 GetTargetPosition()
@@ -1425,7 +1611,9 @@ public class NpcOrderVisitor : MonoBehaviour
         float speedZ = localVelocity.z;
         bool isMovingForward = speedZ >= speedX;
         bool isMovingBackward = speedZ <= -speedX;
-        bool isMoving = planarSpeed > 0.001f;
+        bool isMoving = lastFrameVelocity.sqrMagnitude > 0.001f;
+
+        UpdateFootstepAudio(isMoving);
 
         bool isLookingDown = false;
         bool isLookingHorizontal = false;
@@ -1436,12 +1624,12 @@ public class NpcOrderVisitor : MonoBehaviour
             Vector3 playerPosition = playerController.transform.position;
             float distanceToPlayer = Vector3.Distance(transform.position, playerPosition);
             isPlayerNear = distanceToPlayer <= lookAtPlayerRadius;
-            canFacePlayer = isPlayerNear
-                && !isMoving
-                && CanFacePlayerInCurrentState();
+            canFacePlayer = isPlayerNear && !isMoving && CanFacePlayerInCurrentState();
             if (canFacePlayer)
             {
-                Vector3 localDirection = transform.InverseTransformDirection((playerPosition - transform.position).normalized);
+                Vector3 localDirection = transform.InverseTransformDirection(
+                    (playerPosition - transform.position).normalized
+                );
                 float angle = Mathf.Atan2(localDirection.x, localDirection.z) * Mathf.Rad2Deg;
 
                 isLookingHorizontal = Mathf.Abs(angle) >= 45f && Mathf.Abs(angle) <= 135f;
