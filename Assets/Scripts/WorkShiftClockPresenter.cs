@@ -6,11 +6,15 @@ public class WorkShiftClockPresenter : MonoBehaviour
     [Header("Scene Binding")]
     [SerializeField] private Transform hourHand;
     [SerializeField] private Transform minuteHand;
+    [SerializeField, Min(0f)] private float smoothSpeed = 8f;
 
     private WorkShiftTimeSystem timeSystem;
-    private float hourHandBaseX;
-    private float minuteHandBaseX;
+    private float hourHandBaseZ;
+    private float minuteHandBaseZ;
     private bool hasCachedBaseRotation;
+    private float targetHourZ;
+    private float targetMinuteZ;
+    private bool hasTargetAngles;
 
     private void Awake()
     {
@@ -50,12 +54,12 @@ public class WorkShiftClockPresenter : MonoBehaviour
 
     private void HandleTimeChanged(int currentMinutesFromMidnight)
     {
-        RefreshHands();
+        UpdateTargetAngles(currentMinutesFromMidnight);
     }
 
     private void HandleShiftEnded()
     {
-        RefreshHands();
+        UpdateTargetAngles(timeSystem != null ? timeSystem.CurrentMinutesFromMidnight : WorkShiftTimeSystem.ShiftEndMinutes);
     }
 
     private void ResolveTimeSystem()
@@ -74,12 +78,12 @@ public class WorkShiftClockPresenter : MonoBehaviour
     {
         if (hourHand != null)
         {
-            hourHandBaseX = hourHand.eulerAngles.z;
+            hourHandBaseZ = hourHand.eulerAngles.z;
         }
 
         if (minuteHand != null)
         {
-            minuteHandBaseX = minuteHand.eulerAngles.z;
+            minuteHandBaseZ = minuteHand.eulerAngles.z;
         }
 
         hasCachedBaseRotation = hourHand != null && minuteHand != null;
@@ -108,10 +112,21 @@ public class WorkShiftClockPresenter : MonoBehaviour
             CacheBaseRotations();
         }
 
-        ApplyHandRotations(timeSystem.CurrentMinutesFromMidnight);
+        UpdateTargetAngles(timeSystem.CurrentMinutesFromMidnight);
+        ApplySmoothedRotation(true);
     }
 
-    private void ApplyHandRotations(int minutesFromMidnight)
+    private void Update()
+    {
+        if (!hasTargetAngles)
+        {
+            return;
+        }
+
+        ApplySmoothedRotation(false);
+    }
+
+    private void UpdateTargetAngles(int minutesFromMidnight)
     {
         if (hourHand == null || minuteHand == null)
         {
@@ -125,11 +140,32 @@ public class WorkShiftClockPresenter : MonoBehaviour
         float minuteAngle = minute * 6f;
         float hourAngle = ((hour % 12) + minute / 60f) * 30f;
 
+        targetMinuteZ = minuteHandBaseZ - minuteAngle;
+        targetHourZ = hourHandBaseZ - hourAngle;
+        hasTargetAngles = true;
+    }
+
+    private void ApplySmoothedRotation(bool snap)
+    {
+        if (hourHand == null || minuteHand == null)
+        {
+            return;
+        }
+
         Vector3 minuteEuler = minuteHand.eulerAngles;
         Vector3 hourEuler = hourHand.eulerAngles;
 
-        minuteEuler.z = minuteHandBaseX - minuteAngle;
-        hourEuler.z = hourHandBaseX - hourAngle;
+        if (snap || smoothSpeed <= 0f)
+        {
+            minuteEuler.z = targetMinuteZ;
+            hourEuler.z = targetHourZ;
+        }
+        else
+        {
+            float deltaTime = Time.deltaTime * smoothSpeed;
+            minuteEuler.z = Mathf.LerpAngle(minuteEuler.z, targetMinuteZ, deltaTime);
+            hourEuler.z = Mathf.LerpAngle(hourEuler.z, targetHourZ, deltaTime);
+        }
 
         minuteHand.eulerAngles = minuteEuler;
         hourHand.eulerAngles = hourEuler;
