@@ -11,8 +11,7 @@ public class NPC
     public enum GenderType
     {
         Male,
-        Female,
-        Other
+        Female
     }
 
     [SerializeField] private string persistentId;

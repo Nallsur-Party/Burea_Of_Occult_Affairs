@@ -240,8 +240,6 @@ GameObject:
   - component: {fileID: 23169346}
   - component: {fileID: 23169345}
   - component: {fileID: 23169344}
-  - component: {fileID: 23169347}
-  - component: {fileID: 23169348}
   m_Layer: 0
   m_Name: EventSystem
   m_TagString: Untagged
@@ -299,37 +297,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &23169347
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 23169343}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1c9b4d7f8a2e43a0b6c5d9e0f2a1b3c4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  npcProblemsXml: {fileID: 4900000, guid: 3aead19fd5a76af47b32842ca7931c92, type: 3}
-  problemNewsXml: {fileID: 4900000, guid: 44312e994d53606419bba968b67fdc10, type: 3}
-  newsTemplatesXml: {fileID: 4900000, guid: c5af565d0d2dca14897620683c02f185, type: 3}
-  newsMappingsXml: {fileID: 4900000, guid: 6f3a2c8d4e5f4f1e93f7d6b1c2a9e801, type: 3}
-  initializeOnAwake: 1
---- !u!114 &23169348
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 23169343}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5b7a0168d7b66694fa861fee3177ff3d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentMinutesFromMidnight: 480
-  resetToShiftStartOnAwake: 1
 --- !u!1 &36265537
 GameObject:
   m_ObjectHideFlags: 0
@@ -3823,6 +3790,70 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1975491025}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1511726417
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1511726420}
+  - component: {fileID: 1511726419}
+  - component: {fileID: 1511726418}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1511726418
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1511726417}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b7a0168d7b66694fa861fee3177ff3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentMinutesFromMidnight: 480
+  resetToShiftStartOnAwake: 1
+--- !u!114 &1511726419
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1511726417}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c9b4d7f8a2e43a0b6c5d9e0f2a1b3c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  npcProblemsXml: {fileID: 4900000, guid: 3aead19fd5a76af47b32842ca7931c92, type: 3}
+  problemNewsXml: {fileID: 4900000, guid: 44312e994d53606419bba968b67fdc10, type: 3}
+  newsTemplatesXml: {fileID: 4900000, guid: c5af565d0d2dca14897620683c02f185, type: 3}
+  newsMappingsXml: {fileID: 4900000, guid: 6f3a2c8d4e5f4f1e93f7d6b1c2a9e801, type: 3}
+  initializeOnAwake: 1
+--- !u!4 &1511726420
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1511726417}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.0839114, y: 1.9749532, z: 2.2496479}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1570792253
 GameObject:
   m_ObjectHideFlags: 0
@@ -6496,3 +6527,4 @@ SceneRoots:
   - {fileID: 5659153630476574235}
   - {fileID: 379020160}
   - {fileID: 681355897}
+  - {fileID: 1511726420}

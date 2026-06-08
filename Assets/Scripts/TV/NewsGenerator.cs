@@ -182,6 +182,7 @@ public static class NewsGenerator
             EventSeverity candidateSeverity = severitySearchOrder[severityIndex];
             List<TemplateData> exactMatches = new List<TemplateData>();
             List<TemplateData> anyMatches = new List<TemplateData>();
+            List<TemplateData> fallbackMatches = new List<TemplateData>();
 
             IReadOnlyList<TemplateData> templates = NewsDataLoader.Templates;
             for (int i = 0; i < templates.Count; i++)
@@ -202,7 +203,10 @@ public static class NewsGenerator
                 if (normalizedGender == "any")
                 {
                     anyMatches.Add(candidate);
+                    continue;
                 }
+
+                fallbackMatches.Add(candidate);
             }
 
             if (exactMatches.Count > 0)
@@ -214,6 +218,12 @@ public static class NewsGenerator
             if (anyMatches.Count > 0)
             {
                 template = anyMatches[UnityEngine.Random.Range(0, anyMatches.Count)];
+                return true;
+            }
+
+            if (fallbackMatches.Count > 0)
+            {
+                template = fallbackMatches[UnityEngine.Random.Range(0, fallbackMatches.Count)];
                 return true;
             }
         }

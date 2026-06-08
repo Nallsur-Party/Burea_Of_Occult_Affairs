@@ -14,7 +14,6 @@ public class NPCGenerator : MonoBehaviour
 
         [SerializeField] private List<string> maleNames = new List<string>();
         [SerializeField] private List<string> femaleNames = new List<string>();
-        [SerializeField] private List<string> otherNames = new List<string>();
         [SerializeField] private List<string> surnames = new List<string>();
 
         public string GetRandomName(NPC.GenderType gender)
@@ -45,7 +44,7 @@ public class NPCGenerator : MonoBehaviour
                     return femaleNames;
 
                 default:
-                    return otherNames.Count > 0 ? otherNames : femaleNames.Count > 0 ? femaleNames : maleNames;
+                    return femaleNames.Count > 0 ? femaleNames : maleNames;
             }
         }
 
@@ -66,7 +65,6 @@ public class NPCGenerator : MonoBehaviour
 
             maleNames = ReadValues(root.Element("male_names"), "name");
             femaleNames = ReadValues(root.Element("female_names"), "name");
-            otherNames = ReadValues(root.Element("other_names"), "name");
             surnames = ReadValues(root.Element("surnames"), "surname");
         }
 

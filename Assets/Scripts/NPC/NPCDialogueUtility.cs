@@ -149,9 +149,7 @@ public static class NPCDialogueUtility
             case NPCQuestionType.Gender:
                 return npc.Gender == NPC.GenderType.Male
                     ? "Я мужчина."
-                    : npc.Gender == NPC.GenderType.Female
-                        ? "Я женщина."
-                        : "Я не хочу уточнять пол.";
+                    : "Я женщина.";
 
             case NPCQuestionType.Age:
                 return $"Мне {npc.Age}.";
