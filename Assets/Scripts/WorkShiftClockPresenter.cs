@@ -6,15 +6,25 @@ public class WorkShiftClockPresenter : MonoBehaviour
     [Header("Scene Binding")]
     [SerializeField] private Transform hourHand;
     [SerializeField] private Transform minuteHand;
-    [SerializeField, Min(0f)] private float smoothSpeed = 8f;
+    [SerializeField, Min(0f)] private float minuteHandDegreesPerSecond = 360f;
+    [SerializeField, Min(0f)] private float hourHandDegreesPerSecond = 90f;
+    [SerializeField, Min(0f)] private float minuteHandMinTweenDuration = 0.2f;
+    [SerializeField, Min(0f)] private float hourHandMinTweenDuration = 0.35f;
 
     private WorkShiftTimeSystem timeSystem;
-    private float hourHandBaseZ;
-    private float minuteHandBaseZ;
+    private Quaternion hourHandBaseLocalRotation;
+    private Quaternion minuteHandBaseLocalRotation;
     private bool hasCachedBaseRotation;
-    private float targetHourZ;
-    private float targetMinuteZ;
-    private bool hasTargetAngles;
+    private Quaternion targetHourLocalRotation;
+    private Quaternion targetMinuteLocalRotation;
+    private Quaternion hourHandTweenStartRotation;
+    private Quaternion minuteHandTweenStartRotation;
+    private float hourHandTweenDuration;
+    private float minuteHandTweenDuration;
+    private float hourHandTweenElapsed;
+    private float minuteHandTweenElapsed;
+    private bool isHourHandTweenActive;
+    private bool isMinuteHandTweenActive;
 
     private void Awake()
     {
@@ -55,11 +65,13 @@ public class WorkShiftClockPresenter : MonoBehaviour
     private void HandleTimeChanged(int currentMinutesFromMidnight)
     {
         UpdateTargetAngles(currentMinutesFromMidnight);
+        RestartTweenFromCurrentVisualState();
     }
 
     private void HandleShiftEnded()
     {
         UpdateTargetAngles(timeSystem != null ? timeSystem.CurrentMinutesFromMidnight : WorkShiftTimeSystem.ShiftEndMinutes);
+        RestartTweenFromCurrentVisualState();
     }
 
     private void ResolveTimeSystem()
@@ -78,12 +90,12 @@ public class WorkShiftClockPresenter : MonoBehaviour
     {
         if (hourHand != null)
         {
-            hourHandBaseZ = hourHand.eulerAngles.z;
+            hourHandBaseLocalRotation = hourHand.localRotation;
         }
 
         if (minuteHand != null)
         {
-            minuteHandBaseZ = minuteHand.eulerAngles.z;
+            minuteHandBaseLocalRotation = minuteHand.localRotation;
         }
 
         hasCachedBaseRotation = hourHand != null && minuteHand != null;
@@ -113,17 +125,17 @@ public class WorkShiftClockPresenter : MonoBehaviour
         }
 
         UpdateTargetAngles(timeSystem.CurrentMinutesFromMidnight);
-        ApplySmoothedRotation(true);
+        SnapToTarget();
     }
 
     private void Update()
     {
-        if (!hasTargetAngles)
+        if (!isHourHandTweenActive && !isMinuteHandTweenActive)
         {
             return;
         }
 
-        ApplySmoothedRotation(false);
+        AnimateTween(Time.deltaTime);
     }
 
     private void UpdateTargetAngles(int minutesFromMidnight)
@@ -140,34 +152,109 @@ public class WorkShiftClockPresenter : MonoBehaviour
         float minuteAngle = minute * 6f;
         float hourAngle = ((hour % 12) + minute / 60f) * 30f;
 
-        targetMinuteZ = minuteHandBaseZ - minuteAngle;
-        targetHourZ = hourHandBaseZ - hourAngle;
-        hasTargetAngles = true;
+        targetMinuteLocalRotation = minuteHandBaseLocalRotation * Quaternion.AngleAxis(-minuteAngle, Vector3.right);
+        targetHourLocalRotation = hourHandBaseLocalRotation * Quaternion.AngleAxis(-hourAngle, Vector3.right);
     }
 
-    private void ApplySmoothedRotation(bool snap)
+    private void SnapToTarget()
     {
         if (hourHand == null || minuteHand == null)
         {
             return;
         }
 
-        Vector3 minuteEuler = minuteHand.eulerAngles;
-        Vector3 hourEuler = hourHand.eulerAngles;
+        minuteHand.localRotation = targetMinuteLocalRotation;
+        hourHand.localRotation = targetHourLocalRotation;
+        minuteHandTweenStartRotation = targetMinuteLocalRotation;
+        hourHandTweenStartRotation = targetHourLocalRotation;
+        minuteHandTweenElapsed = 0f;
+        hourHandTweenElapsed = 0f;
+        minuteHandTweenDuration = 0f;
+        hourHandTweenDuration = 0f;
+        isMinuteHandTweenActive = false;
+        isHourHandTweenActive = false;
+    }
 
-        if (snap || smoothSpeed <= 0f)
+    private void RestartTweenFromCurrentVisualState()
+    {
+        if (hourHand == null || minuteHand == null)
         {
-            minuteEuler.z = targetMinuteZ;
-            hourEuler.z = targetHourZ;
-        }
-        else
-        {
-            float deltaTime = Time.deltaTime * smoothSpeed;
-            minuteEuler.z = Mathf.LerpAngle(minuteEuler.z, targetMinuteZ, deltaTime);
-            hourEuler.z = Mathf.LerpAngle(hourEuler.z, targetHourZ, deltaTime);
+            return;
         }
 
-        minuteHand.eulerAngles = minuteEuler;
-        hourHand.eulerAngles = hourEuler;
+        minuteHandTweenStartRotation = minuteHand.localRotation;
+        hourHandTweenStartRotation = hourHand.localRotation;
+
+        minuteHandTweenElapsed = 0f;
+        hourHandTweenElapsed = 0f;
+
+        minuteHandTweenDuration = CalculateTweenDuration(minuteHandTweenStartRotation, targetMinuteLocalRotation, minuteHandDegreesPerSecond, minuteHandMinTweenDuration);
+        hourHandTweenDuration = CalculateTweenDuration(hourHandTweenStartRotation, targetHourLocalRotation, hourHandDegreesPerSecond, hourHandMinTweenDuration);
+
+        isMinuteHandTweenActive = minuteHandTweenDuration > 0f;
+        isHourHandTweenActive = hourHandTweenDuration > 0f;
+
+        if (!isMinuteHandTweenActive)
+        {
+            minuteHand.localRotation = targetMinuteLocalRotation;
+        }
+
+        if (!isHourHandTweenActive)
+        {
+            hourHand.localRotation = targetHourLocalRotation;
+        }
+    }
+
+    private void AnimateTween(float deltaTime)
+    {
+        if (isMinuteHandTweenActive)
+        {
+            minuteHandTweenElapsed = Mathf.Min(minuteHandTweenElapsed + deltaTime, minuteHandTweenDuration);
+            float minuteT = minuteHandTweenDuration <= 0f ? 1f : Mathf.Clamp01(minuteHandTweenElapsed / minuteHandTweenDuration);
+            minuteT = EaseOutCubic(minuteT);
+            minuteHand.localRotation = Quaternion.SlerpUnclamped(minuteHandTweenStartRotation, targetMinuteLocalRotation, minuteT);
+
+            if (minuteHandTweenElapsed >= minuteHandTweenDuration)
+            {
+                minuteHand.localRotation = targetMinuteLocalRotation;
+                isMinuteHandTweenActive = false;
+            }
+        }
+
+        if (isHourHandTweenActive)
+        {
+            hourHandTweenElapsed = Mathf.Min(hourHandTweenElapsed + deltaTime, hourHandTweenDuration);
+            float hourT = hourHandTweenDuration <= 0f ? 1f : Mathf.Clamp01(hourHandTweenElapsed / hourHandTweenDuration);
+            hourT = EaseOutCubic(hourT);
+            hourHand.localRotation = Quaternion.SlerpUnclamped(hourHandTweenStartRotation, targetHourLocalRotation, hourT);
+
+            if (hourHandTweenElapsed >= hourHandTweenDuration)
+            {
+                hourHand.localRotation = targetHourLocalRotation;
+                isHourHandTweenActive = false;
+            }
+        }
+    }
+
+    private float CalculateTweenDuration(Quaternion from, Quaternion to, float degreesPerSecond, float minDuration)
+    {
+        if (degreesPerSecond <= 0f)
+        {
+            return 0f;
+        }
+
+        float angle = Quaternion.Angle(from, to);
+        if (angle <= Mathf.Epsilon)
+        {
+            return 0f;
+        }
+
+        return Mathf.Max(angle / degreesPerSecond, minDuration);
+    }
+
+    private static float EaseOutCubic(float t)
+    {
+        float oneMinusT = 1f - t;
+        return 1f - (oneMinusT * oneMinusT * oneMinusT);
     }
 }
