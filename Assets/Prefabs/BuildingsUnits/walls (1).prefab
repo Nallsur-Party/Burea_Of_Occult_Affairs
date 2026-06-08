@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 1404605784089728839}
   - component: {fileID: 7776725799458022148}
   - component: {fileID: 765494839818826043}
-  - component: {fileID: 8221545974190864793}
   m_Layer: 0
   m_Name: walls (1)
   m_TagString: Untagged
@@ -27,13 +26,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3882808711990953076}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.7069834, y: 0, z: 0, w: 0.7072302}
-  m_LocalPosition: {x: 11.44, y: 0.28448248, z: 10.81}
-  m_LocalScale: {x: 100, y: 100, z: 100}
+  m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071067}
+  m_LocalPosition: {x: -1.4066596, y: 0.1492481, z: -4.879163}
+  m_LocalScale: {x: 100, y: 99.999985, z: 99.999985}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: -89.98, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &7776725799458022148
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -41,7 +40,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3882808711990953076}
-  m_Mesh: {fileID: -2138796739762357153, guid: 55ea013b12281894cbf0185126ab5cec, type: 3}
+  m_Mesh: {fileID: -2138796739762357153, guid: b05cf804c3c57fc43b77a03a02a62181, type: 3}
 --- !u!23 &765494839818826043
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -62,7 +61,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 4874126678125670354, guid: 55ea013b12281894cbf0185126ab5cec, type: 3}
+  - {fileID: 4874126678125670354, guid: b05cf804c3c57fc43b77a03a02a62181, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -84,24 +83,3 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &8221545974190864793
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3882808711990953076}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.0029174518, y: 0.04881809, z: 0.046956573}
-  m_Center: {x: -0.00000066519715, y: 9.313226e-10, z: 0.023247292}
