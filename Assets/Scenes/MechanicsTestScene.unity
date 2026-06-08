@@ -312,7 +312,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &36265538
 Transform:
   m_ObjectHideFlags: 0
@@ -322,7 +322,7 @@ Transform:
   m_GameObject: {fileID: 36265537}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.104013205, y: 1.189, z: -3.834}
+  m_LocalPosition: {x: 0.104013205, y: 1.189, z: 1.93}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4630,6 +4630,12 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 36265538}
     m_Modifications:
+    - target: {fileID: 1110097491038967999, guid: 95513bd84ecdd5f4e9383d15fe1f53d9,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 591414295, guid: 11ca304b2a6bb0e4e95ab12b305add1b,
+        type: 3}
     - target: {fileID: 2564011892817531565, guid: 95513bd84ecdd5f4e9383d15fe1f53d9,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4685,10 +4691,34 @@ PrefabInstance:
       propertyPath: m_Name
       value: NPC Pawn
       objectReference: {fileID: 0}
+    - target: {fileID: 4317440973462819152, guid: 95513bd84ecdd5f4e9383d15fe1f53d9,
+        type: 3}
+      propertyPath: m_Height
+      value: 1.9911048
+      objectReference: {fileID: 0}
+    - target: {fileID: 4317440973462819152, guid: 95513bd84ecdd5f4e9383d15fe1f53d9,
+        type: 3}
+      propertyPath: m_Center.y
+      value: -0.07085514
+      objectReference: {fileID: 0}
+    - target: {fileID: 5193878379442088877, guid: 95513bd84ecdd5f4e9383d15fe1f53d9,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.9961947
+      objectReference: {fileID: 0}
+    - target: {fileID: 5193878379442088877, guid: 95513bd84ecdd5f4e9383d15fe1f53d9,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.08715578
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7865106551276821804, guid: 95513bd84ecdd5f4e9383d15fe1f53d9,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: 95513bd84ecdd5f4e9383d15fe1f53d9, type: 3}
 --- !u!1 &1975493037
 GameObject:
