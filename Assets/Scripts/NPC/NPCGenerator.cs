@@ -14,18 +14,20 @@ public class NPCGenerator : MonoBehaviour
 
         [SerializeField] private List<string> maleNames = new List<string>();
         [SerializeField] private List<string> femaleNames = new List<string>();
-        [SerializeField] private List<string> surnames = new List<string>();
+        [SerializeField] private List<string> maleSurnames = new List<string>();
+        [SerializeField] private List<string> femaleSurnames = new List<string>();
 
         public string GetRandomName(NPC.GenderType gender)
         {
             List<string> selectedPool = GetPool(gender);
+            List<string> selectedSurnames = GetSurnamePool(gender);
 
             if (!TryGetRandomValue(selectedPool, out string firstName))
             {
                 return UnnamedNpc;
             }
 
-            if (!TryGetRandomValue(surnames, out string surname))
+            if (!TryGetRandomValue(selectedSurnames, out string surname))
             {
                 return firstName;
             }
@@ -48,6 +50,21 @@ public class NPCGenerator : MonoBehaviour
             }
         }
 
+        private List<string> GetSurnamePool(NPC.GenderType gender)
+        {
+            switch (gender)
+            {
+                case NPC.GenderType.Male:
+                    return maleSurnames.Count > 0 ? maleSurnames : femaleSurnames;
+
+                case NPC.GenderType.Female:
+                    return femaleSurnames.Count > 0 ? femaleSurnames : maleSurnames;
+
+                default:
+                    return femaleSurnames.Count > 0 ? femaleSurnames : maleSurnames;
+            }
+        }
+
         public void LoadFromXml(TextAsset xmlAsset)
         {
             if (xmlAsset == null || string.IsNullOrWhiteSpace(xmlAsset.text))
@@ -65,7 +82,8 @@ public class NPCGenerator : MonoBehaviour
 
             maleNames = ReadValues(root.Element("male_names"), "name");
             femaleNames = ReadValues(root.Element("female_names"), "name");
-            surnames = ReadValues(root.Element("surnames"), "surname");
+            maleSurnames = ReadValues(root.Element("male_surnames"), "surname");
+            femaleSurnames = ReadValues(root.Element("female_surnames"), "surname");
         }
 
         private static List<string> ReadValues(XElement parentElement, string childName)
