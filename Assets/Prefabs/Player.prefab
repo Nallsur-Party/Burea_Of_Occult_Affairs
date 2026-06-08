@@ -541,14 +541,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd283423f8ee28146b653c0b6cc98104, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
-  jumpForce: 5
-  canJump: 1
+  moveSpeed: 4
+  jumpForce: 4
+  canJump: 0
   useDepthMovement: 1
-  groundAcceleration: 35
+  groundAcceleration: 30
   airAcceleration: 20
   wallCheckDistance: 0.15
-  sprintMultiplier: 2
+  sprintMultiplier: 1.4
   groundCheck: {fileID: 2317117470499008212}
   groundCheckRadius: 0.2
   groundCheckDistance: 0.6

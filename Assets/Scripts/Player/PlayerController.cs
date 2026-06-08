@@ -29,14 +29,11 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private static readonly int SpeedHash = Animator.StringToHash("speed");
-    private static readonly int SpeedXHash = Animator.StringToHash("speedX");
-    private static readonly int SpeedZHash = Animator.StringToHash("speedZ");
-    private static readonly int IsMovingForwardHash = Animator.StringToHash("isMovingForward");
-    private static readonly int IsMovingBackwardHash = Animator.StringToHash("isMovingBackward");
-    private static readonly int IsGroundedHash = Animator.StringToHash("isGrounded");
-    private static readonly int VerticalSpeedHash = Animator.StringToHash("verticalSpeed");
-    private static readonly int IsRunningHash = Animator.StringToHash("isRunning");
+    private static readonly int LastMoveXHash = Animator.StringToHash("LastMoveX");
+    private static readonly int LastMoveZHash = Animator.StringToHash("LastMoveZ");
+    private static readonly int MoveXHash = Animator.StringToHash("MoveX");
+    private static readonly int MoveZHash = Animator.StringToHash("MoveZ");
+    private static readonly int MoveMagnitudeHash = Animator.StringToHash("MoveMagnitude");
 
     [Header("Movement")]
     [SerializeField] private float moveSpeed = 5f;
@@ -82,6 +79,8 @@ public class PlayerController : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private float moveInput;
     private float depthInput;
+    private float lastMoveX;
+    private float lastMoveZ;
     private bool jumpPressed;
     private NpcOrderVisitor currentInteractableNpc;
     private NpcOrderVisitor activeDialogueNpc;
@@ -597,20 +596,20 @@ public class PlayerController : MonoBehaviour
 
         Vector3 velocity = rb != null ? rb.velocity : Vector3.zero;
         Vector3 localVelocity = transform.InverseTransformDirection(velocity);
-        float planarSpeed = new Vector2(velocity.x, velocity.z).magnitude;
-        float speedX = Mathf.Abs(localVelocity.x);
-        float speedZ = localVelocity.z;
-        bool isMovingForward = speedZ >= speedX;
-        bool isMovingBackward = speedZ <= -speedX;
-        bool isRunning = planarSpeed > moveSpeed + 0.1f;
-        animator.SetFloat(SpeedHash, planarSpeed);
-        animator.SetFloat(SpeedXHash, speedX);
-        animator.SetFloat(SpeedZHash, speedZ);
-        animator.SetBool(IsMovingForwardHash, isMovingForward);
-        animator.SetBool(IsMovingBackwardHash, isMovingBackward);
-        animator.SetBool(IsGroundedHash, player.IsGrounded);
-        animator.SetFloat(VerticalSpeedHash, velocity.y);
-        animator.SetBool(IsRunningHash, isRunning);
+        float moveX = moveInput;
+        float moveZ = useDepthMovement ? depthInput : localVelocity.z;
+        float moveMagnitude = new Vector2(moveX, moveZ).magnitude;
+        if (moveMagnitude > 0.01f)
+        {
+            lastMoveX = moveX;
+            lastMoveZ = moveZ;
+        }
+
+        animator.SetFloat(MoveXHash, moveX);
+        animator.SetFloat(MoveZHash, moveZ);
+        animator.SetFloat(MoveMagnitudeHash, moveMagnitude);
+        animator.SetFloat(LastMoveXHash, lastMoveX);
+        animator.SetFloat(LastMoveZHash, lastMoveZ);
     }
 
     private void SetFacingRight(bool facingRight)
