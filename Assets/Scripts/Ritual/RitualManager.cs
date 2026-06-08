@@ -62,6 +62,31 @@ public class RitualManager : MonoBehaviour
         _ = ActivePointsUI;
     }
 
+    public bool CanStartRitual(NpcOrderVisitor npc, out string reason)
+    {
+        reason = null;
+
+        if (npc == null || npc.NpcData == null)
+        {
+            reason = "Сначала нужен NPC.";
+            return false;
+        }
+
+        if (npc.NpcData.IsCured)
+        {
+            reason = "Со мной уже всё в порядке.";
+            return false;
+        }
+
+        if (!TryGetSolution(npc, out _))
+        {
+            reason = "Для этой проблемы нет подходящего ритуала.";
+            return false;
+        }
+
+        return true;
+    }
+
     public bool HasActiveRitual(NpcOrderVisitor npc)
     {
         return npc != null
@@ -72,22 +97,25 @@ public class RitualManager : MonoBehaviour
 
     public bool TryStartRitual(NpcOrderVisitor npc)
     {
-        if (npc == null || npc.NpcData == null)
+        if (!CanStartRitual(npc, out string reason))
         {
+            if (reason == "Со мной уже всё в порядке.")
+            {
+                LogAttempt(npc, RitualAttemptResult.NpcAlreadyCured, null, null, null);
+            }
+            else if (reason == "Сначала нужен NPC.")
+            {
+                LogAttempt(npc, RitualAttemptResult.NoActiveNpc, null, null, null);
+            }
+            else
+            {
+                LogAttempt(npc, RitualAttemptResult.NoSolution, null, null, null);
+            }
+
             return false;
         }
 
-        if (npc.NpcData.IsCured)
-        {
-            LogAttempt(npc, RitualAttemptResult.NpcAlreadyCured, null, null, null);
-            return false;
-        }
-
-        if (!TryGetSolution(npc, out RitualSolutionDefinition solution))
-        {
-            LogAttempt(npc, RitualAttemptResult.NoSolution, null, null, null);
-            return false;
-        }
+        TryGetSolution(npc, out RitualSolutionDefinition solution);
 
         if (!npc.NpcData.IsAlive)
         {

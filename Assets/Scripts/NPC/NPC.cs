@@ -32,6 +32,7 @@ public class NPC
     [SerializeField] private int lieTokens;
     [SerializeField] private int detectiveQuestionTokens;
     [SerializeField] private int spentDetectiveQuestionCount;
+    [NonSerialized] private int askedQuestionActionCount;
     [SerializeField] private int health;
     [SerializeField] private int maxHealth;
     [SerializeField] private bool isCured;
@@ -65,6 +66,7 @@ public class NPC
     public int RemainingConversationTokens => truthTokens + lieTokens;
     public int RemainingDetectiveQuestionTokens => detectiveQuestionTokens;
     public int SpentDetectiveQuestionCount => spentDetectiveQuestionCount;
+    public int AskedQuestionActionCount => askedQuestionActionCount;
     public bool HasProblem => !string.IsNullOrWhiteSpace(problemName);
     public bool IsParanormalCase => caseType == NPCCaseType.Paranormal;
     public bool IsNonParanormalCase => caseType == NPCCaseType.NonParanormal;
@@ -408,6 +410,11 @@ public class NPC
         spentDetectiveQuestionCount++;
     }
 
+    public void RegisterQuestionAsked()
+    {
+        askedQuestionActionCount = Math.Max(0, askedQuestionActionCount) + 1;
+    }
+
     public bool HasToldConversationLine(string storyLine)
     {
         EnsureRuntimeState();
@@ -525,6 +532,7 @@ public class NPC
         lieTokens = 0;
         detectiveQuestionTokens = 0;
         spentDetectiveQuestionCount = 0;
+        askedQuestionActionCount = 0;
         EnsureRuntimeState();
         askedQuestionTypes.Clear();
         rememberedAnswers.Clear();

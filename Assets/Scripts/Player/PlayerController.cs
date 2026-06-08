@@ -38,7 +38,7 @@ public class PlayerController : MonoBehaviour
     private static readonly int VerticalSpeedHash = Animator.StringToHash("verticalSpeed");
     private static readonly int IsRunningHash = Animator.StringToHash("isRunning");
 
-   [Header("Movement")]
+    [Header("Movement")]
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float jumpForce = 7f;
     [SerializeField, Tooltip("Disable this in scenes where the player should not be able to jump.")]
@@ -85,6 +85,7 @@ public class PlayerController : MonoBehaviour
     private bool jumpPressed;
     private NpcOrderVisitor currentInteractableNpc;
     private NpcOrderVisitor activeDialogueNpc;
+    private WorkShiftTimeSystem workShiftTimeSystem;
     private RitualItemType[] ritualItems;
     private Transform activeHeldItem;
     private RitualItemType? activeHeldItemType;
@@ -115,6 +116,7 @@ public class PlayerController : MonoBehaviour
         bodyCollider = GetComponent<Collider>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         ritualManager = FindObjectOfType<RitualManager>();
+        workShiftTimeSystem = ResolveWorkShiftTimeSystem();
 
         if (ritualManager == null)
         {
@@ -131,6 +133,7 @@ public class PlayerController : MonoBehaviour
         CacheHeldItemTransforms();
         UpdateHeldItemVisual();
     }
+
     private void Update()
     {
         ReadMovementInput();
@@ -146,6 +149,7 @@ public class PlayerController : MonoBehaviour
         }
 
         HandleDialogueInput();
+        HandleInspectionInput();
         HandleRitualInput();
         UpdateGroundedState();
         UpdateFacing();
@@ -200,7 +204,6 @@ public class PlayerController : MonoBehaviour
         {
             velocity.y = jumpForce;
         }
-
         else if (!canJump && velocity.y > 0f)
         {
             velocity.y = 0f;
@@ -337,7 +340,22 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
+        NPC npcData = activeDialogueNpc.NpcData;
+        if (!TrySpendQuestionTime(npcData, questionType))
+        {
+            return;
+        }
+
         activeDialogueNpc.ShowDialogue(activeDialogueNpc.GetQuestionResponse(questionType, playerProfile));
+        npcData?.RegisterQuestionAsked();
+    }
+
+    private void HandleInspectionInput()
+    {
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            PerformInspectionStub();
+        }
     }
 
     private void HandleRitualItemSelection()
@@ -405,6 +423,26 @@ public class PlayerController : MonoBehaviour
 
         if (!ritualManager.HasActiveRitual(activeDialogueNpc))
         {
+            if (!CanStartTimeConsumingAction("ритуал"))
+            {
+                return;
+            }
+
+            if (!ritualManager.CanStartRitual(activeDialogueNpc, out string blockedReason))
+            {
+                if (!string.IsNullOrWhiteSpace(blockedReason))
+                {
+                    activeDialogueNpc.ShowDialogue(blockedReason);
+                }
+
+                return;
+            }
+
+            if (!TrySpendTimeForAction(WorkShiftTimeSystem.RitualCostMinutes, "ритуал"))
+            {
+                return;
+            }
+
             if (ritualManager.TryStartRitual(activeDialogueNpc))
             {
                 activeDialogueNpc.ShowDialogue("Начинаем ритуал...");
@@ -418,6 +456,21 @@ public class PlayerController : MonoBehaviour
         {
             Debug.Log("Ritual Debug | Ritual step ignored because the ritual has not been started.");
         }
+    }
+
+    public void PerformInspectionStub()
+    {
+        if (!CanStartTimeConsumingAction("осмотр"))
+        {
+            return;
+        }
+
+        if (!TrySpendTimeForAction(WorkShiftTimeSystem.InspectionCostMinutes, "осмотр"))
+        {
+            return;
+        }
+
+        Debug.LogWarning("Inspection is not implemented yet. Time was consumed as a placeholder.", this);
     }
 
     private void SelectRitualItem(RitualItemType item)
@@ -441,6 +494,86 @@ public class PlayerController : MonoBehaviour
     private static bool IsAnyActionHotkeyPressed(KeyCode primaryKey, KeyCode secondaryKey)
     {
         return Input.GetKeyDown(primaryKey) || Input.GetKeyDown(secondaryKey);
+    }
+
+    private bool TrySpendQuestionTime(NPC npc, NPCQuestionType questionType)
+    {
+        if (!CanStartTimeConsumingAction("вопрос NPC"))
+        {
+            return false;
+        }
+
+        int questionCount = npc != null ? npc.AskedQuestionActionCount : 0;
+        int costMinutes = questionCount <= 0 ? 0 : WorkShiftTimeSystem.ExtraNpcQuestionCostMinutes;
+
+        if (!TrySpendTimeForAction(costMinutes, $"вопрос NPC {questionType}"))
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    private bool CanStartTimeConsumingAction(string actionLabel)
+    {
+        WorkShiftTimeSystem timeSystem = GetWorkShiftTimeSystem();
+        if (timeSystem == null)
+        {
+            Debug.LogWarning($"Work shift time system is not available. {actionLabel} cannot be processed.", this);
+            return false;
+        }
+
+        if (timeSystem.IsShiftEnded)
+        {
+            Debug.LogWarning($"Work shift has ended. {actionLabel} is blocked.", this);
+            return false;
+        }
+
+        return true;
+    }
+
+    private bool TrySpendTimeForAction(int minutes, string actionLabel)
+    {
+        if (minutes <= 0)
+        {
+            return true;
+        }
+
+        WorkShiftTimeSystem timeSystem = GetWorkShiftTimeSystem();
+        if (timeSystem == null)
+        {
+            Debug.LogWarning($"Work shift time system is not available. {actionLabel} cannot consume time.", this);
+            return false;
+        }
+
+        if (!timeSystem.TrySpendMinutes(minutes))
+        {
+            Debug.LogWarning($"Work shift has ended. {actionLabel} cannot consume time.", this);
+            return false;
+        }
+
+        return true;
+    }
+
+    private WorkShiftTimeSystem GetWorkShiftTimeSystem()
+    {
+        if (workShiftTimeSystem != null)
+        {
+            return workShiftTimeSystem;
+        }
+
+        workShiftTimeSystem = ResolveWorkShiftTimeSystem();
+        return workShiftTimeSystem;
+    }
+
+    private static WorkShiftTimeSystem ResolveWorkShiftTimeSystem()
+    {
+        if (WorkShiftTimeSystem.Instance != null)
+        {
+            return WorkShiftTimeSystem.Instance;
+        }
+
+        return FindObjectOfType<WorkShiftTimeSystem>();
     }
 
     private void CycleRitualItem()
