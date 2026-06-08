@@ -6,7 +6,7 @@ TextureImporter:
   serializedVersion: 13
   mipmaps:
     mipMapMode: 0
-    enableMipMap: 1
+    enableMipMap: 0
     sRGBTexture: 1
     linearTexture: 0
     fadeOut: 0
@@ -34,27 +34,27 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
-    wrapU: 0
-    wrapV: 0
+    wrapU: 1
+    wrapV: 1
     wrapW: 0
-  nPOTScale: 1
+  nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 0
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 70
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
-  alphaIsTransparency: 0
+  alphaIsTransparency: 1
   spriteTessellationDetail: -1
-  textureType: 0
+  textureType: 8
   textureShape: 1
   singleChannelComponent: 0
   flipbookRows: 1
@@ -69,7 +69,7 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 2048
+    maxTextureSize: 1024
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 1
@@ -108,18 +108,480 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: action_Dback0001-Sheet-export_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 656
+        width: 164
+        height: 164
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 611605d46d2dce04ba83ab4d0daf01bb
+      internalID: 1389120759
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: action_Dback0001-Sheet-export_1
+      rect:
+        serializedVersion: 2
+        x: 164
+        y: 656
+        width: 164
+        height: 164
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b7dae5b19b723364a9c68ac93c7eec97
+      internalID: 844705287
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: action_Dback0001-Sheet-export_2
+      rect:
+        serializedVersion: 2
+        x: 328
+        y: 656
+        width: 164
+        height: 164
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2e98b0d229f04df48a2ec32faaec1c29
+      internalID: -929030326
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: action_Dback0001-Sheet-export_3
+      rect:
+        serializedVersion: 2
+        x: 492
+        y: 656
+        width: 164
+        height: 164
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 18a88bca97b8fda49a91fa76b7d82f42
+      internalID: -1402719982
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: action_Dback0001-Sheet-export_4
+      rect:
+        serializedVersion: 2
+        x: 656
+        y: 656
+        width: 164
+        height: 164
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d9ba6ce55ced2c74981b44501d6a95fd
+      internalID: -216831216
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: action_Dback0001-Sheet-export_5
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 492
+        width: 164
+        height: 164
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 27214d6beb93c6d45b5c7798527979c3
+      internalID: 1999185848
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: action_Dback0001-Sheet-export_6
+      rect:
+        serializedVersion: 2
+        x: 164
+        y: 492
+        width: 164
+        height: 164
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3073e8b2654168146868bc7a8ec9374f
+      internalID: -1994663529
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: action_Dback0001-Sheet-export_7
+      rect:
+        serializedVersion: 2
+        x: 328
+        y: 492
+        width: 164
+        height: 164
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 328a71e952faf154da512d7104b1de2d
+      internalID: 1169713323
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: action_Dback0001-Sheet-export_8
+      rect:
+        serializedVersion: 2
+        x: 492
+        y: 492
+        width: 164
+        height: 164
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4de1545aadaf8294aa9cf88f9667c9b7
+      internalID: -359049899
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: action_Dback0001-Sheet-export_9
+      rect:
+        serializedVersion: 2
+        x: 656
+        y: 492
+        width: 164
+        height: 164
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b134f66e164dec040b5a0fedea21a06e
+      internalID: -402110544
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: action_Dback0001-Sheet-export_10
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 328
+        width: 164
+        height: 164
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: eb0ca1e69f2baa049bd57c67964e0c54
+      internalID: -49117045
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: action_Dback0001-Sheet-export_11
+      rect:
+        serializedVersion: 2
+        x: 164
+        y: 328
+        width: 164
+        height: 164
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c5aee32ea46fca240ae005b2a2ec9d1f
+      internalID: -325652580
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: action_Dback0001-Sheet-export_12
+      rect:
+        serializedVersion: 2
+        x: 328
+        y: 328
+        width: 164
+        height: 164
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dcba61e54c04f414684fc6b6eac16536
+      internalID: -1543833811
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: action_Dback0001-Sheet-export_13
+      rect:
+        serializedVersion: 2
+        x: 492
+        y: 328
+        width: 164
+        height: 164
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 18801733e83dcc146ba2a78ee06feebc
+      internalID: -1137996077
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: action_Dback0001-Sheet-export_14
+      rect:
+        serializedVersion: 2
+        x: 656
+        y: 328
+        width: 164
+        height: 164
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1261e41b79501514aa9bb95e15edfec3
+      internalID: -2140087895
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: action_Dback0001-Sheet-export_15
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 164
+        width: 164
+        height: 164
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 043c5154b2dc09f4e8d7ce36f8846ff5
+      internalID: -782981150
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: action_Dback0001-Sheet-export_16
+      rect:
+        serializedVersion: 2
+        x: 164
+        y: 164
+        width: 164
+        height: 164
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b2c8126cab29408478e3642628e3c3b5
+      internalID: -167099748
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: action_Dback0001-Sheet-export_17
+      rect:
+        serializedVersion: 2
+        x: 328
+        y: 164
+        width: 164
+        height: 164
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4f525c877db70704789aceae37aaf41e
+      internalID: -1417040221
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: action_Dback0001-Sheet-export_18
+      rect:
+        serializedVersion: 2
+        x: 492
+        y: 164
+        width: 164
+        height: 164
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dfb0d29edfa6ef246916d662f273d26f
+      internalID: 595779061
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: action_Dback0001-Sheet-export_19
+      rect:
+        serializedVersion: 2
+        x: 656
+        y: 164
+        width: 164
+        height: 164
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bf9e69122b9c9a9438b051500e2db8fa
+      internalID: 1700397506
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: action_Dback0001-Sheet-export_20
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 164
+        height: 164
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4d3047e97a421a747a6e225769a22138
+      internalID: -264549066
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 2845b23f3e3811b4aba9c4e50755bb46
     internalID: 0
     vertices: []
     indices: 
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      action_Dback0001-Sheet-export_0: 1389120759
+      action_Dback0001-Sheet-export_1: 844705287
+      action_Dback0001-Sheet-export_10: -49117045
+      action_Dback0001-Sheet-export_11: -325652580
+      action_Dback0001-Sheet-export_12: -1543833811
+      action_Dback0001-Sheet-export_13: -1137996077
+      action_Dback0001-Sheet-export_14: -2140087895
+      action_Dback0001-Sheet-export_15: -782981150
+      action_Dback0001-Sheet-export_16: -167099748
+      action_Dback0001-Sheet-export_17: -1417040221
+      action_Dback0001-Sheet-export_18: 595779061
+      action_Dback0001-Sheet-export_19: 1700397506
+      action_Dback0001-Sheet-export_2: -929030326
+      action_Dback0001-Sheet-export_20: -264549066
+      action_Dback0001-Sheet-export_3: -1402719982
+      action_Dback0001-Sheet-export_4: -216831216
+      action_Dback0001-Sheet-export_5: 1999185848
+      action_Dback0001-Sheet-export_6: -1994663529
+      action_Dback0001-Sheet-export_7: 1169713323
+      action_Dback0001-Sheet-export_8: -359049899
+      action_Dback0001-Sheet-export_9: -402110544
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

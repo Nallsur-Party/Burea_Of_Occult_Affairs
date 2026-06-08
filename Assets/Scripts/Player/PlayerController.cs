@@ -623,7 +623,7 @@ public class PlayerController : MonoBehaviour
 
         if (spriteRenderer != null)
         {
-            spriteRenderer.flipX = facingRight;
+            spriteRenderer.flipX = !facingRight;
             return;
         }
 
