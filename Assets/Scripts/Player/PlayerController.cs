@@ -41,6 +41,7 @@ public class PlayerController : MonoBehaviour
     private static readonly int MoveZHash = Animator.StringToHash("MoveZ");
     private static readonly int MoveMagnitudeHash = Animator.StringToHash("MoveMagnitude");
     private static readonly int RunMagnitudeHash = Animator.StringToHash("RunMagnitude");
+    private static readonly int IsSelectionItemHash = Animator.StringToHash("isSelectionItem");
 
     [Header("Movement")]
     [SerializeField]
@@ -126,6 +127,13 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private AudioSource footSteps;
 
+    [Header("Ritual Item Selection")]
+    [SerializeField]
+    private float ritualItemSelectionStopThreshold = 0.05f;
+
+    [SerializeField]
+    private float ritualItemSelectionDuration = 1f;
+
     private Rigidbody rb;
     private Player player;
     private PlayerProfile playerProfile;
@@ -142,6 +150,10 @@ public class PlayerController : MonoBehaviour
     private RitualItemType[] ritualItems;
     private Transform activeHeldItem;
     private RitualItemType? activeHeldItemType;
+    private RitualItemType? pendingRitualItemType;
+    private bool isRitualItemSelectionPending;
+    private bool isRitualItemSelectionActive;
+    private float ritualItemSelectionTimer;
 
     private void Awake()
     {
@@ -211,6 +223,7 @@ public class PlayerController : MonoBehaviour
         UpdateGroundedState();
         UpdateFacing();
         UpdateAnimator();
+        UpdateRitualItemSelectionTimer();
         SetInteractionPromptVisible(currentInteractableNpc != null);
 
         if (activeDialogueNpc != null)
@@ -237,9 +250,15 @@ public class PlayerController : MonoBehaviour
             ? new Vector3(moveInput, 0f, depthInput)
             : new Vector3(moveInput, 0f, 0f);
 
-        if (moveDirection.sqrMagnitude > 0.01f)
+        bool isItemSelectionLocked = isRitualItemSelectionPending || isRitualItemSelectionActive;
+
+        if (!isItemSelectionLocked && moveDirection.sqrMagnitude > 0.01f)
         {
             moveDirection.Normalize();
+        }
+        else if (isItemSelectionLocked)
+        {
+            moveDirection = Vector3.zero;
         }
 
         Vector3 targetPlanarVelocity =
@@ -254,6 +273,23 @@ public class PlayerController : MonoBehaviour
         );
 
         currentPlanarVelocity = ResolveWallCollision(currentPlanarVelocity);
+
+        if (isItemSelectionLocked)
+        {
+            currentPlanarVelocity = Vector3.MoveTowards(
+                currentPlanarVelocity,
+                Vector3.zero,
+                acceleration * Time.fixedDeltaTime
+            );
+
+            if (
+                isRitualItemSelectionPending
+                && currentPlanarVelocity.magnitude <= ritualItemSelectionStopThreshold
+            )
+            {
+                StartRitualItemSelection();
+            }
+        }
 
         velocity.x = currentPlanarVelocity.x;
         velocity.z = currentPlanarVelocity.z;
@@ -340,6 +376,14 @@ public class PlayerController : MonoBehaviour
 
     private void ReadMovementInput()
     {
+        if (isRitualItemSelectionPending || isRitualItemSelectionActive)
+        {
+            moveInput = 0f;
+            depthInput = 0f;
+            player.IsSprinting = false;
+            return;
+        }
+
         moveInput = Input.GetAxisRaw("Horizontal");
         depthInput = useDepthMovement ? Input.GetAxisRaw("Vertical") : 0f;
         player.IsSprinting = Input.GetKey(KeyCode.LeftShift);
@@ -440,6 +484,11 @@ public class PlayerController : MonoBehaviour
 
     private void HandleRitualActionSelection()
     {
+        if (IsRitualItemSelectionLocked())
+        {
+            return;
+        }
+
         if (!IsRitualActionModifierPressed())
         {
             return;
@@ -481,6 +530,11 @@ public class PlayerController : MonoBehaviour
 
     public void PerformRitualStep()
     {
+        if (IsRitualItemSelectionLocked())
+        {
+            return;
+        }
+
         if (ritualManager == null)
         {
             Debug.LogWarning("RitualManager is not available.");
@@ -556,9 +610,22 @@ public class PlayerController : MonoBehaviour
 
     public void SelectRitualItem(RitualItemType item)
     {
-        player.SelectedRitualItem = item;
-        UpdateHeldItemVisual();
-        Debug.Log($"Ritual Debug | Selected item: {player.SelectedRitualItem.GetDisplayName()}");
+        if (animator == null)
+        {
+            player.SelectedRitualItem = item;
+            UpdateHeldItemVisual();
+            Debug.Log(
+                $"Ritual Debug | Selected item: {player.SelectedRitualItem.GetDisplayName()}"
+            );
+            return;
+        }
+
+        pendingRitualItemType = item;
+        isRitualItemSelectionPending = true;
+        isRitualItemSelectionActive = false;
+        animator.SetBool(IsSelectionItemHash, false);
+        player.IsSprinting = false;
+        Debug.Log($"Ritual Debug | Queued item selection: {item.GetDisplayName()}");
     }
 
     public void SelectRitualAction(RitualActionType action)
@@ -713,6 +780,47 @@ public class PlayerController : MonoBehaviour
         SelectRitualItem(ritualItems[nextIndex]);
     }
 
+    public void CompleteRitualItemSelection()
+    {
+        if (animator != null)
+        {
+            animator.SetBool(IsSelectionItemHash, false);
+        }
+
+        isRitualItemSelectionPending = false;
+        isRitualItemSelectionActive = false;
+        ritualItemSelectionTimer = 0f;
+    }
+
+    private void StartRitualItemSelection()
+    {
+        if (!pendingRitualItemType.HasValue)
+        {
+            return;
+        }
+
+        player.SelectedRitualItem = pendingRitualItemType.Value;
+        UpdateHeldItemVisual();
+
+        isRitualItemSelectionPending = false;
+        isRitualItemSelectionActive = true;
+        ritualItemSelectionTimer = Mathf.Max(0f, ritualItemSelectionDuration);
+
+        if (rb != null)
+        {
+            rb.velocity = Vector3.zero;
+        }
+
+        if (animator != null)
+        {
+            animator.SetBool(IsSelectionItemHash, true);
+        }
+
+        Debug.Log(
+            $"Ritual Debug | Selected item: {player.SelectedRitualItem.GetDisplayName()}"
+        );
+    }
+
     private void UpdateAnimator()
     {
         if (animator == null)
@@ -738,6 +846,23 @@ public class PlayerController : MonoBehaviour
         animator.SetFloat(RunMagnitudeHash, runMagnitude);
         animator.SetFloat(LastMoveXHash, lastMoveX);
         animator.SetFloat(LastMoveZHash, lastMoveZ);
+        animator.SetBool(IsSelectionItemHash, isRitualItemSelectionActive);
+    }
+
+    private void UpdateRitualItemSelectionTimer()
+    {
+        if (!isRitualItemSelectionActive)
+        {
+            return;
+        }
+
+        ritualItemSelectionTimer -= Time.deltaTime;
+        if (ritualItemSelectionTimer > 0f)
+        {
+            return;
+        }
+
+        CompleteRitualItemSelection();
     }
 
     private void SetFacingRight(bool facingRight)
@@ -938,5 +1063,10 @@ public class PlayerController : MonoBehaviour
             footSteps.Play();
         else if (!isMoving && footSteps.isPlaying)
             footSteps.Stop();
+    }
+
+    private bool IsRitualItemSelectionLocked()
+    {
+        return isRitualItemSelectionPending || isRitualItemSelectionActive;
     }
 }

@@ -2060,6 +2060,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6388802178107742455, guid: a468429a45fcc1e4bb142170817d5051,
+        type: 3}
+      propertyPath: ritualItemSelectionDuration
+      value: 0.75
+      objectReference: {fileID: 0}
     - target: {fileID: 9175066928066003693, guid: a468429a45fcc1e4bb142170817d5051,
         type: 3}
       propertyPath: m_Name
@@ -5446,12 +5451,12 @@ PrefabInstance:
     - target: {fileID: 8075267064868920725, guid: 48fa343d8a1093046891efc5b3374bf6,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -226.9
+      value: -226.89996
       objectReference: {fileID: 0}
     - target: {fileID: 8075267064868920725, guid: 48fa343d8a1093046891efc5b3374bf6,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 35.8
+      value: 35.80005
       objectReference: {fileID: 0}
     - target: {fileID: 8075267064868920725, guid: 48fa343d8a1093046891efc5b3374bf6,
         type: 3}

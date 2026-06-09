@@ -566,3 +566,6 @@ MonoBehaviour:
     m_Bits: 128
   interactionPrompt: {fileID: 7424461039103929092}
   ritualManager: {fileID: 0}
+  footSteps: {fileID: 0}
+  ritualItemSelectionStopThreshold: 0.05
+  ritualItemSelectionDuration: 0.75
