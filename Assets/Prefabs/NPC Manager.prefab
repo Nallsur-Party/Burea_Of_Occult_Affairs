@@ -59,8 +59,8 @@ MonoBehaviour:
   namePool:
     maleNames: []
     femaleNames: []
-    otherNames: []
-    surnames: []
+    maleSurnames: []
+    femaleSurnames: []
   nonParanormalConditions:
   - Cough
   - Cold
@@ -107,6 +107,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f702c157436754041b6f5e3f358e2703, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  audioSource: {fileID: 0}
+  openSounds:
+  - {fileID: 8300000, guid: cc51d421bced45348821b9009a7cb760, type: 3}
+  - {fileID: 8300000, guid: 009dfca9fb661ab4aac9839a4a3ce45b, type: 3}
+  closeSounds:
+  - {fileID: 8300000, guid: 3cbdaf60eb972754885c0561fe1b5ed6, type: 3}
+  - {fileID: 8300000, guid: a479fbab668725649b00de15ff2e0dce, type: 3}
+  - {fileID: 8300000, guid: 8ebe96c196d1a1040880fe512449c9c7, type: 3}
+  footstepLoopClips:
+  - {fileID: 8300000, guid: 3768c2e5ec8baab4cba3e2b3fd9cd90c, type: 3}
+  - {fileID: 8300000, guid: b9ce6db1bd571f744b233c4645d44f26, type: 3}
+  footstepVolumeRange: {x: 0.1, y: 0.4}
+  audioSourceDialoque: {fileID: 0}
+  dialogueLetterSounds:
+  - {fileID: 8300000, guid: e0d21bce0a05cf24b8c98f49a09c99bb, type: 3}
+  dialogueVolumeRange: {x: 0.3, y: 0.6}
+  dialoguePitchRange: {x: 0.9, y: 1.1}
+  dialogueLettersPerSecond: 1
+  ignoreWhitespaceAndPunctuation: 1
   npcPawnPrefab: {fileID: 3188153488741869461, guid: 95513bd84ecdd5f4e9383d15fe1f53d9,
     type: 3}
   spawnParent: {fileID: 7181312806285078053}
@@ -153,7 +172,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 205017572eddbb147b36d4324738af51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  queuePoints: []
+  queuePoints:
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!114 &8667221072683586471
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -118,8 +118,14 @@ MonoBehaviour:
   footstepAudioSource: {fileID: 0}
   footstepLoopClip: {fileID: 0}
   footstepInterval: 0.4
-  stepClips: []
   stepRate: 0.4
+  dialogueAudioSource: {fileID: 0}
+  dialogueLetterSounds:
+  - {fileID: 0}
+  dialogueVolumeRange: {x: 0, y: 0}
+  dialoguePitchRange: {x: 0, y: 0}
+  dialogueLettersPerSecond: 0
+  ignoreWhitespaceAndPunctuation: 0
   spriteRenderer: {fileID: 1110097491038967999}
   invertFlipX: 0
   facesRightByDefault: 1
