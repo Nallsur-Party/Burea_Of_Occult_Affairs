@@ -78,7 +78,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: ae8555b805dba6147b7bea0e5b577b1f, type: 3}
+  m_Sprite: {fileID: 591414295, guid: 11ca304b2a6bb0e4e95ab12b305add1b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 1
   m_FlipY: 0
@@ -115,8 +115,13 @@ MonoBehaviour:
   stoppingDistance: 0.05
   keepCurrentY: 1
   collisionSkin: 0.02
+  footstepAudioSource: {fileID: 0}
+  footstepLoopClip: {fileID: 0}
+  footstepInterval: 0.4
+  stepClips: []
+  stepRate: 0.4
   spriteRenderer: {fileID: 1110097491038967999}
-  invertFlipX: 1
+  invertFlipX: 0
   facesRightByDefault: 1
   animator: {fileID: 963012411273868691}
   lookAtPlayerRadius: 2
@@ -173,10 +178,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.21300983
-  m_Height: 1.7437077
+  m_Radius: 0.25026253
+  m_Height: 1.9911048
   m_Direction: 1
-  m_Center: {x: -0.032645226, y: 0.0075092316, z: 0.009150505}
+  m_Center: {x: 0.06420532, y: -0.07085514, z: 0.009150505}
 --- !u!95 &963012411273868691
 Animator:
   serializedVersion: 5
@@ -301,12 +306,12 @@ PrefabInstance:
     - target: {fileID: 1783818679437874818, guid: 6eb105722920c5647a610279d331394a,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.9922194
+      value: 0.9961947
       objectReference: {fileID: 0}
     - target: {fileID: 1783818679437874818, guid: 6eb105722920c5647a610279d331394a,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.124501996
+      value: 0.08715578
       objectReference: {fileID: 0}
     - target: {fileID: 1783818679437874818, guid: 6eb105722920c5647a610279d331394a,
         type: 3}
