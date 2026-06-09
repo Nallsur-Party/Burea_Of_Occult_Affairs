@@ -24,6 +24,7 @@
 4. Player chooses the appropriate ritual / sanation for the diagnosed problem.
 5. A sanation step is performed as item + action.
 6. Correct sequence cures the NPC; mistakes deal damage and reset progress.
+7. Actions consume shift time; when the shift ends, new time-consuming actions are blocked.
 
 ## Dialogue Rules
 - NPC may have a hidden problem or no problem at all.
@@ -31,6 +32,7 @@
 - NPC lines come from `NPCSymptomeLines.xml`.
 - NPC traits control answer reliability: truth, lie, evasive.
 - When lines run out, repeats or fallback phrases are used.
+- The first question in a conversation is free; additional questions cost shift time.
 
 ## Ritual / Sanation Rules
 - Ritual / Sanation is selected by problem name.
@@ -38,6 +40,15 @@
 - Correct step advances the procedure.
 - A wrong step damages the NPC and resets progress.
 - Completed ritual / sanation cures the NPC and closes the case.
+- Starting a ritual consumes shift time.
+- Inspection, where available, consumes shift time as a placeholder action.
+
+## Shift Rules
+- The work shift starts at `08:00` and ends at `18:00`.
+- Inspection costs `15` minutes.
+- Additional NPC questions cost `2` minutes each.
+- Starting a ritual costs `30` minutes.
+- `WorkShiftClockPresenter` shows the current shift clock in the scene.
 
 ## Controls
 - `E`: interact with nearest NPC.
@@ -45,9 +56,11 @@
 - `Q`: cycle ritual / sanation item.
 - `Alt + 1..8`: select ritual / sanation action.
 - `R`: perform the current ritual / sanation step.
-- `H`: toggle the panel.
+- `I`: run inspection placeholder.
+- `Insert`: toggle the runtime debug panel.
 
 ## Debug Controls
 - `P`: spawn NPC.
 - `Z`: send waiting NPC to route Z.
 - `N`: send waiting NPC to route N.
+- Debug panel buttons also expose typewriter, NPC routing, and TV pinning actions when the relevant scene objects are present.

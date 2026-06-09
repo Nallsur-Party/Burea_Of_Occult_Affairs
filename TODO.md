@@ -4,7 +4,8 @@
 - [ ] Improve ritual feedback readability for players.
 - [ ] Improve diary clarity for symptom-to-problem deduction.
 - [ ] Expand non-paranormal case content and diagnosis flow.
-- [ ] Add UI/debug tooling for filtering NPC by `CaseType`.
+- [ ] Add clearer case filtering and archive/debug views for `CaseType`.
+- [ ] Make shift/time usage more visible in UI beyond the clock.
 
 ## Orders / Requests
 - [ ] Add non-afflicted visitors with orders.
