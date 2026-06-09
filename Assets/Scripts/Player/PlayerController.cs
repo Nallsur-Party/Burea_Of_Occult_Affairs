@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.Serialization;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
@@ -12,9 +13,14 @@ public class PlayerController : MonoBehaviour
         public RitualItemType item;
         public Transform itemObject;
 
-        [NonSerialized] public Vector3 InitialLocalPosition;
-        [NonSerialized] public Quaternion InitialLocalRotation;
-        [NonSerialized] public Vector3 InitialLocalScale;
+        [NonSerialized]
+        public Vector3 InitialLocalPosition;
+
+        [NonSerialized]
+        public Quaternion InitialLocalRotation;
+
+        [NonSerialized]
+        public Vector3 InitialLocalScale;
 
         public void CacheInitialTransform()
         {
@@ -37,41 +43,88 @@ public class PlayerController : MonoBehaviour
     private static readonly int RunMagnitudeHash = Animator.StringToHash("RunMagnitude");
 
     [Header("Movement")]
-    [SerializeField] private float moveSpeed = 5f;
-    [SerializeField] private float jumpForce = 7f;
+    [SerializeField]
+    private float moveSpeed = 5f;
+
+    [SerializeField]
+    private float jumpForce = 7f;
+
     [SerializeField, Tooltip("Disable this in scenes where the player should not be able to jump.")]
     private bool canJump = true;
-    [SerializeField] private bool useDepthMovement = false;
-    [SerializeField] private float groundAcceleration = 35f;
-    [SerializeField] private float airAcceleration = 20f;
-    [SerializeField] private float wallCheckDistance = 0.15f;
-    [SerializeField] private float sprintMultiplier = 2f;
+
+    [SerializeField]
+    private bool useDepthMovement = false;
+
+    [SerializeField]
+    private float groundAcceleration = 35f;
+
+    [SerializeField]
+    private float airAcceleration = 20f;
+
+    [SerializeField]
+    private float wallCheckDistance = 0.15f;
+
+    [SerializeField]
+    private float sprintMultiplier = 2f;
 
     [Header("Ground Check")]
-    [SerializeField] private Transform groundCheck;
-    [SerializeField] private float groundCheckRadius = 0.2f;
-    [SerializeField] private float groundCheckDistance = 0.6f;
-    [SerializeField] private LayerMask groundMask = ~0;
+    [SerializeField]
+    private Transform groundCheck;
+
+    [SerializeField]
+    private float groundCheckRadius = 0.2f;
+
+    [SerializeField]
+    private float groundCheckDistance = 0.6f;
+
+    [SerializeField]
+    private LayerMask groundMask = ~0;
 
     [Header("Visual")]
-    [SerializeField] private Transform visualRoot;
-    [SerializeField] private Animator animator;
+    [SerializeField]
+    private Transform visualRoot;
+
+    [SerializeField]
+    private Animator animator;
 
     [Header("Held Item Visual")]
-    [SerializeField, Tooltip("Mirrors only the held item's local X position when the player faces left.")]
+    [
+        SerializeField,
+        Tooltip("Mirrors only the held item's local X position when the player faces left.")
+    ]
     private bool mirrorHeldItemWhenFacingLeft = true;
-    [SerializeField, Tooltip("Extra local rotation applied to 3D held items while the player faces left.")]
+
+    [
+        SerializeField,
+        Tooltip("Extra local rotation applied to 3D held items while the player faces left.")
+    ]
     private Vector3 heldItemLeftFacingEulerOffset = new Vector3(0f, 180f, 0f);
-    [SerializeField, Tooltip("Scene object bindings for each selectable ritual item. Objects should be children of the player or hand anchor.")]
+
+    [
+        SerializeField,
+        Tooltip(
+            "Scene object bindings for each selectable ritual item. Objects should be children of the player or hand anchor."
+        )
+    ]
     private RitualItemVisualBinding[] heldItemObjects;
 
     [Header("Interaction")]
-    [SerializeField] private float interactionRadius = 1.5f;
-    [SerializeField] private LayerMask interactionMask = ~0;
-    [SerializeField] private GameObject interactionPrompt;
+    [SerializeField]
+    private float interactionRadius = 1.5f;
+
+    [SerializeField]
+    private LayerMask interactionMask = ~0;
+
+    [SerializeField]
+    private GameObject interactionPrompt;
 
     [Header("Debug Ritual")]
-    [SerializeField] private RitualManager ritualManager;
+    [SerializeField]
+    private RitualManager ritualManager;
+
+    [Header("Walking Audio")]
+    [SerializeField]
+    private AudioSource footSteps;
 
     private Rigidbody rb;
     private Player player;
@@ -148,6 +201,10 @@ public class PlayerController : MonoBehaviour
             jumpPressed = false;
         }
 
+        bool isMoving =
+            Mathf.Abs(moveInput) > 0.01f || (useDepthMovement && Mathf.Abs(depthInput) > 0.01f);
+        UpdateFootstepAudio(isMoving);
+
         HandleDialogueInput();
         HandleInspectionInput();
         HandleRitualInput();
@@ -185,7 +242,8 @@ public class PlayerController : MonoBehaviour
             moveDirection.Normalize();
         }
 
-        Vector3 targetPlanarVelocity = moveDirection * (player.IsSprinting ? moveSpeed * sprintMultiplier : moveSpeed);
+        Vector3 targetPlanarVelocity =
+            moveDirection * (player.IsSprinting ? moveSpeed * sprintMultiplier : moveSpeed);
         Vector3 currentPlanarVelocity = new Vector3(velocity.x, 0f, velocity.z);
         float acceleration = player.IsGrounded ? groundAcceleration : airAcceleration;
 
@@ -223,7 +281,14 @@ public class PlayerController : MonoBehaviour
         Vector3 direction = planarVelocity.normalized;
         float sweepDistance = wallCheckDistance + planarVelocity.magnitude * Time.fixedDeltaTime;
 
-        if (!rb.SweepTest(direction, out RaycastHit hit, sweepDistance, QueryTriggerInteraction.Ignore))
+        if (
+            !rb.SweepTest(
+                direction,
+                out RaycastHit hit,
+                sweepDistance,
+                QueryTriggerInteraction.Ignore
+            )
+        )
         {
             return planarVelocity;
         }
@@ -242,7 +307,12 @@ public class PlayerController : MonoBehaviour
     {
         Vector3 checkPosition = groundCheck != null ? groundCheck.position : transform.position;
 
-        player.IsGrounded = Physics.CheckSphere(checkPosition, groundCheckRadius, groundMask, QueryTriggerInteraction.Ignore);
+        player.IsGrounded = Physics.CheckSphere(
+            checkPosition,
+            groundCheckRadius,
+            groundMask,
+            QueryTriggerInteraction.Ignore
+        );
 
         if (!player.IsGrounded)
         {
@@ -346,7 +416,9 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        activeDialogueNpc.ShowDialogue(activeDialogueNpc.GetQuestionResponse(questionType, playerProfile));
+        activeDialogueNpc.ShowDialogue(
+            activeDialogueNpc.GetQuestionResponse(questionType, playerProfile)
+        );
         npcData?.RegisterQuestionAsked();
     }
 
@@ -451,10 +523,16 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        RitualAttemptResult result = ritualManager.TryPerformStep(activeDialogueNpc, player.SelectedRitualItem, player.SelectedRitualAction);
+        RitualAttemptResult result = ritualManager.TryPerformStep(
+            activeDialogueNpc,
+            player.SelectedRitualItem,
+            player.SelectedRitualAction
+        );
         if (result == RitualAttemptResult.NotStarted)
         {
-            Debug.Log("Ritual Debug | Ritual step ignored because the ritual has not been started.");
+            Debug.Log(
+                "Ritual Debug | Ritual step ignored because the ritual has not been started."
+            );
         }
     }
 
@@ -470,7 +548,10 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        Debug.LogWarning("Inspection is not implemented yet. Time was consumed as a placeholder.", this);
+        Debug.LogWarning(
+            "Inspection is not implemented yet. Time was consumed as a placeholder.",
+            this
+        );
     }
 
     public void SelectRitualItem(RitualItemType item)
@@ -483,7 +564,9 @@ public class PlayerController : MonoBehaviour
     public void SelectRitualAction(RitualActionType action)
     {
         player.SelectedRitualAction = action;
-        Debug.Log($"Ritual Debug | Selected action: {player.SelectedRitualAction.GetDisplayName()} | {player.SelectedRitualAction.GetDescription()}");
+        Debug.Log(
+            $"Ritual Debug | Selected action: {player.SelectedRitualAction.GetDisplayName()} | {player.SelectedRitualAction.GetDescription()}"
+        );
     }
 
     public void SelectGlassWithPencil()
@@ -555,7 +638,10 @@ public class PlayerController : MonoBehaviour
         WorkShiftTimeSystem timeSystem = GetWorkShiftTimeSystem();
         if (timeSystem == null)
         {
-            Debug.LogWarning($"Work shift time system is not available. {actionLabel} cannot be processed.", this);
+            Debug.LogWarning(
+                $"Work shift time system is not available. {actionLabel} cannot be processed.",
+                this
+            );
             return false;
         }
 
@@ -578,7 +664,10 @@ public class PlayerController : MonoBehaviour
         WorkShiftTimeSystem timeSystem = GetWorkShiftTimeSystem();
         if (timeSystem == null)
         {
-            Debug.LogWarning($"Work shift time system is not available. {actionLabel} cannot consume time.", this);
+            Debug.LogWarning(
+                $"Work shift time system is not available. {actionLabel} cannot consume time.",
+                this
+            );
             return false;
         }
 
@@ -836,5 +925,18 @@ public class PlayerController : MonoBehaviour
 
         Gizmos.color = Color.cyan;
         Gizmos.DrawWireSphere(transform.position, interactionRadius);
+    }
+
+    private void UpdateFootstepAudio(bool isMoving)
+    {
+        if (footSteps == null)
+            return;
+        float targetPitch = player.IsSprinting ? 1.3f : 1f;
+        footSteps.pitch = Mathf.Lerp(footSteps.pitch, targetPitch, Time.deltaTime * 10f);
+
+        if (isMoving && !footSteps.isPlaying)
+            footSteps.Play();
+        else if (!isMoving && footSteps.isPlaying)
+            footSteps.Stop();
     }
 }
