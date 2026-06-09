@@ -86,9 +86,6 @@ public class NpcOrderVisitor : MonoBehaviour
     private float footstepInterval = 0.4f;
 
     [SerializeField]
-    private AudioClip[] stepClips;
-
-    [SerializeField]
     private float stepRate = 0.4f;
     private float stepTimer;
 
@@ -622,26 +619,27 @@ public class NpcOrderVisitor : MonoBehaviour
         UpdateAnimator();
     }
 
+    public void SetFootstepAudio(AudioSource source, AudioClip clip)
+    {
+        footstepAudioSource = source;
+        footstepLoopClip = clip;
+        if (footstepAudioSource != null)
+        {
+            footstepAudioSource.clip = clip;
+            footstepAudioSource.playOnAwake = false;
+            footstepAudioSource.loop = true;
+        }
+    }
+
     private void UpdateFootstepAudio(bool isMoving)
     {
-        if (footstepAudioSource == null || stepClips == null || stepClips.Length == 0)
+        if (footstepAudioSource == null || footstepLoopClip == null)
             return;
 
-        if (!isMoving)
-        {
-            stepTimer = 0f;
-            return;
-        }
-
-        stepTimer -= Time.deltaTime;
-
-        if (stepTimer <= 0f)
-        {
-            stepTimer = stepRate;
-
-            AudioClip clip = stepClips[Random.Range(0, stepClips.Length)];
-            footstepAudioSource.PlayOneShot(clip, 0.8f);
-        }
+        if (isMoving && !footstepAudioSource.isPlaying)
+            footstepAudioSource.Play();
+        else if (!isMoving && footstepAudioSource.isPlaying)
+            footstepAudioSource.Stop();
     }
 
     private void Start()

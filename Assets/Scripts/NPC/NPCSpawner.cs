@@ -16,6 +16,14 @@ public class NPCSpawner : MonoBehaviour
     [SerializeField]
     private List<AudioClip> closeSounds = new List<AudioClip>(); // Звуки закрытия двери
 
+    [Header("NPC Footstep Audio")]
+    [SerializeField]
+    private AudioClip[] footstepLoopClips;
+
+    [SerializeField]
+    private Vector2 footstepVolumeRange = new Vector2(0.2f, 0.5f);
+
+    [Header("Spawn Settings")]
     [
         SerializeField,
         Tooltip("Prefab asset or hidden scene prototype to instantiate for spawned NPCs.")
@@ -454,6 +462,8 @@ public class NPCSpawner : MonoBehaviour
         npcOrderVisitor.SetRitualApproachRoutePoints(GetRitualApproachRoutePoints());
         npcOrderVisitor.SetRitualExitRoutePoints(GetRitualExitRoutePoints());
 
+        SetupNpcFootsteps(npcOrderVisitor, spawnedNpcObject); // Настройка звука шагов
+
         npcQueueManager.EnqueueNPC(npcOrderVisitor);
 
         Debug.Log(
@@ -461,6 +471,42 @@ public class NPCSpawner : MonoBehaviour
             spawnedNpcObject
         );
         return true;
+    }
+
+    private void SetupNpcFootsteps(NpcOrderVisitor npc, GameObject npcObject)
+    {
+        if (footstepLoopClips == null || footstepLoopClips.Length == 0)
+        {
+            Debug.LogWarning(
+                "No footstep loop clips assigned in NPCSpawner, NPC will have no footstep sound.",
+                this
+            );
+            return;
+        }
+
+        // Выбираем случайный клип из массива
+        AudioClip selectedClip = footstepLoopClips[Random.Range(0, footstepLoopClips.Length)];
+
+        // Находим или создаём AudioSource на объекте NPC
+        AudioSource npcAudioSource = npcObject.GetComponent<AudioSource>();
+        if (npcAudioSource == null)
+        {
+            npcAudioSource = npcObject.AddComponent<AudioSource>();
+            npcAudioSource.playOnAwake = false;
+            npcAudioSource.loop = true;
+            npcAudioSource.volume = 0.5f;
+            npcAudioSource.spatialBlend = 0f;
+        }
+
+        // Назначаем клип и выключаем PlayOnAwake
+        npcAudioSource.clip = selectedClip;
+        npcAudioSource.playOnAwake = false;
+
+        // Передаём ссылки в NpcOrderVisitor
+        npc.SetFootstepAudio(npcAudioSource, selectedClip);
+
+        float randomVolume = Random.Range(footstepVolumeRange.x, footstepVolumeRange.y);
+        npcAudioSource.volume = randomVolume;
     }
 
     private void QueueArchivedNpcSpawn(string persistentId)
