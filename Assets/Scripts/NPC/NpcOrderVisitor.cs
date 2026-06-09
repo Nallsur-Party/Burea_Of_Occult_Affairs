@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
@@ -89,6 +90,28 @@ public class NpcOrderVisitor : MonoBehaviour
     private float stepRate = 0.4f;
     private float stepTimer;
 
+    [Header("Dialogue audio")]
+    [SerializeField]
+    private AudioSource dialogueAudioSource;
+
+    [SerializeField]
+    private AudioClip[] dialogueLetterSounds;
+
+    [SerializeField]
+    private Vector2 dialogueVolumeRange;
+
+    [SerializeField]
+    private Vector2 dialoguePitchRange;
+
+    [SerializeField]
+    private float dialogueLettersPerSecond;
+
+    [SerializeField]
+    private bool ignoreWhitespaceAndPunctuation;
+
+    [SerializeField]
+    private Coroutine dialogueSoundCoroutine;
+
     [Header("Visual")]
     [SerializeField]
     private SpriteRenderer spriteRenderer;
@@ -161,6 +184,9 @@ public class NpcOrderVisitor : MonoBehaviour
     private int ritualExitIndex = -1;
     private float footstepTimer;
     private bool isFootstepPlaying;
+    private bool isActiveDialogue = false;
+    private float dialogueStartTime;
+    private float maxDialogueDuration;
 
     private enum RitualRoutePhase
     {
@@ -392,44 +418,124 @@ public class NpcOrderVisitor : MonoBehaviour
 
     public void ShowDialogue(string message)
     {
-        if (dialogueBubble == null)
-        {
+        Debug.Log(
+            $"ShowDialogue called. AudioSource={dialogueAudioSource != null}, clips={dialogueLetterSounds?.Length}, message length={message.Length}"
+        );
+        if (!isActiveDialogue)
             return;
-        }
+        if (dialogueBubble == null)
+            return;
 
         dialogueBubble.Show(message);
         if (healthBar != null)
-        {
             healthBar.SetVisible(true);
+
+        StopDialogueSound();
+        if (
+            dialogueAudioSource != null
+            && dialogueLetterSounds != null
+            && dialogueLetterSounds.Length > 0
+        )
+        {
+            dialogueStartTime = Time.time;
+            maxDialogueDuration = Random.Range(4f, 6f);
+            dialogueSoundCoroutine = StartCoroutine(PlayDialogueSoundForText(message));
         }
     }
 
     public void ShowPersistentDialogue(string message)
     {
+        Debug.Log(
+            $"ShowPersistentDialogue called. AudioSource={dialogueAudioSource != null}, clips={dialogueLetterSounds?.Length}, message length={message.Length}"
+        );
+        if (!isActiveDialogue)
+            return; // ← Теперь проверка есть!
         if (dialogueBubble == null)
-        {
             return;
-        }
 
         dialogueBubble.ShowPersistent(message);
         if (healthBar != null)
-        {
             healthBar.SetVisible(true);
+
+        StopDialogueSound();
+        if (
+            dialogueAudioSource != null
+            && dialogueLetterSounds != null
+            && dialogueLetterSounds.Length > 0
+        )
+        {
+            dialogueStartTime = Time.time;
+            maxDialogueDuration = Random.Range(4f, 7f);
+            dialogueSoundCoroutine = StartCoroutine(PlayDialogueSoundForText(message));
         }
+    }
+
+    private IEnumerator PlayDialogueSoundForText(string message)
+    {
+        Debug.Log("PlayDialogueSoundForText entered");
+        if (dialogueAudioSource == null)
+        {
+            Debug.LogError("dialogueAudioSource is null");
+            yield break;
+        }
+        if (dialogueLetterSounds == null || dialogueLetterSounds.Length == 0)
+        {
+            Debug.LogError("dialogueLetterSounds is null or empty");
+            yield break;
+        }
+        if (dialogueLettersPerSecond <= 0)
+        {
+            dialogueLettersPerSecond = 20f;
+        }
+
+        float interval = 1f / dialogueLettersPerSecond;
+        int charCount = message.Length;
+        float startTime = Time.time;
+
+        for (int i = 0; i < charCount; i++)
+        {
+            // Если прошло больше maxDialogueDuration – принудительно завершаем
+            if (Time.time - startTime > maxDialogueDuration)
+            {
+                Debug.Log("Dialogue sound timeout, stopping.");
+                break;
+            }
+
+            char c = message[i];
+            bool playSound = true;
+            if (ignoreWhitespaceAndPunctuation && (char.IsWhiteSpace(c) || char.IsPunctuation(c)))
+                playSound = false;
+
+            if (playSound)
+            {
+                AudioClip clip = dialogueLetterSounds[Random.Range(0, dialogueLetterSounds.Length)];
+                float volume = Random.Range(dialogueVolumeRange.x, dialogueVolumeRange.y);
+                float pitch = Random.Range(dialoguePitchRange.x, dialoguePitchRange.y);
+                dialogueAudioSource.pitch = pitch;
+                dialogueAudioSource.PlayOneShot(clip, volume);
+                Debug.Log($"Playing sound: clip={clip.name}, volume={volume}, pitch={pitch}");
+                dialogueAudioSource.pitch = 1f;
+            }
+            yield return new WaitForSeconds(interval);
+        }
+
+        Debug.Log("PlayDialogueSoundForText finished");
+        // Останавливаем звук и сбрасываем флаг активности, чтобы диалог не вис бесконечно
+        StopDialogueSound();
+        SetIsActiveDialogue(false);
     }
 
     public void HideDialogue()
     {
         if (dialogueBubble == null)
-        {
             return;
-        }
 
         dialogueBubble.Hide();
         if (healthBar != null)
-        {
             healthBar.SetVisible(false);
-        }
+
+        StopDialogueSound();
+        SetIsActiveDialogue(false); // сбросить флаг активности для этого NPC
     }
 
     public void SetDialogueFocus(bool focused)
@@ -640,6 +746,60 @@ public class NpcOrderVisitor : MonoBehaviour
             footstepAudioSource.Play();
         else if (!isMoving && footstepAudioSource.isPlaying)
             footstepAudioSource.Stop();
+    }
+
+    public void SetIsActiveDialogue(bool active)
+    {
+        isActiveDialogue = active;
+    }
+
+    public void SetDialogueAudio(
+        AudioSource source,
+        AudioClip[] clips,
+        Vector2 volumeRange,
+        Vector2 pitchRange,
+        float lettersPerSecond,
+        bool ignoreWhitespace
+    )
+    {
+        // Проверяем, что переданный source действительно является AudioSource, а не GameObject
+        if (
+            source == null
+            || !(source is AudioSource)
+            || source.gameObject == gameObject && source.GetType() != typeof(AudioSource)
+        )
+        {
+            Debug.LogWarning(
+                $"SetDialogueAudio: source is not valid AudioSource (type: {source?.GetType()}, name: {source?.name}). Creating new."
+            );
+            // Пытаемся найти или создать AudioSource на этом объекте
+            dialogueAudioSource = GetComponent<AudioSource>();
+            if (dialogueAudioSource == null)
+                dialogueAudioSource = gameObject.AddComponent<AudioSource>();
+        }
+        else
+        {
+            dialogueAudioSource = source;
+        }
+
+        dialogueLetterSounds = clips;
+        dialogueVolumeRange = volumeRange;
+        dialoguePitchRange = pitchRange;
+        dialogueLettersPerSecond = lettersPerSecond;
+        ignoreWhitespaceAndPunctuation = ignoreWhitespace;
+
+        Debug.Log(
+            $"SetDialogueAudio: final source = {dialogueAudioSource.name} ({dialogueAudioSource.GetType()})"
+        );
+    }
+
+    private void StopDialogueSound()
+    {
+        if (dialogueSoundCoroutine != null)
+        {
+            StopCoroutine(dialogueSoundCoroutine);
+            dialogueSoundCoroutine = null;
+        }
     }
 
     private void Start()

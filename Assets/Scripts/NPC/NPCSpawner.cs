@@ -23,6 +23,25 @@ public class NPCSpawner : MonoBehaviour
     [SerializeField]
     private Vector2 footstepVolumeRange = new Vector2(0.2f, 0.5f);
 
+    [Header("NPC Dialogue Audio")]
+    [SerializeField]
+    private AudioSource audioSourceDialoque;
+
+    [SerializeField]
+    private AudioClip[] dialogueLetterSounds;
+
+    [SerializeField]
+    private Vector2 dialogueVolumeRange = new Vector2(0.3f, 0.6f);
+
+    [SerializeField]
+    private Vector2 dialoguePitchRange = new Vector2(0.9f, 1.1f);
+
+    [SerializeField]
+    private float dialogueLettersPerSecond = 30f;
+
+    [SerializeField]
+    private bool ignoreWhitespaceAndPunctuation = true;
+
     [Header("Spawn Settings")]
     [
         SerializeField,
@@ -426,6 +445,34 @@ public class NPCSpawner : MonoBehaviour
         return npcGenerator.GeneratedNpc;
     }
 
+    private void SetupNpcDialogueAudio(NpcOrderVisitor npc, GameObject npcObject)
+    {
+        if (dialogueLetterSounds == null || dialogueLetterSounds.Length == 0)
+        {
+            Debug.LogWarning(
+                "No dialogue letter sounds assigned in NPCSpawner, NPC will have no dialogue audio.",
+                this
+            );
+            return;
+        }
+
+        // ВСЕГДА создаём новый AudioSource для диалогов, отдельный от шагов
+        AudioSource dialogueAudioSource = npcObject.AddComponent<AudioSource>();
+        dialogueAudioSource.playOnAwake = false;
+        dialogueAudioSource.spatialBlend = 0f; // 2D звук, чтобы было слышно всегда
+        dialogueAudioSource.volume = Random.Range(dialogueVolumeRange.x, dialogueVolumeRange.y);
+        dialogueAudioSource.pitch = 1f;
+
+        npc.SetDialogueAudio(
+            dialogueAudioSource,
+            dialogueLetterSounds,
+            dialogueVolumeRange,
+            dialoguePitchRange,
+            dialogueLettersPerSecond,
+            ignoreWhitespaceAndPunctuation
+        );
+    }
+
     private bool TrySpawnNpcInstance(NPC npcData, string spawnSourceLabel)
     {
         if (npcData == null)
@@ -463,6 +510,8 @@ public class NPCSpawner : MonoBehaviour
         npcOrderVisitor.SetRitualExitRoutePoints(GetRitualExitRoutePoints());
 
         SetupNpcFootsteps(npcOrderVisitor, spawnedNpcObject); // Настройка звука шагов
+
+        SetupNpcDialogueAudio(npcOrderVisitor, spawnedNpcObject); // Настройка звука диалогов
 
         npcQueueManager.EnqueueNPC(npcOrderVisitor);
 

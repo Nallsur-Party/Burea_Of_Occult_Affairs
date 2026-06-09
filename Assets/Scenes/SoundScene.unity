@@ -4795,6 +4795,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3728247049770033207, guid: 95513bd84ecdd5f4e9383d15fe1f53d9,
         type: 3}
+      propertyPath: dialogueAudioSource
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3728247049770033207, guid: 95513bd84ecdd5f4e9383d15fe1f53d9,
+        type: 3}
+      propertyPath: dialogueLetterSound
+      value: 
+      objectReference: {fileID: 8300000, guid: e0d21bce0a05cf24b8c98f49a09c99bb, type: 3}
+    - target: {fileID: 3728247049770033207, guid: 95513bd84ecdd5f4e9383d15fe1f53d9,
+        type: 3}
       propertyPath: footstepAudioSource
       value: 
       objectReference: {fileID: 0}
@@ -4818,6 +4828,16 @@ PrefabInstance:
       propertyPath: footstepClips.Array.data[1]
       value: 
       objectReference: {fileID: 8300000, guid: b9ce6db1bd571f744b233c4645d44f26, type: 3}
+    - target: {fileID: 3728247049770033207, guid: 95513bd84ecdd5f4e9383d15fe1f53d9,
+        type: 3}
+      propertyPath: dialogueLetterSounds.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3728247049770033207, guid: 95513bd84ecdd5f4e9383d15fe1f53d9,
+        type: 3}
+      propertyPath: dialogueLetterSounds.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -5163,6 +5183,11 @@ PrefabInstance:
       objectReference: {fileID: 8300000, guid: 3768c2e5ec8baab4cba3e2b3fd9cd90c, type: 3}
     - target: {fileID: 3708043392199942633, guid: a627bb56f72e98b4ab851642a4f3c5c6,
         type: 3}
+      propertyPath: audioSourceDialoque
+      value: 
+      objectReference: {fileID: 1789654269}
+    - target: {fileID: 3708043392199942633, guid: a627bb56f72e98b4ab851642a4f3c5c6,
+        type: 3}
       propertyPath: footstepVolumeRange.x
       value: 0.1
       objectReference: {fileID: 0}
@@ -5180,6 +5205,11 @@ PrefabInstance:
         type: 3}
       propertyPath: closeSounds.Array.size
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3708043392199942633, guid: a627bb56f72e98b4ab851642a4f3c5c6,
+        type: 3}
+      propertyPath: dialogueLettersPerSecond
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3708043392199942633, guid: a627bb56f72e98b4ab851642a4f3c5c6,
         type: 3}
@@ -5223,6 +5253,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3708043392199942633, guid: a627bb56f72e98b4ab851642a4f3c5c6,
         type: 3}
+      propertyPath: ignoreWhitespaceAndPunctuation
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3708043392199942633, guid: a627bb56f72e98b4ab851642a4f3c5c6,
+        type: 3}
+      propertyPath: dialogueLetterSounds.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3708043392199942633, guid: a627bb56f72e98b4ab851642a4f3c5c6,
+        type: 3}
       propertyPath: footstepLoopClips.Array.data[0]
       value: 
       objectReference: {fileID: 8300000, guid: 3768c2e5ec8baab4cba3e2b3fd9cd90c, type: 3}
@@ -5231,6 +5271,16 @@ PrefabInstance:
       propertyPath: footstepLoopClips.Array.data[1]
       value: 
       objectReference: {fileID: 8300000, guid: b9ce6db1bd571f744b233c4645d44f26, type: 3}
+    - target: {fileID: 3708043392199942633, guid: a627bb56f72e98b4ab851642a4f3c5c6,
+        type: 3}
+      propertyPath: dialogueLetterSounds.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: e0d21bce0a05cf24b8c98f49a09c99bb, type: 3}
+    - target: {fileID: 3708043392199942633, guid: a627bb56f72e98b4ab851642a4f3c5c6,
+        type: 3}
+      propertyPath: dialogueLetterSounds.Array.data[1]
+      value: 
+      objectReference: {fileID: 8300000, guid: e0d21bce0a05cf24b8c98f49a09c99bb, type: 3}
     - target: {fileID: 3708043392199942633, guid: a627bb56f72e98b4ab851642a4f3c5c6,
         type: 3}
       propertyPath: usualExitRoutePoints.Array.data[0]

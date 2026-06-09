@@ -445,6 +445,7 @@ public class PlayerController : MonoBehaviour
         activeDialogueNpc = npc;
         npc.ShowDialogue(npc.Interact());
         npc.SetDialogueFocus(true);
+        npc.SetIsActiveDialogue(true);
     }
 
     private void AskNpcQuestion(NPCQuestionType questionType)
@@ -816,9 +817,7 @@ public class PlayerController : MonoBehaviour
             animator.SetBool(IsSelectionItemHash, true);
         }
 
-        Debug.Log(
-            $"Ritual Debug | Selected item: {player.SelectedRitualItem.GetDisplayName()}"
-        );
+        Debug.Log($"Ritual Debug | Selected item: {player.SelectedRitualItem.GetDisplayName()}");
     }
 
     private void UpdateAnimator()
