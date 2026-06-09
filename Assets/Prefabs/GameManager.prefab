@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 467920824651574611}
-  - component: {fileID: 8633591070225583713}
   - component: {fileID: 1860199988852954004}
   m_Layer: 0
   m_Name: GameManager
@@ -33,23 +32,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8633591070225583713
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8460393869027150271}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1c9b4d7f8a2e43a0b6c5d9e0f2a1b3c4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  npcProblemsXml: {fileID: 4900000, guid: 3aead19fd5a76af47b32842ca7931c92, type: 3}
-  problemNewsXml: {fileID: 4900000, guid: 44312e994d53606419bba968b67fdc10, type: 3}
-  newsTemplatesXml: {fileID: 4900000, guid: c5af565d0d2dca14897620683c02f185, type: 3}
-  newsMappingsXml: {fileID: 4900000, guid: 6f3a2c8d4e5f4f1e93f7d6b1c2a9e801, type: 3}
-  initializeOnAwake: 1
 --- !u!114 &1860199988852954004
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -64,3 +46,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentMinutesFromMidnight: 480
   resetToShiftStartOnAwake: 1
+  logTimeChanges: 1
