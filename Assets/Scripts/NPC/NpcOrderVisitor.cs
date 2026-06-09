@@ -438,7 +438,7 @@ public class NpcOrderVisitor : MonoBehaviour
         )
         {
             dialogueStartTime = Time.time;
-            maxDialogueDuration = Random.Range(4f, 6f);
+            maxDialogueDuration = Random.Range(2f, 4f);
             dialogueSoundCoroutine = StartCoroutine(PlayDialogueSoundForText(message));
         }
     }
