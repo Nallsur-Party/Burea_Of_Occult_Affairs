@@ -1,4 +1,4 @@
-public static class RitualItemTypeExtensions
+public static class RitualItemExtensions
 {
     public static string GetDisplayName(this RitualItemType item)
     {

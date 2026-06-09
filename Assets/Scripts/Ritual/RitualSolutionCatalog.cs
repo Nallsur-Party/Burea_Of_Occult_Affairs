@@ -9,6 +9,7 @@ public class RitualSolutionCatalog : ScriptableObject
     [SerializeField] private List<RitualSolutionDefinition> solutions = new List<RitualSolutionDefinition>();
 
     private Dictionary<string, RitualSolutionDefinition> solutionsByProblemName;
+    private Dictionary<string, string> legacyAliasesByProblemName;
 
     public IReadOnlyList<RitualSolutionDefinition> Solutions => solutions;
 
@@ -46,7 +47,27 @@ public class RitualSolutionCatalog : ScriptableObject
             RebuildLookup();
         }
 
-        return solutionsByProblemName.TryGetValue(problemName.Trim(), out solution);
+        string normalizedProblemName = NormalizeProblemName(problemName);
+        if (solutionsByProblemName.TryGetValue(normalizedProblemName, out solution))
+        {
+            return true;
+        }
+
+        if (legacyAliasesByProblemName != null
+            && legacyAliasesByProblemName.TryGetValue(normalizedProblemName, out string canonicalProblemName)
+            && !string.IsNullOrWhiteSpace(canonicalProblemName)
+            && solutionsByProblemName.TryGetValue(canonicalProblemName, out solution))
+        {
+            return true;
+        }
+
+        if (TryGetSolutionByLooseName(normalizedProblemName, out solution))
+        {
+            return true;
+        }
+
+        solution = null;
+        return false;
     }
 
     public static RitualSolutionCatalog CreateRuntimeDefault()
@@ -232,7 +253,117 @@ public class RitualSolutionCatalog : ScriptableObject
                 continue;
             }
 
-            solutionsByProblemName[solution.ProblemName.Trim()] = solution;
+            solutionsByProblemName[NormalizeProblemName(solution.ProblemName)] = solution;
         }
+
+        EnsureLegacyAliases();
+    }
+
+    private void EnsureLegacyAliases()
+    {
+        if (legacyAliasesByProblemName == null)
+        {
+            legacyAliasesByProblemName = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        }
+
+        if (legacyAliasesByProblemName.Count > 0)
+        {
+            return;
+        }
+
+        RegisterLegacyAlias("Повтор", "Эффект наложения");
+        RegisterLegacyAlias("Потерянный маршрут", "Забытая комната");
+        RegisterLegacyAlias("Незавершённый разговор", "Шумовой след");
+        RegisterLegacyAlias("Забытая встреча", "Резонанс памяти");
+        RegisterLegacyAlias("Пропавшее намерение", "Нарушенный контракт");
+        RegisterLegacyAlias("Расслоение", "Пространственный двойник");
+        RegisterLegacyAlias("Отпечаток", "Инородный отпечаток");
+        RegisterLegacyAlias("Зеркальный", "Проекция");
+        RegisterLegacyAlias("Смещение", "Пространственный сдвиг");
+        RegisterLegacyAlias("Эхо", "Резонанс памяти");
+        RegisterLegacyAlias("Привязка", "Привязанный паразит");
+        RegisterLegacyAlias("Сбой личности", "Подмена");
+        RegisterLegacyAlias("Зов", "Холодный зов");
+        RegisterLegacyAlias("Петля", "Точка возврата");
+        RegisterLegacyAlias("Десинхронизация", "Искажение времени");
+    }
+
+    private void RegisterLegacyAlias(string legacyName, string canonicalName)
+    {
+        string legacyKey = NormalizeProblemName(legacyName);
+        string canonicalKey = NormalizeProblemName(canonicalName);
+
+        if (string.IsNullOrWhiteSpace(legacyKey) || string.IsNullOrWhiteSpace(canonicalKey))
+        {
+            return;
+        }
+
+        legacyAliasesByProblemName[legacyKey] = canonicalKey;
+    }
+
+    private bool TryGetSolutionByLooseName(string problemName, out RitualSolutionDefinition solution)
+    {
+        solution = null;
+
+        if (string.IsNullOrWhiteSpace(problemName) || solutionsByProblemName == null || solutionsByProblemName.Count == 0)
+        {
+            return false;
+        }
+
+        foreach (KeyValuePair<string, RitualSolutionDefinition> pair in solutionsByProblemName)
+        {
+            if (MatchesLoosely(problemName, pair.Key))
+            {
+                solution = pair.Value;
+                return solution != null;
+            }
+        }
+
+        if (legacyAliasesByProblemName != null)
+        {
+            foreach (KeyValuePair<string, string> pair in legacyAliasesByProblemName)
+            {
+                if (!MatchesLoosely(problemName, pair.Key))
+                {
+                    continue;
+                }
+
+                if (solutionsByProblemName.TryGetValue(pair.Value, out solution))
+                {
+                    return solution != null;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private static bool MatchesLoosely(string left, string right)
+    {
+        if (string.IsNullOrWhiteSpace(left) || string.IsNullOrWhiteSpace(right))
+        {
+            return false;
+        }
+
+        if (string.Equals(left, right, StringComparison.OrdinalIgnoreCase))
+        {
+            return true;
+        }
+
+        return left.IndexOf(right, StringComparison.OrdinalIgnoreCase) >= 0
+            || right.IndexOf(left, StringComparison.OrdinalIgnoreCase) >= 0;
+    }
+
+    private static string NormalizeProblemName(string value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return string.Empty;
+        }
+
+        string normalized = value.Trim();
+        normalized = normalized.Trim('\"', '\'', '«', '»', 'Â');
+        normalized = normalized.Replace("Ã‚Â«", string.Empty).Replace("Ã‚Â»", string.Empty);
+        return normalized.Trim();
     }
 }

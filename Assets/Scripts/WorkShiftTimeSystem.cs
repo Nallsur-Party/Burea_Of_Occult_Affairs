@@ -12,6 +12,7 @@ public class WorkShiftTimeSystem : MonoBehaviour
     public const int RitualCostMinutes = 30;
 
     private static WorkShiftTimeSystem instance;
+    private bool isReloadingScene;
 
     [SerializeField] private int currentMinutesFromMidnight = ShiftStartMinutes;
     [SerializeField] private bool resetToShiftStartOnAwake = true;
@@ -135,6 +136,7 @@ public class WorkShiftTimeSystem : MonoBehaviour
 
     private void HandleSceneLoaded(Scene scene, LoadSceneMode loadSceneMode)
     {
+        isReloadingScene = false;
         NotifyTimeChanged();
     }
 
@@ -171,5 +173,32 @@ public class WorkShiftTimeSystem : MonoBehaviour
         shiftEndedNotified = true;
         Debug.Log("Work shift has ended.", this);
         ShiftEnded?.Invoke();
+        AdvanceDayAndReloadCurrentScene();
+    }
+
+    private void AdvanceDayAndReloadCurrentScene()
+    {
+        if (isReloadingScene)
+        {
+            return;
+        }
+
+        isReloadingScene = true;
+
+        if (DayCounterSystem.Instance != null)
+        {
+            DayCounterSystem.Instance.AdvanceDay();
+        }
+
+        ResetShift();
+
+        Scene currentScene = SceneManager.GetActiveScene();
+        if (!currentScene.IsValid() || !currentScene.isLoaded)
+        {
+            isReloadingScene = false;
+            return;
+        }
+
+        SceneManager.LoadScene(currentScene.name);
     }
 }

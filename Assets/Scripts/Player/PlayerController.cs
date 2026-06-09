@@ -490,42 +490,11 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        if (!IsRitualActionModifierPressed())
+        if (Input.GetKeyDown(KeyCode.T))
         {
+            bool selectPrevious = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
+            CycleRitualAction(selectPrevious);
             return;
-        }
-
-        if (IsAnyActionHotkeyPressed(KeyCode.Alpha1, KeyCode.Keypad1))
-        {
-            SelectRitualAction(RitualActionType.EquipOnNpc);
-        }
-        else if (IsAnyActionHotkeyPressed(KeyCode.Alpha2, KeyCode.Keypad2))
-        {
-            SelectRitualAction(RitualActionType.HoldNearNpc);
-        }
-        else if (IsAnyActionHotkeyPressed(KeyCode.Alpha3, KeyCode.Keypad3))
-        {
-            SelectRitualAction(RitualActionType.ReadIncantation);
-        }
-        else if (IsAnyActionHotkeyPressed(KeyCode.Alpha4, KeyCode.Keypad4))
-        {
-            SelectRitualAction(RitualActionType.CircleAroundNpc);
-        }
-        else if (IsAnyActionHotkeyPressed(KeyCode.Alpha5, KeyCode.Keypad5))
-        {
-            SelectRitualAction(RitualActionType.PlaceNearby);
-        }
-        else if (IsAnyActionHotkeyPressed(KeyCode.Alpha6, KeyCode.Keypad6))
-        {
-            SelectRitualAction(RitualActionType.TouchNpc);
-        }
-        else if (IsAnyActionHotkeyPressed(KeyCode.Alpha7, KeyCode.Keypad7))
-        {
-            SelectRitualAction(RitualActionType.BreakItem);
-        }
-        else if (IsAnyActionHotkeyPressed(KeyCode.Alpha8, KeyCode.Keypad8))
-        {
-            SelectRitualAction(RitualActionType.MarkGround);
         }
     }
 
@@ -779,6 +748,27 @@ public class PlayerController : MonoBehaviour
         int currentIndex = Array.IndexOf(ritualItems, player.SelectedRitualItem);
         int nextIndex = currentIndex < 0 ? 0 : (currentIndex + 1) % ritualItems.Length;
         SelectRitualItem(ritualItems[nextIndex]);
+    }
+
+    public void CycleRitualAction(bool reverse = false)
+    {
+        RitualActionType[] ritualActions = (RitualActionType[])Enum.GetValues(typeof(RitualActionType));
+        if (ritualActions == null || ritualActions.Length == 0)
+        {
+            return;
+        }
+
+        int currentIndex = Array.IndexOf(ritualActions, player.SelectedRitualAction);
+        if (currentIndex < 0)
+        {
+            SelectRitualAction(ritualActions[0]);
+            return;
+        }
+
+        int nextIndex = reverse
+            ? (currentIndex - 1 + ritualActions.Length) % ritualActions.Length
+            : (currentIndex + 1) % ritualActions.Length;
+        SelectRitualAction(ritualActions[nextIndex]);
     }
 
     public void CompleteRitualItemSelection()

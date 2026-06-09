@@ -6,8 +6,9 @@ using UnityEngine;
 public class NewsTextMeshProPresenter : MonoBehaviour
 {
     [Header("Source")]
-    [SerializeField] private string archivedNpcPersistentId;
+    [SerializeField] private List<string> archivedNpcPersistentIds = new List<string>();
     [SerializeField] private bool useLatestArchivedNpc = true;
+    [SerializeField, Min(1)] private int maxPinnedArchivedNpcs = 8;
 
     [Header("Output")]
     [SerializeField] private TMP_Text targetText;
@@ -108,7 +109,7 @@ public class NewsTextMeshProPresenter : MonoBehaviour
             return false;
         }
 
-        archivedNpcPersistentId = snapshot.PersistentId.Trim();
+        PinArchivedNpc(snapshot.PersistentId.Trim());
         useLatestArchivedNpc = false;
 
         if (targetText == null)
@@ -136,20 +137,37 @@ public class NewsTextMeshProPresenter : MonoBehaviour
 
         if (!useLatestArchivedNpc)
         {
-            if (string.IsNullOrWhiteSpace(archivedNpcPersistentId))
+            if (archivedNpcPersistentIds == null || archivedNpcPersistentIds.Count == 0)
             {
-                reason = "archivedNpcPersistentId is not assigned.";
+                reason = "no archived NPCs are pinned to the TV.";
                 return false;
             }
 
-            if (!archiveService.TryGetArchivedSnapshot(archivedNpcPersistentId, out snapshot))
+            int attemptCount = archivedNpcPersistentIds.Count;
+            for (int i = 0; i < attemptCount; i++)
             {
-                reason = $"no archived NPC found for persistent id '{archivedNpcPersistentId}'.";
-                return false;
+                int index = (i + GetPinnedRotationIndex()) % archivedNpcPersistentIds.Count;
+                string persistentId = archivedNpcPersistentIds[index];
+                if (string.IsNullOrWhiteSpace(persistentId))
+                {
+                    continue;
+                }
+
+                if (!archiveService.TryGetArchivedSnapshot(persistentId, out snapshot))
+                {
+                    continue;
+                }
+
+                npc = NPC.FromSnapshot(snapshot);
+                if (npc != null)
+                {
+                    SetPinnedRotationIndex(index + 1);
+                    return true;
+                }
             }
 
-            npc = NPC.FromSnapshot(snapshot);
-            return npc != null;
+            reason = "no valid archived NPC found among pinned TV entries.";
+            return false;
         }
 
         return TryGetLatestArchivedNpc(out npc, out snapshot, out reason);
@@ -259,6 +277,62 @@ public class NewsTextMeshProPresenter : MonoBehaviour
         typewriter = FindSceneComponentIncludingInactive<TMPPageTypewriter>();
         return typewriter != null;
     }
+
+    private void PinArchivedNpc(string persistentId)
+    {
+        if (string.IsNullOrWhiteSpace(persistentId))
+        {
+            return;
+        }
+
+        if (archivedNpcPersistentIds == null)
+        {
+            archivedNpcPersistentIds = new List<string>();
+        }
+
+        persistentId = persistentId.Trim();
+
+        for (int i = archivedNpcPersistentIds.Count - 1; i >= 0; i--)
+        {
+            string existingId = archivedNpcPersistentIds[i];
+            if (string.IsNullOrWhiteSpace(existingId))
+            {
+                archivedNpcPersistentIds.RemoveAt(i);
+                continue;
+            }
+
+            if (string.Equals(existingId.Trim(), persistentId, System.StringComparison.OrdinalIgnoreCase))
+            {
+                archivedNpcPersistentIds.RemoveAt(i);
+                break;
+            }
+        }
+
+        archivedNpcPersistentIds.Add(persistentId);
+
+        while (archivedNpcPersistentIds.Count > maxPinnedArchivedNpcs)
+        {
+            archivedNpcPersistentIds.RemoveAt(0);
+        }
+    }
+
+    private int GetPinnedRotationIndex()
+    {
+        return pinnedRotationIndex < 0 ? 0 : pinnedRotationIndex;
+    }
+
+    private void SetPinnedRotationIndex(int nextIndex)
+    {
+        if (archivedNpcPersistentIds == null || archivedNpcPersistentIds.Count == 0)
+        {
+            pinnedRotationIndex = 0;
+            return;
+        }
+
+        pinnedRotationIndex = nextIndex % archivedNpcPersistentIds.Count;
+    }
+
+    [SerializeField, HideInInspector] private int pinnedRotationIndex;
 
     private static T FindSceneComponentIncludingInactive<T>() where T : Component
     {
