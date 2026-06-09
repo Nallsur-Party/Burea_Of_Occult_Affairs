@@ -11,6 +11,8 @@ public class RitualManager : MonoBehaviour
     [SerializeField] private RitualPointsUI ritualPointsUI;
 
     private readonly Dictionary<NpcOrderVisitor, RitualProgressState> progressByNpc = new Dictionary<NpcOrderVisitor, RitualProgressState>();
+    private NPCGenerator runtimeNpcGenerator;
+    private NPCProblemCatalog runtimeProblemCatalog;
     private RitualSolutionCatalog runtimeCatalog;
     private RitualPointsUI runtimeRitualPointsUI;
 
@@ -32,7 +34,7 @@ public class RitualManager : MonoBehaviour
 
             if (runtimeCatalog == null)
             {
-                runtimeCatalog = RitualSolutionCatalog.CreateRuntimeDefault();
+                runtimeCatalog = CreateRuntimeCatalog();
             }
 
             return runtimeCatalog;
@@ -59,6 +61,7 @@ public class RitualManager : MonoBehaviour
 
     private void Awake()
     {
+        EnsureProblemCatalogLoaded();
         _ = ActivePointsUI;
     }
 
@@ -238,6 +241,44 @@ public class RitualManager : MonoBehaviour
         return catalog != null && catalog.TryGetSolution(npc.NpcData.ProblemName, out solution);
     }
 
+    private RitualSolutionCatalog CreateRuntimeCatalog()
+    {
+        return RitualSolutionCatalog.CreateRuntimeDefault();
+    }
+
+    private void EnsureProblemCatalogLoaded()
+    {
+        if (runtimeProblemCatalog != null)
+        {
+            return;
+        }
+
+        NPCGenerator generator = ResolveNpcGenerator();
+        if (generator == null)
+        {
+            runtimeProblemCatalog = new NPCProblemCatalog(System.Array.Empty<NPCProblemDefinition>());
+            return;
+        }
+
+        generator.LoadCatalog();
+        runtimeProblemCatalog = generator.ProblemCatalog;
+        if (runtimeProblemCatalog == null)
+        {
+            runtimeProblemCatalog = new NPCProblemCatalog(System.Array.Empty<NPCProblemDefinition>());
+        }
+    }
+
+    private NPCGenerator ResolveNpcGenerator()
+    {
+        if (runtimeNpcGenerator != null)
+        {
+            return runtimeNpcGenerator;
+        }
+
+        runtimeNpcGenerator = FindObjectOfType<NPCGenerator>();
+        return runtimeNpcGenerator;
+    }
+
     private void LogAttempt(
         NpcOrderVisitor npc,
         RitualAttemptResult result,
@@ -270,7 +311,21 @@ public class RitualManager : MonoBehaviour
 
     private static string FormatStep(RitualStepDefinition step)
     {
-        return step == null ? null : $"{step.Item.GetDisplayName()} + {step.Action.GetDisplayName()}";
+        if (step == null)
+        {
+            return null;
+        }
+
+        string label = !string.IsNullOrWhiteSpace(step.Title)
+            ? step.Title
+            : $"{step.Item.GetDisplayName()} + {step.Action.GetDisplayName()}";
+
+        if (string.IsNullOrWhiteSpace(step.Description))
+        {
+            return label;
+        }
+
+        return $"{label} ({step.Description})";
     }
 
     private void AwardRitualPoints()

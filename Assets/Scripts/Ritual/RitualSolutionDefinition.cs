@@ -6,6 +6,7 @@ public class RitualSolutionDefinition
 {
     public string ProblemName;
     public List<RitualStepDefinition> Steps = new List<RitualStepDefinition>();
+    public string DisplayName;
 
     public RitualSolutionDefinition()
     {
@@ -14,6 +15,7 @@ public class RitualSolutionDefinition
     public RitualSolutionDefinition(string problemName, params RitualStepDefinition[] steps)
     {
         ProblemName = problemName;
+        DisplayName = problemName;
 
         if (steps == null)
         {

@@ -1,0 +1,146 @@
+<RitualData>
+  <Problem name="Одержимость">
+    <Step index="0" item="SoapWithPlantain" action="EquipOnNpc" title="Надеть оберег" description="Надеть защитный предмет на NPC" />
+    <Step index="1" item="LeadTablet" action="ReadIncantation" title="Прочитать формулу" description="Запустить ритуал чтением текста" />
+  </Problem>
+  <Problem name="Привязанный паразит">
+    <Step index="0" item="GlassWithPencil" action="CircleAroundNpc" title="Очертить контур" description="Отделить паразита от носителя" />
+    <Step index="1" item="SoapWithPlantain" action="PlaceNearby" title="Оставить очищение" description="Стабилизировать след" />
+  </Problem>
+  <Problem name="Преследующая сущность">
+    <Step index="0" item="SoapWithPlantain" action="PlaceNearby" title="Оставить защиту" description="Снять давление присутствия" />
+    <Step index="1" item="LeadTablet" action="CircleAroundNpc" title="Замкнуть круг" description="Сдержать след в границе" />
+  </Problem>
+  <Problem name="Подмена">
+    <Step index="0" item="LeadTablet" action="TouchNpc" title="Коснуться следа" description="Проверить подменённую форму" />
+    <Step index="1" item="GildedIcon" action="ReadIncantation" title="Прочитать формулу" description="Вернуть исходный образ" />
+  </Problem>
+  <Problem name="Наблюдатель">
+    <Step index="0" item="SoapWithPlantain" action="PlaceNearby" title="Оставить защиту" description="Снизить давление наблюдения" />
+    <Step index="1" item="LeadTablet" action="MarkGround" title="Нанести знак" description="Зафиксировать точку наблюдения" />
+  </Problem>
+  <Problem name="Осознанная сделка">
+    <Step index="0" item="GildedIcon" action="ReadIncantation" title="Проговорить формулу" description="Разорвать согласие" />
+    <Step index="1" item="GlassWithPencil" action="BreakItem" title="Сломать носитель" description="Уничтожить канал сделки" />
+  </Problem>
+  <Problem name="Нарушенный контракт">
+    <Step index="0" item="GildedIcon" action="HoldNearNpc" title="Поднести символ" description="Активировать договор" />
+    <Step index="1" item="LeadTablet" action="MarkGround" title="Нанести знак" description="Закрепить пересмотр условий" />
+  </Problem>
+  <Problem name="Неосознанный контракт">
+    <Step index="0" item="SoapWithPlantain" action="EquipOnNpc" title="Наложить защиту" description="Снять автоматическую привязку" />
+    <Step index="1" item="GlassWithPencil" action="BreakItem" title="Сломать носитель" description="Прервать скрытое условие" />
+  </Problem>
+  <Problem name="Классическое проклятие">
+    <Step index="0" item="SoapWithPlantain" action="EquipOnNpc" title="Наложить защиту" description="Защитить цель от воздействия" />
+    <Step index="1" item="LeadTablet" action="MarkGround" title="Нанести знак" description="Закрыть проклятие в границе" />
+  </Problem>
+  <Problem name="Наследственное проклятие">
+    <Step index="0" item="GlassWithPencil" action="BreakItem" title="Разорвать линию" description="Сломать передачу" />
+    <Step index="1" item="SoapWithPlantain" action="EquipOnNpc" title="Наложить защиту" description="Закрепить новый след" />
+  </Problem>
+  <Problem name="Самонавязанное">
+    <Step index="0" item="SoapWithPlantain" action="EquipOnNpc" title="Наложить защиту" description="Снять самоподдержку" />
+    <Step index="1" item="LeadTablet" action="TouchNpc" title="Коснуться следа" description="Закрепить отмену" />
+  </Problem>
+  <Problem name="Локальное проклятие">
+    <Step index="0" item="LeadTablet" action="MarkGround" title="Нанести знак" description="Обозначить границу" />
+    <Step index="1" item="SoapWithPlantain" action="PlaceNearby" title="Оставить очищение" description="Стабилизировать точку" />
+  </Problem>
+  <Problem name="Предметное проклятие">
+    <Step index="0" item="LeadTablet" action="HoldNearNpc" title="Поднести знак" description="Выявить источник" />
+    <Step index="1" item="LeadTablet" action="BreakItem" title="Сломать носитель" description="Уничтожить предметный канал" />
+  </Problem>
+  <Problem name="Незакрытый ритуал">
+    <Step index="0" item="GildedIcon" action="ReadIncantation" title="Прочитать формулу" description="Завершить незакрытый цикл" />
+    <Step index="1" item="LeadTablet" action="MarkGround" title="Нанести знак" description="Поставить финальную точку" />
+  </Problem>
+  <Problem name="Ошибка ритуала">
+    <Step index="0" item="LeadTablet" action="MarkGround" title="Нанести знак" description="Сбросить неверный след" />
+    <Step index="1" item="GildedIcon" action="ReadIncantation" title="Прочитать формулу" description="Переписать последовательность" />
+  </Problem>
+  <Problem name="Чужой ритуал">
+    <Step index="0" item="SoapWithPlantain" action="HoldNearNpc" title="Поднести защиту" description="Перехватить чужое влияние" />
+    <Step index="1" item="GlassWithPencil" action="BreakItem" title="Разрушить носитель" description="Снять чужой контур" />
+  </Problem>
+  <Problem name="Искажение пространства">
+    <Step index="0" item="SoapWithPlantain" action="PlaceNearby" title="Оставить защиту" description="Стабилизировать среду" />
+    <Step index="1" item="LeadTablet" action="MarkGround" title="Нанести знак" description="Закрепить пространство" />
+  </Problem>
+  <Problem name="Искажение времени">
+    <Step index="0" item="GlassWithPencil" action="EquipOnNpc" title="Наложить предмет" description="Синхронизировать след" />
+    <Step index="1" item="LeadTablet" action="MarkGround" title="Нанести знак" description="Выровнять временную петлю" />
+  </Problem>
+  <Problem name="Фоновый резонанс">
+    <Step index="0" item="LeadTablet" action="MarkGround" title="Нанести знак" description="Зафиксировать аномалию в месте" />
+    <Step index="1" item="GildedIcon" action="ReadIncantation" title="Прочитать формулу" description="Снять резонанс" />
+  </Problem>
+  <Problem name="Пространственный сдвиг">
+    <Step index="0" item="GlassWithPencil" action="CircleAroundNpc" title="Очертить контур" description="Обозначить искажение" />
+    <Step index="1" item="SoapWithPlantain" action="PlaceNearby" title="Оставить очищение" description="Зафиксировать место" />
+  </Problem>
+  <Problem name="Разрыв локальности">
+    <Step index="0" item="SoapWithPlantain" action="PlaceNearby" title="Оставить очищение" description="Стабилизировать место" />
+    <Step index="1" item="LeadTablet" action="MarkGround" title="Нанести знак" description="Закрыть разрыв" />
+  </Problem>
+  <Problem name="Резонанс памяти">
+    <Step index="0" item="LeadTablet" action="MarkGround" title="Отметить точку" description="Сбросить петлю памяти" />
+    <Step index="1" item="GildedIcon" action="ReadIncantation" title="Проговорить формулу" description="Разорвать повтор" />
+  </Problem>
+  <Problem name="Шумовой след">
+    <Step index="0" item="GildedIcon" action="HoldNearNpc" title="Поднести символ" description="Утихомирить шум" />
+    <Step index="1" item="SoapWithPlantain" action="PlaceNearby" title="Оставить защиту" description="Стабилизировать след" />
+  </Problem>
+  <Problem name="Точка возврата">
+    <Step index="0" item="GlassWithPencil" action="EquipOnNpc" title="Синхронизировать след" description="Разорвать цикл возврата" />
+    <Step index="1" item="LeadTablet" action="MarkGround" title="Нанести знак" description="Закрыть петлю" />
+  </Problem>
+  <Problem name="Холодный зов">
+    <Step index="0" item="GildedIcon" action="HoldNearNpc" title="Поднести защиту" description="Смягчить зов" />
+    <Step index="1" item="SoapWithPlantain" action="PlaceNearby" title="Оставить очищение" description="Снять холодное давление" />
+  </Problem>
+  <Problem name="Забытая комната">
+    <Step index="0" item="SoapWithPlantain" action="PlaceNearby" title="Оставить защиту" description="Вернуть границы комнаты" />
+    <Step index="1" item="LeadTablet" action="MarkGround" title="Нанести знак" description="Зафиксировать память места" />
+  </Problem>
+  <Problem name="Проекция">
+    <Step index="0" item="GlassWithPencil" action="CircleAroundNpc" title="Очертить контур" description="Удержать проекцию" />
+    <Step index="1" item="LeadTablet" action="MarkGround" title="Нанести знак" description="Закрепить образ" />
+  </Problem>
+  <Problem name="Инородный отпечаток">
+    <Step index="0" item="SoapWithPlantain" action="EquipOnNpc" title="Наложить защиту" description="Снять чужой след" />
+    <Step index="1" item="LeadTablet" action="TouchNpc" title="Коснуться следа" description="Закрыть отпечаток" />
+  </Problem>
+  <Problem name="Нарушение контура">
+    <Step index="0" item="GlassWithPencil" action="CircleAroundNpc" title="Очертить контур" description="Вернуть форму" />
+    <Step index="1" item="SoapWithPlantain" action="PlaceNearby" title="Оставить очищение" description="Зафиксировать границу" />
+  </Problem>
+  <Problem name="Пространственный двойник">
+    <Step index="0" item="LeadTablet" action="MarkGround" title="Нанести знак" description="Отделить двойник" />
+    <Step index="1" item="GildedIcon" action="ReadIncantation" title="Прочитать формулу" description="Снять наложение" />
+  </Problem>
+  <Problem name="Разлад">
+    <Step index="0" item="SoapWithPlantain" action="HoldNearNpc" title="Поднести защиту" description="Снизить разлад" />
+    <Step index="1" item="LeadTablet" action="MarkGround" title="Нанести знак" description="Удержать состояние" />
+  </Problem>
+  <Problem name="Наблюдение извне">
+    <Step index="0" item="SoapWithPlantain" action="PlaceNearby" title="Оставить защиту" description="Закрыть внешнее влияние" />
+    <Step index="1" item="LeadTablet" action="MarkGround" title="Нанести знак" description="Зафиксировать границу" />
+  </Problem>
+  <Problem name="Петля присутствия">
+    <Step index="0" item="GildedIcon" action="HoldNearNpc" title="Поднести символ" description="Снять зацикленное присутствие" />
+    <Step index="1" item="LeadTablet" action="MarkGround" title="Нанести знак" description="Закрыть петлю" />
+  </Problem>
+  <Problem name="След контакта">
+    <Step index="0" item="SoapWithPlantain" action="EquipOnNpc" title="Наложить защиту" description="Стереть контактный след" />
+    <Step index="1" item="LeadTablet" action="TouchNpc" title="Коснуться следа" description="Запечатать точку контакта" />
+  </Problem>
+  <Problem name="Потерянный образ">
+    <Step index="0" item="LeadTablet" action="MarkGround" title="Нанести знак" description="Вернуть образ в место" />
+    <Step index="1" item="GildedIcon" action="ReadIncantation" title="Прочитать формулу" description="Собрать образ" />
+  </Problem>
+  <Problem name="Эффект наложения">
+    <Step index="0" item="SoapWithPlantain" action="PlaceNearby" title="Оставить очищение" description="Развести наложенные слои" />
+    <Step index="1" item="LeadTablet" action="MarkGround" title="Нанести знак" description="Закрепить итоговый слой" />
+  </Problem>
+</RitualData>
