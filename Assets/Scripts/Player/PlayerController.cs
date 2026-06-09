@@ -407,7 +407,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void PerformRitualStep()
+    public void PerformRitualStep()
     {
         if (ritualManager == null)
         {
@@ -473,17 +473,53 @@ public class PlayerController : MonoBehaviour
         Debug.LogWarning("Inspection is not implemented yet. Time was consumed as a placeholder.", this);
     }
 
-    private void SelectRitualItem(RitualItemType item)
+    public void SelectRitualItem(RitualItemType item)
     {
         player.SelectedRitualItem = item;
         UpdateHeldItemVisual();
-        Debug.Log($"Ritual Debug | Cycled selected item to: {player.SelectedRitualItem}");
+        Debug.Log($"Ritual Debug | Selected item: {player.SelectedRitualItem.GetDisplayName()}");
     }
 
-    private void SelectRitualAction(RitualActionType action)
+    public void SelectRitualAction(RitualActionType action)
     {
         player.SelectedRitualAction = action;
         Debug.Log($"Ritual Debug | Selected action: {player.SelectedRitualAction.GetDisplayName()} | {player.SelectedRitualAction.GetDescription()}");
+    }
+
+    public void SelectGlassWithPencil()
+    {
+        SelectRitualItem(RitualItemType.GlassWithPencil);
+    }
+
+    public void SelectSoapWithPlantain()
+    {
+        SelectRitualItem(RitualItemType.SoapWithPlantain);
+    }
+
+    public void SelectGildedIcon()
+    {
+        SelectRitualItem(RitualItemType.GildedIcon);
+    }
+
+    public void SelectLeadTablet()
+    {
+        SelectRitualItem(RitualItemType.LeadTablet);
+    }
+
+    public void SelectRitualItemByIndex(int index)
+    {
+        if (ritualItems == null || ritualItems.Length == 0)
+        {
+            ritualItems = (RitualItemType[])Enum.GetValues(typeof(RitualItemType));
+        }
+
+        if (index < 0 || index >= ritualItems.Length)
+        {
+            Debug.LogWarning($"Ritual Debug | Invalid ritual item index: {index}", this);
+            return;
+        }
+
+        SelectRitualItem(ritualItems[index]);
     }
 
     private static bool IsRitualActionModifierPressed()
@@ -576,7 +612,7 @@ public class PlayerController : MonoBehaviour
         return FindObjectOfType<WorkShiftTimeSystem>();
     }
 
-    private void CycleRitualItem()
+    public void CycleRitualItem()
     {
         if (ritualItems == null || ritualItems.Length == 0)
         {

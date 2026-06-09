@@ -248,7 +248,7 @@ public class RitualManager : MonoBehaviour
         string npcName = npc != null && npc.NpcData != null ? npc.NpcData.Name : "No NPC";
         string problemName = npc != null && npc.NpcData != null && npc.NpcData.HasProblem ? npc.NpcData.ProblemName : "No problem";
         string healthText = npc != null && npc.NpcData != null ? $"{npc.NpcData.Health}/{npc.NpcData.MaxHealth}" : "-";
-        string itemText = selectedItem.HasValue ? selectedItem.Value.ToString() : "-";
+        string itemText = selectedItem.HasValue ? selectedItem.Value.GetDisplayName() : "-";
         string actionText = selectedAction.HasValue ? selectedAction.Value.ToString() : "-";
         string expectedText = string.IsNullOrWhiteSpace(expectedStepDescription) ? "-" : expectedStepDescription;
 
@@ -270,7 +270,7 @@ public class RitualManager : MonoBehaviour
 
     private static string FormatStep(RitualStepDefinition step)
     {
-        return step == null ? null : $"{step.Item} + {step.Action.GetDisplayName()}";
+        return step == null ? null : $"{step.Item.GetDisplayName()} + {step.Action.GetDisplayName()}";
     }
 
     private void AwardRitualPoints()

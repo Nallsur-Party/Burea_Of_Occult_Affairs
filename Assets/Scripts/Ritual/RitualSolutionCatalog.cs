@@ -57,76 +57,76 @@ public class RitualSolutionCatalog : ScriptableObject
         solutions.Clear();
 
         Add("Одержимость",
-            Step(RitualItemType.Amulet, RitualActionType.EquipOnNpc),
-            Step(RitualItemType.Cross, RitualActionType.ReadIncantation));
+            Step(RitualItemType.SoapWithPlantain, RitualActionType.EquipOnNpc),
+            Step(RitualItemType.LeadTablet, RitualActionType.ReadIncantation));
 
         Add("Привязанный паразит",
-            Step(RitualItemType.Necklace, RitualActionType.CircleAroundNpc),
-            Step(RitualItemType.Amulet, RitualActionType.PlaceNearby));
+            Step(RitualItemType.GlassWithPencil, RitualActionType.CircleAroundNpc),
+            Step(RitualItemType.SoapWithPlantain, RitualActionType.PlaceNearby));
 
         Add("Преследующая сущность",
-            Step(RitualItemType.Amulet, RitualActionType.PlaceNearby),
-            Step(RitualItemType.Wand, RitualActionType.CircleAroundNpc));
+            Step(RitualItemType.SoapWithPlantain, RitualActionType.PlaceNearby),
+            Step(RitualItemType.LeadTablet, RitualActionType.CircleAroundNpc));
 
         Add("Подмена",
-            Step(RitualItemType.Cross, RitualActionType.TouchNpc),
-            Step(RitualItemType.Grimoire, RitualActionType.ReadIncantation));
+            Step(RitualItemType.LeadTablet, RitualActionType.TouchNpc),
+            Step(RitualItemType.GildedIcon, RitualActionType.ReadIncantation));
 
         Add("Наблюдатель",
-            Step(RitualItemType.Amulet, RitualActionType.PlaceNearby),
-            Step(RitualItemType.Wand, RitualActionType.MarkGround));
+            Step(RitualItemType.SoapWithPlantain, RitualActionType.PlaceNearby),
+            Step(RitualItemType.LeadTablet, RitualActionType.MarkGround));
 
         Add("Осознанная сделка",
-            Step(RitualItemType.Grimoire, RitualActionType.ReadIncantation),
-            Step(RitualItemType.Necklace, RitualActionType.BreakItem));
+            Step(RitualItemType.GildedIcon, RitualActionType.ReadIncantation),
+            Step(RitualItemType.GlassWithPencil, RitualActionType.BreakItem));
 
         Add("Нарушенный контракт",
-            Step(RitualItemType.Grimoire, RitualActionType.HoldNearNpc),
-            Step(RitualItemType.Cross, RitualActionType.MarkGround));
+            Step(RitualItemType.GildedIcon, RitualActionType.HoldNearNpc),
+            Step(RitualItemType.LeadTablet, RitualActionType.MarkGround));
 
         Add("Неосознанный контракт",
-            Step(RitualItemType.Amulet, RitualActionType.EquipOnNpc),
-            Step(RitualItemType.Necklace, RitualActionType.BreakItem));
+            Step(RitualItemType.SoapWithPlantain, RitualActionType.EquipOnNpc),
+            Step(RitualItemType.GlassWithPencil, RitualActionType.BreakItem));
 
         Add("Классическое проклятие",
-            Step(RitualItemType.Amulet, RitualActionType.EquipOnNpc),
-            Step(RitualItemType.Cross, RitualActionType.MarkGround));
+            Step(RitualItemType.SoapWithPlantain, RitualActionType.EquipOnNpc),
+            Step(RitualItemType.LeadTablet, RitualActionType.MarkGround));
 
         Add("Наследственное проклятие",
-            Step(RitualItemType.Necklace, RitualActionType.BreakItem),
-            Step(RitualItemType.Amulet, RitualActionType.EquipOnNpc));
+            Step(RitualItemType.GlassWithPencil, RitualActionType.BreakItem),
+            Step(RitualItemType.SoapWithPlantain, RitualActionType.EquipOnNpc));
 
         Add("Самонавязанное",
-            Step(RitualItemType.Amulet, RitualActionType.EquipOnNpc),
-            Step(RitualItemType.Wand, RitualActionType.TouchNpc));
+            Step(RitualItemType.SoapWithPlantain, RitualActionType.EquipOnNpc),
+            Step(RitualItemType.LeadTablet, RitualActionType.TouchNpc));
 
         Add("Локальное проклятие",
-            Step(RitualItemType.Cross, RitualActionType.MarkGround),
-            Step(RitualItemType.Amulet, RitualActionType.PlaceNearby));
+            Step(RitualItemType.LeadTablet, RitualActionType.MarkGround),
+            Step(RitualItemType.SoapWithPlantain, RitualActionType.PlaceNearby));
 
         Add("Предметное проклятие",
-            Step(RitualItemType.Cross, RitualActionType.HoldNearNpc),
-            Step(RitualItemType.Wand, RitualActionType.BreakItem));
+            Step(RitualItemType.LeadTablet, RitualActionType.HoldNearNpc),
+            Step(RitualItemType.LeadTablet, RitualActionType.BreakItem));
 
         Add("Незакрытый ритуал",
-            Step(RitualItemType.Grimoire, RitualActionType.ReadIncantation),
-            Step(RitualItemType.Wand, RitualActionType.MarkGround));
+            Step(RitualItemType.GildedIcon, RitualActionType.ReadIncantation),
+            Step(RitualItemType.LeadTablet, RitualActionType.MarkGround));
 
         Add("Ошибка ритуала",
-            Step(RitualItemType.Cross, RitualActionType.MarkGround),
-            Step(RitualItemType.Grimoire, RitualActionType.ReadIncantation));
+            Step(RitualItemType.LeadTablet, RitualActionType.MarkGround),
+            Step(RitualItemType.GildedIcon, RitualActionType.ReadIncantation));
 
         Add("Чужой ритуал",
-            Step(RitualItemType.Amulet, RitualActionType.HoldNearNpc),
-            Step(RitualItemType.Necklace, RitualActionType.BreakItem));
+            Step(RitualItemType.SoapWithPlantain, RitualActionType.HoldNearNpc),
+            Step(RitualItemType.GlassWithPencil, RitualActionType.BreakItem));
 
         Add("Искажение пространства",
-            Step(RitualItemType.Amulet, RitualActionType.PlaceNearby),
-            Step(RitualItemType.Cross, RitualActionType.MarkGround));
+            Step(RitualItemType.SoapWithPlantain, RitualActionType.PlaceNearby),
+            Step(RitualItemType.LeadTablet, RitualActionType.MarkGround));
 
         Add("Искажение времени",
-            Step(RitualItemType.Necklace, RitualActionType.EquipOnNpc),
-            Step(RitualItemType.Wand, RitualActionType.MarkGround));
+            Step(RitualItemType.GlassWithPencil, RitualActionType.EquipOnNpc),
+            Step(RitualItemType.LeadTablet, RitualActionType.MarkGround));
     }
 
     private void Add(string problemName, params RitualStepDefinition[] steps)

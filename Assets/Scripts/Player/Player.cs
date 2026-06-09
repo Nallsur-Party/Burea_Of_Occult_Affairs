@@ -4,7 +4,7 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     [Header("Ritual State")]
-    [SerializeField] private RitualItemType selectedRitualItem = RitualItemType.Necklace;
+    [SerializeField] private RitualItemType selectedRitualItem = RitualItemType.GlassWithPencil;
     [SerializeField] private RitualActionType selectedRitualAction = RitualActionType.EquipOnNpc;
 
     [Header("Runtime State")]

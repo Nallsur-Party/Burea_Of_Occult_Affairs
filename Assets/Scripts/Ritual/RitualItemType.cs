@@ -1,8 +1,7 @@
 public enum RitualItemType
 {
-    Necklace,
-    Amulet,
-    Grimoire,
-    Cross,
-    Wand
+    GlassWithPencil,
+    SoapWithPlantain,
+    GildedIcon,
+    LeadTablet
 }
