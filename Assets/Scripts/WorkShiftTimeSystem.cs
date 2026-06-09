@@ -15,6 +15,7 @@ public class WorkShiftTimeSystem : MonoBehaviour
 
     [SerializeField] private int currentMinutesFromMidnight = ShiftStartMinutes;
     [SerializeField] private bool resetToShiftStartOnAwake = true;
+    [SerializeField] private bool logTimeChanges = false;
 
     private bool shiftEndedNotified;
 
@@ -51,6 +52,7 @@ public class WorkShiftTimeSystem : MonoBehaviour
     {
         if (instance != null && instance != this)
         {
+            instance.ApplySceneConfiguration(this);
             Destroy(gameObject);
             return;
         }
@@ -82,6 +84,12 @@ public class WorkShiftTimeSystem : MonoBehaviour
         currentMinutesFromMidnight = ShiftStartMinutes;
         shiftEndedNotified = false;
         NotifyTimeChanged();
+    }
+
+    [ContextMenu("Log Current Time")]
+    public void LogCurrentTime()
+    {
+        Debug.Log($"WorkShiftTimeSystem | current time: {CurrentTimeText} ({currentMinutesFromMidnight} min)", this);
     }
 
     public bool CanSpendTime()
@@ -132,7 +140,25 @@ public class WorkShiftTimeSystem : MonoBehaviour
 
     private void NotifyTimeChanged()
     {
+        if (logTimeChanges)
+        {
+            Debug.Log($"WorkShiftTimeSystem | time changed to {CurrentTimeText}", this);
+        }
+
         TimeChanged?.Invoke(currentMinutesFromMidnight);
+    }
+
+    private void ApplySceneConfiguration(WorkShiftTimeSystem source)
+    {
+        if (source == null)
+        {
+            return;
+        }
+
+        currentMinutesFromMidnight = source.currentMinutesFromMidnight;
+        resetToShiftStartOnAwake = source.resetToShiftStartOnAwake;
+        logTimeChanges = source.logTimeChanges;
+        shiftEndedNotified = source.shiftEndedNotified;
     }
 
     private void NotifyShiftEnded()

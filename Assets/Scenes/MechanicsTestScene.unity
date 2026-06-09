@@ -2060,11 +2060,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6388802178107742455, guid: a468429a45fcc1e4bb142170817d5051,
-        type: 3}
-      propertyPath: ritualItemSelectionDuration
-      value: 0.75
-      objectReference: {fileID: 0}
     - target: {fileID: 9175066928066003693, guid: a468429a45fcc1e4bb142170817d5051,
         type: 3}
       propertyPath: m_Name
@@ -6096,6 +6091,21 @@ PrefabInstance:
     - target: {fileID: 467920824651574611, guid: faf40cffc33843f40b5258ba482c3c56,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4818084362899967004, guid: faf40cffc33843f40b5258ba482c3c56,
+        type: 3}
+      propertyPath: logEventFires
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4818084362899967004, guid: faf40cffc33843f40b5258ba482c3c56,
+        type: 3}
+      propertyPath: logBindingState
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4818084362899967004, guid: faf40cffc33843f40b5258ba482c3c56,
+        type: 3}
+      propertyPath: autoBindOnEnable
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8460393869027150271, guid: faf40cffc33843f40b5258ba482c3c56,

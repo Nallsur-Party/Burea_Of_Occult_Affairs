@@ -45,12 +45,7 @@ public class WorkShiftClockPresenter : MonoBehaviour
             timeSystem.ShiftEnded += HandleShiftEnded;
         }
 
-        RefreshHands();
-    }
-
-    private void Start()
-    {
-        RefreshHands();
+        SyncHandsToGlobalTime();
     }
 
     private void OnDisable()
@@ -70,8 +65,7 @@ public class WorkShiftClockPresenter : MonoBehaviour
 
     private void HandleShiftEnded()
     {
-        UpdateTargetAngles(timeSystem != null ? timeSystem.CurrentMinutesFromMidnight : WorkShiftTimeSystem.ShiftEndMinutes);
-        RestartTweenFromCurrentVisualState();
+        SyncHandsToGlobalTime();
     }
 
     private void ResolveTimeSystem()
@@ -101,7 +95,7 @@ public class WorkShiftClockPresenter : MonoBehaviour
         hasCachedBaseRotation = hourHand != null && minuteHand != null;
     }
 
-    private void RefreshHands()
+    private void SyncHandsToGlobalTime()
     {
         if (timeSystem == null)
         {
