@@ -5,11 +5,33 @@ using UnityEngine;
 public class TMPPageTypewriter : MonoBehaviour
 {
     [Header("Playback")]
-    [SerializeField, Min(0f)] private float charactersPerSecond = 30f;
-    [SerializeField, Min(0f)] private float pagePauseSeconds = 0.5f;
-    [SerializeField] private bool startHidden = true;
-    [SerializeField] private bool forcePageOverflowMode = true;
-    [SerializeField] private GameObject visualRoot;
+    [SerializeField, Min(0f)]
+    private float charactersPerSecond = 30f;
+
+    [SerializeField, Min(0f)]
+    private float pagePauseSeconds = 0.5f;
+
+    [SerializeField]
+    private bool startHidden = true;
+
+    [SerializeField]
+    private bool forcePageOverflowMode = true;
+
+    [SerializeField]
+    private GameObject visualRoot;
+
+    [Header("Audio")]
+    [SerializeField]
+    private AudioSource audioSource;
+
+    [SerializeField]
+    private AudioClip typeSound;
+
+    [SerializeField, Range(0f, 1f)]
+    private float volume = 0.5f;
+
+    [SerializeField, Range(0f, 2f)]
+    private float pitchRandomness = 0.1f;
 
     private TMP_Text textComponent;
     private string sourceText = string.Empty;
@@ -32,6 +54,14 @@ public class TMPPageTypewriter : MonoBehaviour
         ResolveTextComponent();
         CaptureSourceText();
         ApplyIdleState();
+
+        // Если AudioSource не назначен, пытаемся найти на объекте
+        if (audioSource == null)
+            audioSource = GetComponent<AudioSource>();
+
+        // Если всё ещё null, добавляем новый компонент (чтобы не зависеть от внешнего назначения)
+        if (audioSource == null && typeSound != null)
+            audioSource = gameObject.AddComponent<AudioSource>();
     }
 
     private void OnValidate()
@@ -170,14 +200,34 @@ public class TMPPageTypewriter : MonoBehaviour
 
         RefreshPageCache(0);
         ApplyCurrentPageState();
+
+        // Проигрываем звук для первого символа
+        PlayFirstSound();
     }
 
     private void RevealNextCharacter()
     {
+        int charIndex = currentVisibleCharacterCount;
+        char currentChar = ' ';
+        if (charIndex < sourceText.Length)
+            currentChar = sourceText[charIndex];
+
+        if (char.IsWhiteSpace(currentChar) || char.IsPunctuation(currentChar))
+        {
+            currentVisibleCharacterCount = Mathf.Min(
+                currentVisibleCharacterCount + 1,
+                currentPageEndVisibleCharacterCount
+            );
+            ApplyCurrentCharacterCount();
+            return;
+        }
+
         currentVisibleCharacterCount = Mathf.Min(
             currentVisibleCharacterCount + 1,
             currentPageEndVisibleCharacterCount
         );
+
+        PlayTypeSound(); // Воспроизведение звука
 
         ApplyCurrentCharacterCount();
 
@@ -200,6 +250,40 @@ public class TMPPageTypewriter : MonoBehaviour
         }
 
         AdvanceToNextPageOrFinish();
+    }
+
+    private void PlayTypeSound()
+    {
+        if (IsComplete)
+            return;
+        if (audioSource == null || typeSound == null)
+            return;
+        if (audioSource.isPlaying)
+            return;
+
+        audioSource.pitch = Random.Range(1f - pitchRandomness, 1f + pitchRandomness);
+        audioSource.PlayOneShot(typeSound, volume);
+    }
+
+    private void PlayFirstSound()
+    {
+        Debug.Log($"PlayFirstSound called, sourceText length={sourceText.Length}");
+        if (string.IsNullOrEmpty(sourceText))
+            return;
+        if (audioSource == null || typeSound == null)
+            return;
+
+        char firstChar = sourceText[0];
+        if (char.IsWhiteSpace(firstChar) || char.IsPunctuation(firstChar))
+            return;
+
+        if (audioSource.isPlaying)
+            audioSource.Stop();
+
+        float originalPitch = audioSource.pitch;
+        audioSource.pitch = 1f + Random.Range(-pitchRandomness, pitchRandomness);
+        audioSource.PlayOneShot(typeSound, volume);
+        audioSource.pitch = originalPitch;
     }
 
     private void AdvanceToNextPageOrFinish()
@@ -225,6 +309,10 @@ public class TMPPageTypewriter : MonoBehaviour
         characterAccumulator = 0f;
         pagePauseTimer = 0f;
 
+        // Остановка звука после завершения текста
+        if (audioSource != null && audioSource.isPlaying)
+            audioSource.Stop();
+
         ApplyHiddenState();
     }
 
@@ -240,6 +328,10 @@ public class TMPPageTypewriter : MonoBehaviour
         currentPageEndVisibleCharacterCount = 0;
         currentVisibleCharacterCount = 0;
         pageCount = 1;
+
+        // Остановка звука при принудительной остановке воспроизведения
+        if (audioSource != null && audioSource.isPlaying)
+            audioSource.Stop();
     }
 
     private void RefreshPageCache(int pageIndex)
@@ -260,7 +352,10 @@ public class TMPPageTypewriter : MonoBehaviour
         {
             pageCount = 1;
             currentPageStartVisibleCharacterCount = 0;
-            currentPageEndVisibleCharacterCount = Mathf.Max(0, textInfo != null ? textInfo.characterCount : 0);
+            currentPageEndVisibleCharacterCount = Mathf.Max(
+                0,
+                textInfo != null ? textInfo.characterCount : 0
+            );
             currentVisibleCharacterCount = currentPageStartVisibleCharacterCount;
             return;
         }
@@ -316,15 +411,17 @@ public class TMPPageTypewriter : MonoBehaviour
     private void ApplyHiddenState()
     {
         if (textComponent == null)
-        {
             return;
-        }
 
         textComponent.text = sourceText;
         textComponent.maxVisibleCharacters = 0;
         textComponent.pageToDisplay = 1;
         textComponent.enabled = false;
         SetVisualRootActive(false);
+
+        // Остановка звука при скрытии
+        if (audioSource != null && audioSource.isPlaying)
+            audioSource.Stop();
     }
 
     private void ResolveTextComponent()
