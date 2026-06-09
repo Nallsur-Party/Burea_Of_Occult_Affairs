@@ -2149,6 +2149,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 627144413}
   m_PrefabAsset: {fileID: 0}
+--- !u!82 &627633314 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 8781509391055181943, guid: b8d6489633bad064b832018925fa8162,
+    type: 3}
+  m_PrefabInstance: {fileID: 8412461916027438298}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &631179563
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3863,6 +3869,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentMinutesFromMidnight: 480
   resetToShiftStartOnAwake: 1
+  logTimeChanges: 0
 --- !u!114 &1511726419
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6560,6 +6567,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0.163
+      objectReference: {fileID: 0}
+    - target: {fileID: 7062631071583435016, guid: 6b706bc3252e13f439b304f386d7f4f6,
+        type: 3}
+      propertyPath: typeSound
+      value: 
+      objectReference: {fileID: 8300000, guid: c0de82bc2bfb0494c9db09f5ae3deda8, type: 3}
+    - target: {fileID: 7062631071583435016, guid: 6b706bc3252e13f439b304f386d7f4f6,
+        type: 3}
+      propertyPath: audioSource
+      value: 
+      objectReference: {fileID: 627633314}
+    - target: {fileID: 7062631071583435016, guid: 6b706bc3252e13f439b304f386d7f4f6,
+        type: 3}
+      propertyPath: pitchRandomness
+      value: 0.03
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
