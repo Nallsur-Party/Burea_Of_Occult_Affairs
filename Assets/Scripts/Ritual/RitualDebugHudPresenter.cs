@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Xml.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -64,6 +65,7 @@ public class RitualDebugHudPresenter : MonoBehaviour
     private readonly HashSet<string> excludedSymptoms = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
     private readonly List<RitualActionType> actionTypes = new List<RitualActionType>();
     private readonly List<RitualItemType> itemTypes = new List<RitualItemType>();
+    private Dictionary<string, string> symptomTextMap = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
     private sealed class SymptomEntry
     {
@@ -455,11 +457,38 @@ public class RitualDebugHudPresenter : MonoBehaviour
         if (npcProblemsXml != null)
         {
             problemCatalog = NPCProblemsLoader.Load(npcProblemsXml);
+            symptomTextMap = ParseSymptomsPoolFromXml(npcProblemsXml.text);
         }
         else
         {
             NPCGenerator generator = FindObjectOfType<NPCGenerator>();
             problemCatalog = generator != null ? generator.ProblemCatalog : null;
+
+            // build symptomTextMap from runtime problem catalog when XML not provided
+            symptomTextMap = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            if (problemCatalog != null && problemCatalog.Problems != null)
+            {
+                for (int i = 0; i < problemCatalog.Problems.Count; i++)
+                {
+                    NPCProblemDefinition p = problemCatalog.Problems[i];
+                    if (p == null) continue;
+
+                    var ids = p.SymptomIds;
+                    var texts = p.Symptoms;
+                    if (ids == null) continue;
+
+                    for (int j = 0; j < ids.Count; j++)
+                    {
+                        string id = ids[j];
+                        if (string.IsNullOrWhiteSpace(id)) continue;
+                        string text = (texts != null && j < texts.Count) ? texts[j] : id;
+                        if (!string.IsNullOrWhiteSpace(text))
+                        {
+                            symptomTextMap[id] = text.Trim();
+                        }
+                    }
+                }
+            }
         }
 
         if (ritualSolutionsXml != null)
@@ -470,6 +499,39 @@ public class RitualDebugHudPresenter : MonoBehaviour
         {
             solutionCatalog = RitualSolutionCatalog.CreateRuntimeDefault();
         }
+    }
+
+    private Dictionary<string, string> ParseSymptomsPoolFromXml(string xmlContent)
+    {
+        var map = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        if (string.IsNullOrWhiteSpace(xmlContent))
+        {
+            return map;
+        }
+
+        try
+        {
+            XDocument doc = XDocument.Parse(xmlContent);
+            XElement root = doc.Element("NPCData");
+            if (root == null) return map;
+            XElement pool = root.Element("SymptomsPool");
+            if (pool == null) return map;
+
+            foreach (XElement symptomElement in pool.Elements("Symptom"))
+            {
+                XAttribute idAttr = symptomElement.Attribute("id");
+                string id = idAttr?.Value?.Trim();
+                string text = symptomElement.Value?.Trim();
+                if (string.IsNullOrWhiteSpace(id) || string.IsNullOrWhiteSpace(text)) continue;
+                map[id] = text;
+            }
+        }
+        catch (Exception)
+        {
+            // ignore parse errors; return empty map
+        }
+
+        return map;
     }
 
     private void RecalculateCandidates()
@@ -497,19 +559,19 @@ public class RitualDebugHudPresenter : MonoBehaviour
 
     private bool MatchesCurrentExclusions(NPCProblemDefinition problem)
     {
-        if (problem == null || problem.Symptoms == null)
+        if (problem == null || problem.SymptomIds == null)
         {
             return false;
         }
 
-        foreach (string excluded in excludedSymptoms)
+        foreach (string excludedId in excludedSymptoms)
         {
-            if (string.IsNullOrWhiteSpace(excluded))
+            if (string.IsNullOrWhiteSpace(excludedId))
             {
                 continue;
             }
 
-            if (ContainsSymptom(problem, excluded))
+            if (ContainsSymptom(problem, excludedId))
             {
                 return false;
             }
@@ -518,16 +580,16 @@ public class RitualDebugHudPresenter : MonoBehaviour
         return true;
     }
 
-    private static bool ContainsSymptom(NPCProblemDefinition problem, string symptom)
+    private bool ContainsSymptom(NPCProblemDefinition problem, string symptomId)
     {
-        if (problem == null || string.IsNullOrWhiteSpace(symptom) || problem.Symptoms == null)
+        if (problem == null || string.IsNullOrWhiteSpace(symptomId) || problem.SymptomIds == null)
         {
             return false;
         }
 
-        for (int i = 0; i < problem.Symptoms.Count; i++)
+        for (int i = 0; i < problem.SymptomIds.Count; i++)
         {
-            if (string.Equals(problem.Symptoms[i], symptom, StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(problem.SymptomIds[i], symptomId, StringComparison.OrdinalIgnoreCase))
             {
                 return true;
             }
@@ -535,6 +597,8 @@ public class RitualDebugHudPresenter : MonoBehaviour
 
         return false;
     }
+
+    // removed: old symptom text-based contains method. Use id-aware ContainsSymptom above.
 
     private string BuildCandidateText()
     {
@@ -552,9 +616,32 @@ public class RitualDebugHudPresenter : MonoBehaviour
                 continue;
             }
 
-            string symptoms = problem != null && problem.Symptoms != null && problem.Symptoms.Count > 0
-                ? string.Join(", ", problem.Symptoms)
-                : "No symptoms";
+            string symptoms;
+            if (problem.SymptomIds != null && problem.SymptomIds.Count > 0)
+            {
+                List<string> mapped = new List<string>();
+                for (int s = 0; s < problem.SymptomIds.Count; s++)
+                {
+                    string id = problem.SymptomIds[s];
+                    if (string.IsNullOrWhiteSpace(id)) continue;
+                    if (!symptomTextMap.TryGetValue(id, out string display))
+                    {
+                        // fallback to provided plain text list if available
+                        display = (problem.Symptoms != null && s < problem.Symptoms.Count && !string.IsNullOrWhiteSpace(problem.Symptoms[s]))
+                            ? problem.Symptoms[s]
+                            : id;
+                    }
+                    mapped.Add(display);
+                }
+
+                symptoms = mapped.Count > 0 ? string.Join(", ", mapped) : "No symptoms";
+            }
+            else
+            {
+                symptoms = problem.Symptoms != null && problem.Symptoms.Count > 0
+                    ? string.Join(", ", problem.Symptoms)
+                    : "No symptoms";
+            }
 
             lines.Add($"{i + 1}. {problem.Name}");
             lines.Add($"   Symptoms: {symptoms}");
@@ -630,7 +717,8 @@ public class RitualDebugHudPresenter : MonoBehaviour
             }
 
             bool excluded = excludedSymptoms.Contains(entry.Symptom);
-            entry.Label.text = excluded ? $"<s>{entry.Symptom}</s>" : entry.Symptom;
+            string display = symptomTextMap.TryGetValue(entry.Symptom, out string txt) ? txt : entry.Symptom;
+            entry.Label.text = excluded ? $"<s>{display}</s>" : display;
             entry.Label.color = excluded ? ExcludedColor : Color.white;
             entry.Button.targetGraphic.color = excluded
                 ? new Color(0.18f, 0.18f, 0.2f, 0.9f)
@@ -645,17 +733,18 @@ public class RitualDebugHudPresenter : MonoBehaviour
 
     private void EnsureSymptomButtons()
     {
-        List<string> allSymptoms = CollectAllSymptoms();
+        List<string> allSymptomIds = CollectAllSymptoms();
 
-        while (symptomEntries.Count < allSymptoms.Count)
+        while (symptomEntries.Count < allSymptomIds.Count)
         {
             int index = symptomEntries.Count;
-            string symptom = allSymptoms[index];
-            Button button = CreateButton(symptomButtonsRoot, symptom, () => ToggleSymptom(symptom));
+            string id = allSymptomIds[index];
+            string display = symptomTextMap.TryGetValue(id, out string txt) ? txt : id;
+            Button button = CreateButton(symptomButtonsRoot, display, () => ToggleSymptom(id));
             TMP_Text label = button.GetComponentInChildren<TMP_Text>(true);
             symptomEntries.Add(new SymptomEntry
             {
-                Symptom = symptom,
+                Symptom = id,
                 Button = button,
                 Label = label
             });
@@ -663,11 +752,11 @@ public class RitualDebugHudPresenter : MonoBehaviour
 
         for (int i = 0; i < symptomEntries.Count; i++)
         {
-            bool active = i < allSymptoms.Count;
+            bool active = i < allSymptomIds.Count;
             symptomEntries[i].Button.gameObject.SetActive(active);
             if (active)
             {
-                symptomEntries[i].Symptom = allSymptoms[i];
+                symptomEntries[i].Symptom = allSymptomIds[i];
             }
         }
 
@@ -675,62 +764,72 @@ public class RitualDebugHudPresenter : MonoBehaviour
 
     private List<string> CollectAllSymptoms()
     {
-        List<string> symptoms = new List<string>();
+        List<string> ids = new List<string>();
         if (problemCatalog == null || problemCatalog.Problems == null)
         {
-            return symptoms;
+            return ids;
         }
 
         for (int i = 0; i < problemCatalog.Problems.Count; i++)
         {
             NPCProblemDefinition problem = problemCatalog.Problems[i];
-            if (problem == null || problem.Symptoms == null)
-            {
-                continue;
-            }
+            if (problem == null) continue;
 
-            for (int j = 0; j < problem.Symptoms.Count; j++)
+            if (problem.SymptomIds != null && problem.SymptomIds.Count > 0)
             {
-                string symptom = problem.Symptoms[j];
-                if (string.IsNullOrWhiteSpace(symptom))
+                for (int j = 0; j < problem.SymptomIds.Count; j++)
                 {
-                    continue;
-                }
-
-                symptom = symptom.Trim();
-                bool alreadyPresent = false;
-                for (int k = 0; k < symptoms.Count; k++)
-                {
-                    if (string.Equals(symptoms[k], symptom, StringComparison.OrdinalIgnoreCase))
+                    string id = problem.SymptomIds[j];
+                    if (string.IsNullOrWhiteSpace(id)) continue;
+                    id = id.Trim();
+                    bool exists = false;
+                    for (int k = 0; k < ids.Count; k++)
                     {
-                        alreadyPresent = true;
-                        break;
+                        if (string.Equals(ids[k], id, StringComparison.OrdinalIgnoreCase)) { exists = true; break; }
+                    }
+                    if (!exists) ids.Add(id);
+                }
+            }
+            else if (problem.Symptoms != null && problem.Symptoms.Count > 0)
+            {
+                for (int j = 0; j < problem.Symptoms.Count; j++)
+                {
+                    string text = problem.Symptoms[j];
+                    if (string.IsNullOrWhiteSpace(text)) continue;
+                    text = text.Trim();
+                    // use text as id when no explicit id provided
+                    bool exists = false;
+                    for (int k = 0; k < ids.Count; k++)
+                    {
+                        if (string.Equals(ids[k], text, StringComparison.OrdinalIgnoreCase)) { exists = true; break; }
+                    }
+                    if (!exists)
+                    {
+                        ids.Add(text);
+                        // ensure symptomTextMap contains mapping for this ad-hoc id
+                        if (!symptomTextMap.ContainsKey(text)) symptomTextMap[text] = text;
                     }
                 }
-
-                if (!alreadyPresent)
-                {
-                    symptoms.Add(symptom);
-                }
             }
         }
 
-        return symptoms;
+        if (ids.Count == 0)
+        {
+            int problemsCount = problemCatalog?.Problems?.Count ?? 0;
+            Debug.LogWarning($"RitualDebug: collected 0 symptom ids from problem catalog (problems={problemsCount}). Check NPC problems XML or symptom pool.");
+        }
+
+        return ids;
     }
 
-    private void ToggleSymptom(string symptom)
+    private void ToggleSymptom(string symptomId)
     {
-        if (string.IsNullOrWhiteSpace(symptom))
+        if (string.IsNullOrWhiteSpace(symptomId)) return;
+        symptomId = symptomId.Trim();
+        if (!excludedSymptoms.Add(symptomId))
         {
-            return;
+            excludedSymptoms.Remove(symptomId);
         }
-
-        symptom = symptom.Trim();
-        if (!excludedSymptoms.Add(symptom))
-        {
-            excludedSymptoms.Remove(symptom);
-        }
-
         RefreshDeductionPage();
     }
 
